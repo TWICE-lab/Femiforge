@@ -1,0 +1,1935 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FemiForge Empowerment Nexus | Empowering Women & Young Ladies</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #8a2be2;
+            --primary-dark: #6a1cb0;
+            --secondary: #ff69b4;
+            --accent: #ffd700;
+            --light: #f9f0ff;
+            --dark: #333333;
+            --gray: #666666;
+            --light-gray: #f5f5f5;
+            --white: #ffffff;
+            --shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            --shadow-hover: 0 10px 25px rgba(0, 0, 0, 0.15);
+            --transition: all 0.3s ease;
+            --border-radius: 10px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background-color: var(--white);
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, h4 {
+            font-family: 'Playfair Display', serif;
+            font-weight: 600;
+            line-height: 1.3;
+            margin-bottom: 1rem;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Slider Navigation - Desktop Only */
+        .slider-nav {
+            position: fixed;
+            top: 50%;
+            right: 20px;
+            transform: translateY(-50%);
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 15px 10px;
+            border-radius: 20px;
+            box-shadow: var(--shadow);
+        }
+
+        .nav-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: var(--light-gray);
+            cursor: pointer;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .nav-dot.active {
+            background-color: var(--primary);
+            transform: scale(1.3);
+        }
+
+        .nav-dot:hover {
+            background-color: var(--secondary);
+            transform: scale(1.2);
+        }
+
+        .nav-label {
+            position: absolute;
+            right: 25px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: var(--primary);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 12px;
+            font-weight: 600;
+            white-space: nowrap;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition);
+            pointer-events: none;
+        }
+
+        .nav-dot:hover .nav-label {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* Header */
+        header {
+            background-color: var(--white);
+            box-shadow: var(--shadow);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 999;
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo-icon {
+            color: var(--primary);
+            font-size: 28px;
+        }
+
+        .logo-text {
+            font-family: 'Playfair Display', serif;
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .logo-text span {
+            color: var(--secondary);
+        }
+
+        /* Desktop Navigation */
+        .desktop-nav {
+            display: flex;
+            align-items: center;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+            margin-right: 30px;
+        }
+
+        .nav-menu a {
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 500;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .nav-menu a:hover {
+            color: var(--primary);
+        }
+
+        .nav-menu a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            background: var(--primary);
+            left: 0;
+            bottom: -5px;
+            transition: var(--transition);
+        }
+
+        .nav-menu a:hover::after {
+            width: 100%;
+        }
+
+        .cta-button {
+            background-color: var(--primary);
+            color: var(--white);
+            padding: 10px 25px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: var(--transition);
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        .cta-button:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        /* Mobile Navigation - COMPACT VERSION */
+        .mobile-nav-toggle {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 24px;
+            color: var(--primary);
+            cursor: pointer;
+            z-index: 1002;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+        }
+
+        .mobile-nav-toggle:hover {
+            background-color: var(--light);
+        }
+
+        .mobile-nav {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 300px;
+            height: 100vh;
+            background: var(--white);
+            box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+            z-index: 1001;
+            transition: right 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            padding: 70px 20px 30px;
+            overflow-y: auto;
+        }
+
+        .mobile-nav.active {
+            right: 0;
+        }
+
+        .mobile-nav-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition);
+        }
+
+        .mobile-nav-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .mobile-nav-header {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: var(--white);
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--light-gray);
+            z-index: 1002;
+        }
+
+        .mobile-nav-close {
+            background: none;
+            border: none;
+            font-size: 22px;
+            color: var(--primary);
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+        }
+
+        .mobile-nav-close:hover {
+            background-color: var(--light);
+        }
+
+        .mobile-nav-menu {
+            list-style: none;
+            margin-bottom: 20px;
+        }
+
+        .mobile-nav-menu li {
+            margin-bottom: 8px;
+        }
+
+        .mobile-nav-menu a {
+            text-decoration: none;
+            color: var(--dark);
+            font-size: 16px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: var(--transition);
+            padding: 12px 15px;
+            border-radius: 8px;
+        }
+
+        .mobile-nav-menu a:hover,
+        .mobile-nav-menu a.active {
+            background-color: var(--light);
+            color: var(--primary);
+        }
+
+        .mobile-nav-icon {
+            width: 20px;
+            text-align: center;
+            color: var(--primary);
+            font-size: 18px;
+        }
+
+        .mobile-nav-footer {
+            margin-top: auto;
+            padding-top: 20px;
+            border-top: 1px solid var(--light-gray);
+        }
+
+        .mobile-social-links {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-top: 15px;
+        }
+
+        .mobile-social-links a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            background-color: var(--light);
+            border-radius: 50%;
+            color: var(--primary);
+            font-size: 16px;
+            transition: var(--transition);
+        }
+
+        .mobile-social-links a:hover {
+            background-color: var(--primary);
+            color: var(--white);
+            transform: translateY(-3px);
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(rgba(138, 43, 226, 0.85), rgba(255, 105, 180, 0.8)), url('https://images.unsplash.com/photo-1529156069898-49953e39b3ac?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: var(--white);
+            padding: 180px 0 120px;
+            text-align: center;
+            margin-top: 70px;
+            position: relative;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto 2.5rem;
+            opacity: 0.95;
+        }
+
+        .btn {
+            display: inline-block;
+            background-color: var(--accent);
+            color: var(--dark);
+            padding: 14px 32px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: var(--transition);
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        .btn:hover {
+            background-color: var(--white);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            color: var(--white);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+        }
+
+        /* Section Styling */
+        section {
+            padding: 100px 0;
+            scroll-margin-top: 80px;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .section-title h2 {
+            font-size: 2.5rem;
+            color: var(--primary);
+            position: relative;
+            display: inline-block;
+            padding-bottom: 15px;
+        }
+
+        .section-title h2::after {
+            content: '';
+            position: absolute;
+            width: 70px;
+            height: 3px;
+            background-color: var(--secondary);
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .section-subtitle {
+            text-align: center;
+            color: var(--gray);
+            max-width: 700px;
+            margin: 0 auto 40px;
+            font-size: 1.1rem;
+        }
+
+        /* About Section */
+        .about-content {
+            display: flex;
+            align-items: center;
+            gap: 50px;
+        }
+
+        .about-text {
+            flex: 1;
+        }
+
+        .about-image {
+            flex: 1;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+        }
+
+        .about-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+            transition: var(--transition);
+        }
+
+        .about-image img:hover {
+            transform: scale(1.05);
+        }
+
+        /* Programs Section */
+        .programs-section {
+            background-color: var(--light);
+        }
+
+        .programs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .program-card {
+            background-color: var(--white);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+
+        .program-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .program-img {
+            height: 200px;
+            overflow: hidden;
+        }
+
+        .program-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition);
+        }
+
+        .program-card:hover .program-img img {
+            transform: scale(1.1);
+        }
+
+        .program-content {
+            padding: 25px;
+        }
+
+        .program-content h3 {
+            color: var(--primary);
+            font-size: 1.5rem;
+        }
+
+        /* Services Section */
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+        }
+
+        .service-card {
+            background-color: var(--white);
+            padding: 40px 30px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            text-align: center;
+            transition: var(--transition);
+            border-top: 4px solid var(--primary);
+        }
+
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .service-icon {
+            font-size: 48px;
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+
+        /* Board & Sponsors Section */
+        .board-sponsors-section {
+            background-color: var(--light-gray);
+        }
+
+        .board-members {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-bottom: 60px;
+        }
+
+        .board-card {
+            background-color: var(--white);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+
+        .board-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .board-img {
+            height: 250px;
+            overflow: hidden;
+        }
+
+        .board-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition);
+        }
+
+        .board-card:hover .board-img img {
+            transform: scale(1.1);
+        }
+
+        .board-content {
+            padding: 25px;
+            text-align: center;
+        }
+
+        .board-content h3 {
+            color: var(--primary);
+            font-size: 1.4rem;
+        }
+
+        .board-role {
+            color: var(--secondary);
+            font-weight: 600;
+            margin-bottom: 10px;
+            font-size: 0.95rem;
+        }
+
+        .sponsors {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 40px;
+            align-items: center;
+            margin-top: 40px;
+        }
+
+        .sponsor-logo {
+            height: 80px;
+            filter: grayscale(100%);
+            opacity: 0.7;
+            transition: var(--transition);
+        }
+
+        .sponsor-logo:hover {
+            filter: grayscale(0%);
+            opacity: 1;
+            transform: scale(1.1);
+        }
+
+        /* Testimonials Section */
+        .testimonials-section {
+            background-color: var(--light);
+        }
+
+        .testimonials-slider {
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .testimonial-card {
+            background-color: var(--white);
+            padding: 40px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            text-align: center;
+            margin: 20px;
+            transition: var(--transition);
+        }
+
+        .testimonial-text {
+            font-style: italic;
+            margin-bottom: 25px;
+            font-size: 1.1rem;
+            color: var(--gray);
+            line-height: 1.8;
+        }
+
+        .testimonial-author {
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 5px;
+        }
+
+        .testimonial-role {
+            color: var(--secondary);
+            font-size: 0.9rem;
+        }
+
+        .testimonial-img {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            overflow: hidden;
+            margin: 0 auto 20px;
+            border: 4px solid var(--primary);
+        }
+
+        .testimonial-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Impact Section */
+        .impact-stats {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 40px;
+            text-align: center;
+            margin-top: 40px;
+        }
+
+        .stat-card {
+            flex: 1;
+            min-width: 200px;
+            padding: 30px;
+            background-color: var(--white);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+
+        .stat-label {
+            font-size: 1.1rem;
+            color: var(--dark);
+            font-weight: 600;
+        }
+
+        /* Support Us Section */
+        .support-section {
+            background: linear-gradient(rgba(138, 43, 226, 0.9), rgba(255, 105, 180, 0.9)), url('https://images.unsplash.com/photo-1551836026-d5c2e0c49b61?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80');
+            background-size: cover;
+            background-position: center;
+            color: var(--white);
+            text-align: center;
+        }
+
+        .support-section .section-title h2,
+        .support-section .section-subtitle {
+            color: var(--white);
+        }
+
+        .support-options {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .support-option {
+            background-color: rgba(255, 255, 255, 0.95);
+            color: var(--dark);
+            padding: 40px 30px;
+            border-radius: var(--border-radius);
+            width: 300px;
+            transition: var(--transition);
+        }
+
+        .support-option:hover {
+            transform: translateY(-10px);
+            background-color: var(--white);
+        }
+
+        .support-option h3 {
+            color: var(--primary);
+        }
+
+        /* Contact Section */
+        .contact-section {
+            background-color: var(--light-gray);
+        }
+
+        .contact-container {
+            display: flex;
+            gap: 50px;
+        }
+
+        .contact-info {
+            flex: 1;
+        }
+
+        .contact-form {
+            flex: 1;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 30px;
+        }
+
+        .contact-icon {
+            background-color: var(--primary);
+            color: var(--white);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            margin-right: 20px;
+            flex-shrink: 0;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px rgba(138, 43, 226, 0.2);
+        }
+
+        textarea.form-control {
+            min-height: 150px;
+            resize: vertical;
+        }
+
+        /* Form Messages */
+        .form-message {
+            margin-top: 15px;
+            padding: 12px;
+            border-radius: 5px;
+            text-align: center;
+            font-weight: 500;
+            display: none;
+        }
+
+        .form-message.success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+            display: block;
+        }
+
+        .form-message.error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+            display: block;
+        }
+
+        .btn-loading {
+            position: relative;
+            color: transparent !important;
+        }
+
+        .btn-loading::after {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--dark);
+            color: var(--white);
+            padding: 70px 0 30px;
+        }
+
+        .footer-content {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 50px;
+            margin-bottom: 50px;
+        }
+
+        .footer-col {
+            flex: 1;
+            min-width: 250px;
+        }
+
+        .footer-logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--white);
+            margin-bottom: 20px;
+        }
+
+        .footer-logo span {
+            color: var(--secondary);
+        }
+
+        .footer-col h3 {
+            color: var(--white);
+            font-size: 1.3rem;
+            margin-bottom: 25px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .footer-col h3::after {
+            content: '';
+            position: absolute;
+            width: 40px;
+            height: 2px;
+            background-color: var(--secondary);
+            bottom: 0;
+            left: 0;
+        }
+
+        .footer-col p {
+            margin-bottom: 20px;
+            opacity: 0.8;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .social-links a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            color: var(--white);
+            font-size: 18px;
+            transition: var(--transition);
+        }
+
+        .social-links a:hover {
+            background-color: var(--primary);
+            transform: translateY(-3px);
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 12px;
+        }
+
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .footer-links a:hover {
+            color: var(--accent);
+            padding-left: 5px;
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 0.9rem;
+            opacity: 0.7;
+        }
+
+        /* Gallery Button */
+        .gallery-btn-container {
+            text-align: center;
+            margin-top: 40px;
+        }
+
+        .gallery-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background-color: var(--primary);
+            color: var(--white);
+            padding: 15px 30px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: var(--transition);
+            border: 2px solid var(--primary);
+        }
+
+        .gallery-btn:hover {
+            background-color: transparent;
+            color: var(--primary);
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .hero h1 {
+                font-size: 2.8rem;
+            }
+            
+            .about-content {
+                flex-direction: column;
+            }
+            
+            .contact-container {
+                flex-direction: column;
+            }
+            
+            .slider-nav {
+                right: 10px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .desktop-nav {
+                display: none;
+            }
+            
+            .mobile-nav-toggle {
+                display: flex;
+            }
+            
+            .hero {
+                padding: 150px 0 90px;
+            }
+            
+            .hero h1 {
+                font-size: 2.3rem;
+            }
+            
+            section {
+                padding: 70px 0;
+            }
+            
+            .section-title h2 {
+                font-size: 2rem;
+            }
+            
+            .slider-nav {
+                display: none;
+            }
+        }
+
+        @media (min-width: 769px) {
+            .mobile-nav-toggle,
+            .mobile-nav,
+            .mobile-nav-overlay {
+                display: none;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .hero h1 {
+                font-size: 1.8rem;
+            }
+            
+            .hero p {
+                font-size: 1rem;
+            }
+            
+            .btn {
+                padding: 12px 25px;
+            }
+            
+            .stat-card {
+                min-width: 150px;
+                padding: 20px;
+            }
+            
+            .stat-number {
+                font-size: 2.5rem;
+            }
+            
+            .support-option {
+                width: 100%;
+            }
+            
+            .mobile-nav {
+                width: 280px;
+                padding: 60px 15px 20px;
+            }
+            
+            .mobile-nav-menu a {
+                font-size: 15px;
+                padding: 10px 12px;
+                gap: 10px;
+            }
+            
+            .mobile-nav-icon {
+                font-size: 16px;
+                width: 18px;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .mobile-nav {
+                width: 260px;
+            }
+            
+            .logo-text {
+                font-size: 20px;
+            }
+            
+            .logo-icon {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Slider Navigation - Desktop Only -->
+    <div class="slider-nav">
+        <div class="nav-dot" data-section="home">
+            <span class="nav-label">Home</span>
+        </div>
+        <div class="nav-dot" data-section="about">
+            <span class="nav-label">About</span>
+        </div>
+        <div class="nav-dot" data-section="programs">
+            <span class="nav-label">Programs</span>
+        </div>
+        <div class="nav-dot" data-section="services">
+            <span class="nav-label">Services</span>
+        </div>
+        <div class="nav-dot" data-section="board-sponsors">
+            <span class="nav-label">Board & Sponsors</span>
+        </div>
+        <div class="nav-dot" data-section="contact">
+            <span class="nav-label">Contact</span>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header>
+        <div class="container header-container">
+            <div class="logo">
+                <div class="logo-icon">
+                    <img src="images/logo.jpg" alt="FemiForge Logo" style="width: 32px; height: 32px;">
+                </div>
+                <div class="logo-text">Femi<span>Forge</span></div>
+            </div>
+            
+            <!-- Desktop Navigation -->
+            <div class="desktop-nav">
+                <ul class="nav-menu">
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#programs">Programs</a></li>
+                    <li><a href="#services">Services</a></li>
+                    <li><a href="#board-sponsors">Board & Sponsors</a></li>
+                </ul>
+                <a href="#contact" class="cta-button">Contact Us</a>
+            </div>
+            
+            <!-- Mobile Navigation Toggle -->
+            <button class="mobile-nav-toggle" id="mobileNavToggle">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- Mobile Navigation Overlay -->
+    <div class="mobile-nav-overlay" id="mobileNavOverlay"></div>
+
+    <!-- Mobile Navigation Menu - COMPACT VERSION -->
+    <div class="mobile-nav" id="mobileNav">
+        <div class="mobile-nav-header">
+            <div class="logo">
+                <div class="logo-icon">
+                    <img src="images/logo.jpg" alt="FemiForge Logo" style="width: 32px; height: 32px;">
+                </div>
+                <div class="logo-text">Femi<span>Forge</span></div>
+            </div>
+            <button class="mobile-nav-close" id="mobileNavClose">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        
+        <ul class="mobile-nav-menu">
+            <li>
+                <a href="#home">
+                    <span class="mobile-nav-icon"><i class="fas fa-home"></i></span>
+                    <span>Home</span>
+                </a>
+            </li>
+            <li>
+                <a href="#about">
+                    <span class="mobile-nav-icon"><i class="fas fa-info-circle"></i></span>
+                    <span>About</span>
+                </a>
+            </li>
+            <li>
+                <a href="#programs">
+                    <span class="mobile-nav-icon"><i class="fas fa-graduation-cap"></i></span>
+                    <span>Programs</span>
+                </a>
+            </li>
+            <li>
+                <a href="#services">
+                    <span class="mobile-nav-icon"><i class="fas fa-concierge-bell"></i></span>
+                    <span>Services</span>
+                </a>
+            </li>
+            <li>
+                <a href="#board-sponsors">
+                    <span class="mobile-nav-icon"><i class="fas fa-users"></i></span>
+                    <span>Board & Sponsors</span>
+                </a>
+            </li>
+            <li>
+                <a href="#testimonials">
+                    <span class="mobile-nav-icon"><i class="fas fa-quote-left"></i></span>
+                    <span>Testimonials</span>
+                </a>
+            </li>
+            <li>
+                <a href="#impact">
+                    <span class="mobile-nav-icon"><i class="fas fa-chart-line"></i></span>
+                    <span>Impact</span>
+                </a>
+            </li>
+            <li>
+                <a href="#support">
+                    <span class="mobile-nav-icon"><i class="fas fa-hand-holding-heart"></i></span>
+                    <span>Support</span>
+                </a>
+            </li>
+            <li>
+                <a href="#contact">
+                    <span class="mobile-nav-icon"><i class="fas fa-envelope"></i></span>
+                    <span>Contact</span>
+                </a>
+            </li>
+        </ul>
+        
+        <div class="mobile-nav-footer">
+            <a href="gallary.html" class="btn btn-primary" style="display: block; text-align: center; margin-bottom: 15px; padding: 12px 20px; font-size: 14px;">
+                <i class="fas fa-images"></i> Gallery
+            </a>
+            
+            <div class="mobile-social-links">
+                <a href="https://www.tiktok.com/@femiforge._empowe?_r=1&_t=ZM-92AcVwKijbk"><i class="fab fa-tiktok"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="https://www.instagram.com/femiforge_empowerment_nexus?igsh=MXkwYWFucWZiaG5rdA=="><i class="fab fa-instagram"></i></a>
+                <a href="https://www.linkedin.com/company/femiforge-empowerment-nexus/"><i class="fab fa-linkedin-in"></i></a>
+                <a href="https://whatsapp.com/channel/0029VbBkLGuGJP8HMp453w2D"><i class="fab fa-whatsapp"></i></a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="container">
+            <h1>Empowering Women, Transforming Communities</h1>
+            <p>FemiForge Empowerment Nexus is a registered non-profit organization dedicated to empowering women and young ladies through education, mentorship, and skill development.</p>
+            <a href="#programs" class="btn">Explore Our Programs</a>
+            <a href="#support" class="btn btn-primary" style="margin-left: 10px;">Support Our Mission</a>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about">
+        <div class="container">
+            <div class="section-title">
+                <h2>About FemiForge</h2>
+            </div>
+            <div class="about-content">
+                <div class="about-text">
+                    <p>FemiForge Empowerment Nexus creates platforms for personal and professional growth by organizing outreaches, seminars, workshops, and group discussions that promote self-reliance, leadership, and innovation.</p>
+                    <p>We believe that empowering women contributes directly to community transformation and national development. Through collaborative initiatives, we seek to inspire women to build confidence, pursue excellence, and contribute meaningfully to society.</p>
+                    <p>Our organization focuses on creating sustainable impact through targeted programs that address the unique challenges faced by women and young ladies in today's society.</p>
+                    
+                    <div class="gallery-btn-container">
+                        <a href="gallary.html" class="gallery-btn">
+                            <i class="fas fa-images"></i> View Our Gallery
+                        </a>
+                    </div>
+                </div>
+                <div class="about-image">
+                    <img src="https://images.unsplash.com/photo-1491438590914-bc09fcaaf77a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Women empowerment group">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Programs Section -->
+    <section class="programs-section" id="programs">
+        <div class="container">
+            <div class="section-title">
+                <h2>Our Programs</h2>
+            </div>
+            <div class="section-subtitle">
+                <p>We offer comprehensive programs designed to equip women with the skills and knowledge needed for personal and professional success.</p>
+            </div>
+            <div class="programs-grid">
+                <div class="program-card">
+                    <div class="program-img">
+                        <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Education program">
+                    </div>
+                    <div class="program-content">
+                        <h3>Education & Skill Development</h3>
+                        <p>Comprehensive training in digital literacy, entrepreneurship, financial management, and career development.</p>
+                    </div>
+                </div>
+                <div class="program-card">
+                    <div class="program-img">
+                        <img src="https://images.unsplash.com/photo-1542744173-8e7e53415bb0?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Mentorship program">
+                    </div>
+                    <div class="program-content">
+                        <h3>Mentorship & Leadership</h3>
+                        <p>One-on-one and group mentorship sessions connecting emerging women leaders with established professionals.</p>
+                    </div>
+                </div>
+                <div class="program-card">
+                    <div class="program-img">
+                        <img src="images/cw.webp" alt="Community outreach">
+                    </div>
+                    <div class="program-content">
+                        <h3>Community Outreach</h3>
+                        <p>Regular community engagement programs, seminars, and workshops addressing pressing social issues.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services">
+        <div class="container">
+            <div class="section-title">
+                <h2>Our Services</h2>
+            </div>
+            <div class="section-subtitle">
+                <p>We provide a range of services designed to support women at every stage of their personal and professional journey.</p>
+            </div>
+            <div class="services-grid">
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
+                    <h3>Training Workshops</h3>
+                    <p>Interactive workshops on entrepreneurship, digital skills, financial literacy, and personal development.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-hands-helping"></i>
+                    </div>
+                    <h3>Mentorship Programs</h3>
+                    <p>Structured mentorship matching with experienced professionals across various industries.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-briefcase"></i>
+                    </div>
+                    <h3>Career Support</h3>
+                    <p>Resume building, interview preparation, job placement assistance, and career counseling.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3>Networking Events</h3>
+                    <p>Regular networking events to connect women with peers, mentors, and potential employers.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Board & Sponsors Section -->
+    <section class="board-sponsors-section" id="board-sponsors">
+        <div class="container">
+            <div class="section-title">
+                <h2>Board & Sponsors</h2>
+            </div>
+            <div class="section-subtitle">
+                <p>Our dedicated board members and generous sponsors make our work possible.</p>
+            </div>
+            
+            <h3 style="text-align: center; margin-bottom: 30px; color: var(--primary);">Board Members</h3>
+            <div class="board-members">
+                <div class="board-card">
+                    <div class="board-img">
+                        <img src="images/emafa.jpg" alt="Jennifer Emefa Dupey">
+                    </div>
+                    <div class="board-content">
+                        <h3>Jennifer Emefa Dupey</h3>
+                        <div class="board-role">CEO & Founder</div>
+                        <p>Aspiring petroleum engineering student, Public speaker, Women empowerment advocate, STEM enthusiast, Mental health advocate.</p>
+                    </div>
+                </div>
+                <div class="board-card">
+                    <div class="board-img">
+                        <img src="images/heygan.jpg" alt="Hagan Davidna Danquah">
+                    </div>
+                    <div class="board-content">
+                        <h3>Hagan Davidna Danquah</h3>
+                        <div class="board-role">Outreach and Partnership Manager</div>
+                        <p>Public Speaker | Electrical Engineering Student | Data Analytics | Tech Enthusiast.</p>
+                    </div>
+                </div>
+                <div class="board-card">
+                    <div class="board-img">
+                        <img src="images/salifu.jpg" alt="Mohammed Zulaiya Salifu">
+                    </div>
+                    <div class="board-content">
+                        <h3>Mohammed Zulaiya Salifu</h3>
+                        <div class="board-role">Administrative Secretary</div>
+                        <p>Debater | STEM Advocate | Robotics Enthusiast.</p>
+                    </div>
+                </div>
+                <div class="board-card">
+                    <div class="board-img">
+                        <img src="images/agie.jpg" alt="Josephine Owusu Agyei">
+                    </div>
+                    <div class="board-content">
+                        <h3>Josephine Owusu Agyei</h3>
+                        <div class="board-role">Deputy Public Relations and Communications</div>
+                        <p>Expert in Geospatial Analysis.</p>
+                    </div>
+                </div>
+                 <div class="board-card">
+                    <div class="board-img">
+                        <img src="images/prissila.jpg" alt="Priscilla Adu-Poku">
+                    </div>
+                    <div class="board-content">
+                        <h3>Priscilla Adu-Poku</h3>
+                        <div class="board-role">Deputy Public Relations and Communications</div>
+                        <p>Expert in Geospatial Analysis.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <h3 style="text-align: center; margin: 60px 0 30px; color: var(--primary);">Our Sponsors & Partners</h3>
+            <div class="sponsors">
+                <img src="images/evolve empire.png" alt="Sponsor 1" class="sponsor-logo">
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="testimonials-section" id="testimonials">
+        <div class="container">
+            <div class="section-title">
+                <h2>Testimonials</h2>
+            </div>
+            <div class="section-subtitle">
+                <p>Hear from the women whose lives have been transformed through FemiForge programs.</p>
+            </div>
+            <div class="testimonials-slider">
+                <div class="testimonial-card">
+                    <div class="testimonial-img">
+                        <img src="images/emafa.jpg" alt="Testimonial 1">
+                    </div>
+                    <p class="testimonial-text">"FemiForge changed my life. Through their entrepreneurship program, I started my own business and now employ three other women in my community."</p>
+                    <h4 class="testimonial-author">Jennifer Emefa Dupey</h4>
+                    <p class="testimonial-role">Founder & CEO</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Impact Section -->
+    <section id="impact">
+        <div class="container">
+            <div class="section-title">
+                <h2>Our Impact</h2>
+            </div>
+            <div class="section-subtitle">
+                <p>Through our programs and initiatives, we've made a measurable difference in the lives of women and communities.</p>
+            </div>
+            <div class="impact-stats">
+                <div class="stat-card">
+                    <div class="stat-number">1,500+</div>
+                    <div class="stat-label">Women Empowered</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">20+</div>
+                    <div class="stat-label">Businesses Started</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">85%</div>
+                    <div class="stat-label">Employment Rate</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">50+</div>
+                    <div class="stat-label">Communities Reached</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Support Us Section -->
+    <section class="support-section" id="support">
+        <div class="container">
+            <div class="section-title">
+                <h2>Support Our Mission</h2>
+            </div>
+            <div class="section-subtitle">
+                <p>Join us in creating a world where every woman has the opportunity to reach her full potential.</p>
+            </div>
+            <div class="support-options">
+                <div class="support-option">
+                    <h3>Donate</h3>
+                    <p>Your financial contribution helps us expand our programs and reach more women in need.</p>
+                    <a href="#contact" class="btn btn-primary" style="margin-top: 20px;">Donate Now</a>
+                </div>
+                <div class="support-option">
+                    <h3>Volunteer</h3>
+                    <p>Share your skills and time to mentor women or help with our programs and events.</p>
+                    <a href="#contact" class="btn" style="margin-top: 20px;">Become a Volunteer</a>
+                </div>
+                <div class="support-option">
+                    <h3>Partner With Us</h3>
+                    <p>Collaborate with us through corporate partnerships, sponsorships, or program collaborations.</p>
+                    <a href="#contact" class="btn btn-primary" style="margin-top: 20px;">Partner With Us</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section - FIXED FORM -->
+    <section class="contact-section" id="contact">
+        <div class="container">
+            <div class="section-title">
+                <h2>Contact Us</h2>
+            </div>
+            <div class="section-subtitle">
+                <p>Get in touch with us to learn more, get involved, or support our mission.</p>
+            </div>
+            <div class="contact-container">
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <div>
+                            <h3>Our Location</h3>
+                            <p>University Of Energy and Natural Resources, Sunyani, Ghana</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-phone"></i>
+                        </div>
+                        <div>
+                            <h3>Phone Number</h3>
+                            <p>+233 53 073 3235</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <div>
+                            <h3>Email Address</h3>
+                            <p>femi.forged@gmail.com</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div>
+                            <h3>Working Hours</h3>
+                            <p>Monday - Friday: 9:00 AM - 5:00 PM</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="contact-form">
+                    <!-- SINGLE FORM ELEMENT - No duplicates -->
+                    <form id="contactForm">
+                        <div class="form-group">
+                            <label for="name">Full Name</label>
+                            <input type="text" id="name" name="name" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email Address</label>
+                            <input type="email" id="email" name="email" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="subject">Subject</label>
+                            <input type="text" id="subject" name="subject" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="message">Message</label>
+                            <textarea id="message" name="message" class="form-control" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary" style="width: 100%;" id="submitBtn">
+                            Send Message
+                        </button>
+                        <div id="formMessage" class="form-message"></div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-col">
+                    <div class="footer-logo">Femi<span>Forge</span></div>
+                    <p>Empowering women and young ladies through education, mentorship, and skill development to create positive change in communities.</p>
+                    <div class="social-links">
+                        <a href="https://www.tiktok.com/@femiforge._empowe?_r=1&_t=ZM-92AcVwKijbk"><i class="fab fa-tiktok"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="https://www.instagram.com/femiforge_empowerment_nexus?igsh=MXkwYWFucWZiaG5rdA=="><i class="fab fa-instagram"></i></a>
+                        <a href="https://www.linkedin.com/company/femiforge-empowerment-nexus/"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="https://whatsapp.com/channel/0029VbBkLGuGJP8HMp453w2D"><i class="fab fa-whatsapp"></i></a>
+                    </div>
+                </div>
+                <div class="footer-col">
+                    <h3>Quick Links</h3>
+                    <ul class="footer-links">
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#about">About Us</a></li>
+                        <li><a href="#programs">Programs</a></li>
+                        <li><a href="#services">Services</a></li>
+                        <li><a href="#board-sponsors">Board & Sponsors</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h3>Resources</h3>
+                    <ul class="footer-links">
+                        <li><a href="#testimonials">Testimonials</a></li>
+                        <li><a href="#impact">Our Impact</a></li>
+                        <li><a href="#support">Support Us</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                        <li><a href="#">Gallery</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2025 FemiForge Empowerment Nexus. All rights reserved. | A registered non-profit organization</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- EmailJS SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    
+    <script>
+        // Initialize EmailJS
+        (function() {
+            emailjs.init({
+                publicKey: "Ad0MTjhj_r2EX57t7", // Your Public Key
+                blockHeadless: true,
+                limitRate: {
+                    id: 'contactForm',
+                    throttle: 10000 // 10 seconds between submissions
+                }
+            });
+        })();
+        
+        // Mobile Navigation Toggle
+        const mobileNavToggle = document.getElementById('mobileNavToggle');
+        const mobileNavClose = document.getElementById('mobileNavClose');
+        const mobileNav = document.getElementById('mobileNav');
+        const mobileNavOverlay = document.getElementById('mobileNavOverlay');
+        
+        function openMobileNav() {
+            mobileNav.classList.add('active');
+            mobileNavOverlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+        
+        function closeMobileNav() {
+            mobileNav.classList.remove('active');
+            mobileNavOverlay.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+        
+        mobileNavToggle.addEventListener('click', openMobileNav);
+        mobileNavClose.addEventListener('click', closeMobileNav);
+        mobileNavOverlay.addEventListener('click', closeMobileNav);
+        
+        // Close mobile nav when clicking a link
+        document.querySelectorAll('.mobile-nav-menu a').forEach(link => {
+            link.addEventListener('click', closeMobileNav);
+        });
+        
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                if(targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if(targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+        
+        // Header background on scroll
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('header');
+            if (window.scrollY > 50) {
+                header.style.boxShadow = '0 5px 20px rgba(0, 0, 0, 0.1)';
+            } else {
+                header.style.boxShadow = 'var(--shadow)';
+            }
+        });
+        
+        // Slider Navigation
+        const navDots = document.querySelectorAll('.nav-dot');
+        const sections = document.querySelectorAll('section');
+        
+        // Function to update active nav dot
+        function updateActiveNav() {
+            let currentSection = '';
+            
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (window.scrollY >= (sectionTop - 200)) {
+                    currentSection = section.getAttribute('id');
+                }
+            });
+            
+            navDots.forEach(dot => {
+                dot.classList.remove('active');
+                if (dot.getAttribute('data-section') === currentSection) {
+                    dot.classList.add('active');
+                }
+            });
+        }
+        
+        // Initial update
+        updateActiveNav();
+        
+        // Update on scroll
+        window.addEventListener('scroll', updateActiveNav);
+        
+        // Click functionality for nav dots
+        navDots.forEach(dot => {
+            dot.addEventListener('click', () => {
+                const sectionId = dot.getAttribute('data-section');
+                const targetSection = document.getElementById(sectionId);
+                
+                if (targetSection) {
+                    window.scrollTo({
+                        top: targetSection.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+        
+        // Testimonials slider functionality
+        const testimonials = [
+            {
+                name: "",
+                role: "Entrepreneur & Program Graduate",
+                text: "\"FemiForge changed my life. Through their entrepreneurship program, I started my own business and now employ three other women in my community.\"",
+                img: "images/salifu.jpg"
+            },
+            {
+                name: "",
+                role: "Digital Skills Graduate",
+                text: "\"The digital literacy program gave me the skills I needed to secure a remote job. I now work as a virtual assistant while taking care of my family.\"",
+                img: "images/prissila.jpg"
+            },
+            {
+                name: "",
+                role: "Mentorship Program Participant",
+                text: "\"My mentor through FemiForge helped me navigate my career transition. I went from feeling stuck to landing my dream job in tech.\"",
+                img: "images/agie.jpg"
+            }
+        ];
+        
+        let currentTestimonial = 0;
+        const testimonialCard = document.querySelector('.testimonial-card');
+        
+        function rotateTestimonials() {
+            currentTestimonial = (currentTestimonial + 1) % testimonials.length;
+            const testimonial = testimonials[currentTestimonial];
+            
+            testimonialCard.innerHTML = `
+                <div class="testimonial-img">
+                    <img src="${testimonial.img}" alt="Testimonial">
+                </div>
+                <p class="testimonial-text">${testimonial.text}</p>
+                <h4 class="testimonial-author">${testimonial.name}</h4>
+                <p class="testimonial-role">${testimonial.role}</p>
+            `;
+            
+            testimonialCard.style.opacity = '0';
+            setTimeout(() => {
+                testimonialCard.style.transition = 'opacity 0.5s ease';
+                testimonialCard.style.opacity = '1';
+            }, 10);
+        }
+        
+        // Rotate testimonials every 5 seconds
+        setInterval(rotateTestimonials, 5000);
+        
+        // Handle EmailJS form submission
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const submitBtn = document.getElementById('submitBtn');
+            const formMessage = document.getElementById('formMessage');
+            
+            // Show loading state
+            submitBtn.innerHTML = 'Sending...';
+            submitBtn.classList.add('btn-loading');
+            submitBtn.disabled = true;
+            
+            // Send the email using EmailJS
+            emailjs.sendForm('service_jb2uqxi', 'template_ux36fkv', this)
+                .then(function(response) {
+                    console.log('SUCCESS!', response.status, response.text);
+                    
+                    // Show success message
+                    formMessage.innerHTML = 'Thank you! Your message has been sent successfully.';
+                    formMessage.className = 'form-message success';
+                    
+                    // Reset form
+                    document.getElementById('contactForm').reset();
+                    
+                    // Reset button state
+                    submitBtn.innerHTML = 'Send Message';
+                    submitBtn.classList.remove('btn-loading');
+                    submitBtn.disabled = false;
+                    
+                    // Hide message after 5 seconds
+                    setTimeout(() => {
+                        formMessage.style.display = 'none';
+                    }, 5000);
+                    
+                }, function(error) {
+                    console.error('FAILED...', error);
+                    
+                    // Show error message
+                    formMessage.innerHTML = 'Sorry, there was an error sending your message. Please try again later or contact us directly at femi.forged@gmail.com';
+                    formMessage.className = 'form-message error';
+                    
+                    // Reset button state
+                    submitBtn.innerHTML = 'Send Message';
+                    submitBtn.classList.remove('btn-loading');
+                    submitBtn.disabled = false;
+                    
+                    // Hide message after 5 seconds
+                    setTimeout(() => {
+                        formMessage.style.display = 'none';
+                    }, 5000);
+                });
+        });
+        
+        // Close mobile nav on window resize if it becomes desktop
+        window.addEventListener('resize', function() {
+            if (window.innerWidth > 768) {
+                closeMobileNav();
+            }
+        });
+        
+        // Highlight active section in mobile nav
+        function highlightActiveMobileNav() {
+            let currentSection = '';
+            
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (window.scrollY >= (sectionTop - 200)) {
+                    currentSection = section.getAttribute('id');
+                }
+            });
+            
+            // Remove active class from all mobile nav links
+            document.querySelectorAll('.mobile-nav-menu a').forEach(link => {
+                link.classList.remove('active');
+            });
+            
+            // Add active class to current section link
+            if (currentSection) {
+                const activeLink = document.querySelector(`.mobile-nav-menu a[href="#${currentSection}"]`);
+                if (activeLink) {
+                    activeLink.classList.add('active');
+                }
+            }
+        }
+        
+        // Update mobile nav highlighting on scroll
+        window.addEventListener('scroll', highlightActiveMobileNav);
+        
+        // Initial highlight update
+        highlightActiveMobileNav();
+    </script>
+</body>
+</html>
