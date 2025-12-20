@@ -9,6 +9,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
+        /* ===== CSS VARIABLES ===== */
         :root {
             --primary: #8a2be2;
             --primary-dark: #6a1cb0;
@@ -25,6 +26,7 @@
             --border-radius: 10px;
         }
 
+        /* ===== RESET & BASE STYLES ===== */
         * {
             margin: 0;
             padding: 0;
@@ -53,40 +55,492 @@
             padding: 0 20px;
         }
 
-        /* Slider Navigation - Desktop Only */
+        /* ===== ADMIN MODALS ===== */
+        .admin-login-modal,
+        .admin-dashboard-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 10000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition);
+        }
+
+        .admin-login-modal.active,
+        .admin-dashboard-modal.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .admin-login-form,
+        .admin-dashboard {
+            background: var(--white);
+            border-radius: var(--border-radius);
+            padding: 40px;
+            width: 90%;
+            max-width: 800px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: var(--shadow-hover);
+            position: relative;
+        }
+
+        .admin-login-form h3,
+        .admin-dashboard-header h3 {
+            color: var(--primary);
+            margin-bottom: 25px;
+            text-align: center;
+            font-size: 1.8rem;
+        }
+
+        .admin-dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            border-bottom: 2px solid var(--light-gray);
+            padding-bottom: 20px;
+        }
+
+        .admin-dashboard-header h3 {
+            margin: 0;
+            text-align: left;
+            font-size: 1.5rem;
+        }
+
+        /* ===== ADMIN FORM STYLES ===== */
+        .admin-input-group,
+        .admin-form-group {
+            margin-bottom: 20px;
+        }
+
+        .admin-input-group label,
+        .admin-form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--dark);
+        }
+
+        .admin-input-group label.required::after,
+        .admin-form-group label.required::after {
+            content: " *";
+            color: #e74c3c;
+        }
+
+        .admin-input-group input,
+        .admin-form-group input,
+        .admin-form-group select,
+        .admin-form-group textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 14px;
+            transition: var(--transition);
+        }
+
+        .admin-input-group input:focus,
+        .admin-form-group input:focus,
+        .admin-form-group select:focus,
+        .admin-form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(138, 43, 226, 0.1);
+        }
+
+        .admin-form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .admin-form-full-width {
+            grid-column: 1 / -1;
+        }
+
+        textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .file-input-container {
+            border: 2px dashed var(--primary);
+            border-radius: 5px;
+            padding: 30px;
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition);
+            position: relative;
+            background: var(--light);
+        }
+
+        .file-input-container:hover {
+            background: #f5e9ff;
+            border-color: var(--primary-dark);
+        }
+
+        .file-input-container i {
+            font-size: 40px;
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+
+        .file-input-container p {
+            margin: 5px 0;
+            color: var(--dark);
+        }
+
+        .file-info {
+            color: var(--gray) !important;
+            font-size: 12px;
+        }
+
+        .file-input-container input[type="file"] {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        .upload-preview {
+            margin: 20px 0;
+            padding: 20px;
+            background: var(--light-gray);
+            border-radius: 5px;
+        }
+
+        .preview-container {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-top: 15px;
+        }
+
+        .preview-thumbnail,
+        .preview-video {
+            max-width: 300px;
+            max-height: 200px;
+            border-radius: 5px;
+            box-shadow: var(--shadow);
+        }
+
+        .preview-video {
+            background: #000;
+        }
+
+        .admin-form-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .btn-submit,
+        .btn-cancel {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 5px;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-submit {
+            background: var(--primary);
+            color: var(--white);
+        }
+
+        .btn-submit:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .btn-cancel {
+            background: var(--light-gray);
+            color: var(--dark);
+        }
+
+        .btn-cancel:hover {
+            background: #e0e0e0;
+        }
+
+        /* ===== ADMIN STATS ===== */
+        .admin-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 20px;
+            margin: 20px 0 30px;
+        }
+
+        .admin-stat-card {
+            background: var(--light);
+            padding: 20px;
+            border-radius: var(--border-radius);
+            text-align: center;
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(138, 43, 226, 0.1);
+        }
+
+        .admin-stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            line-height: 1;
+        }
+
+        .admin-stat-label {
+            margin-top: 10px;
+            color: var(--gray);
+            font-size: 14px;
+        }
+
+        /* ===== ADMIN TABS ===== */
+        .admin-dashboard-tabs {
+            display: flex;
+            gap: 10px;
+            margin: 30px 0;
+            flex-wrap: wrap;
+            border-bottom: 1px solid var(--light-gray);
+            padding-bottom: 10px;
+        }
+
+        .admin-tab-btn {
+            background: none;
+            border: none;
+            padding: 12px 20px;
+            color: var(--gray);
+            font-family: 'Poppins', sans-serif;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .admin-tab-btn:hover {
+            color: var(--primary);
+            background: var(--light);
+        }
+
+        .admin-tab-btn.active {
+            color: var(--white);
+            background: var(--primary);
+        }
+
+        .admin-tab-content {
+            display: none;
+        }
+
+        .admin-tab-content.active {
+            display: block;
+        }
+
+        /* ===== ADMIN MEDIA MANAGEMENT ===== */
+        .admin-media-list h4 {
+            margin-bottom: 20px;
+            color: var(--primary);
+        }
+
+        .admin-media-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .admin-media-item {
+            background: var(--white);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--light-gray);
+            transition: var(--transition);
+        }
+
+        .admin-media-item:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .admin-media-thumbnail {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .admin-media-info {
+            padding: 15px;
+        }
+
+        .admin-media-info h5 {
+            margin: 0 0 5px 0;
+            font-size: 16px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .admin-media-info p,
+        .admin-media-info small {
+            margin: 0;
+            color: var(--gray);
+            font-size: 12px;
+        }
+
+        .admin-media-actions {
+            padding: 10px 15px;
+            border-top: 1px solid var(--light-gray);
+            display: flex;
+            gap: 10px;
+        }
+
+        .view-btn,
+        .delete-btn {
+            padding: 6px 12px;
+            border: none;
+            border-radius: 3px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .view-btn {
+            background: #2ecc71;
+            color: white;
+        }
+
+        .view-btn:hover {
+            background: #27ae60;
+        }
+
+        .delete-btn {
+            background: #e74c3c;
+            color: white;
+        }
+
+        .delete-btn:hover {
+            background: #c0392b;
+        }
+
+        .admin-success-message {
+            background-color: #d4edda;
+            color: #155724;
+            padding: 12px 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            border: 1px solid #c3e6cb;
+            display: none;
+        }
+
+        .admin-success-message.active {
+            display: block;
+        }
+
+        /* ===== LOADING & ERROR STYLES ===== */
+        .loading-spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: var(--white);
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .error-message {
+            background-color: #f8d7da;
+            color: #721c24;
+            padding: 10px 15px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            border: 1px solid #f5c6cb;
+            display: none;
+        }
+
+        .error-message.active {
+            display: block;
+        }
+
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 10001;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 1.2rem;
+            flex-direction: column;
+            gap: 15px;
+            display: none;
+        }
+
+        .loading-overlay.active {
+            display: flex;
+        }
+
+        /* ===== SLIDER NAVIGATION ===== */
         .slider-nav {
             position: fixed;
+            right: 30px;
             top: 50%;
-            right: 20px;
             transform: translateY(-50%);
             z-index: 1000;
             display: flex;
             flex-direction: column;
             gap: 15px;
-            background: rgba(255, 255, 255, 0.95);
-            padding: 15px 10px;
-            border-radius: 20px;
-            box-shadow: var(--shadow);
         }
 
         .nav-dot {
             width: 12px;
             height: 12px;
             border-radius: 50%;
-            background-color: var(--light-gray);
+            background: rgba(138, 43, 226, 0.3);
             cursor: pointer;
-            transition: var(--transition);
             position: relative;
-        }
-
-        .nav-dot.active {
-            background-color: var(--primary);
-            transform: scale(1.3);
+            transition: var(--transition);
         }
 
         .nav-dot:hover {
-            background-color: var(--secondary);
+            background: rgba(138, 43, 226, 0.6);
             transform: scale(1.2);
+        }
+
+        .nav-dot.active {
+            background: var(--primary);
+            transform: scale(1.3);
         }
 
         .nav-label {
@@ -96,10 +550,9 @@
             transform: translateY(-50%);
             background: var(--primary);
             color: white;
-            padding: 5px 10px;
-            border-radius: 5px;
+            padding: 5px 15px;
+            border-radius: 20px;
             font-size: 12px;
-            font-weight: 600;
             white-space: nowrap;
             opacity: 0;
             visibility: hidden;
@@ -112,21 +565,22 @@
             visibility: visible;
         }
 
-        /* Header */
+        /* ===== HEADER STYLES ===== */
         header {
-            background-color: var(--white);
+            background: var(--white);
             box-shadow: var(--shadow);
             position: fixed;
-            width: 100%;
             top: 0;
-            z-index: 999;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            padding: 15px 0;
         }
 
         .header-container {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 15px 0;
         }
 
         .logo {
@@ -136,32 +590,37 @@
         }
 
         .logo-icon {
-            color: var(--primary);
-            font-size: 28px;
+            width: 40px;
+            height: 40px;
+            background: var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 20px;
         }
 
         .logo-text {
             font-family: 'Playfair Display', serif;
             font-size: 24px;
             font-weight: 700;
-            color: var(--primary);
         }
 
         .logo-text span {
-            color: var(--secondary);
+            color: var(--primary);
         }
 
-        /* Desktop Navigation */
         .desktop-nav {
             display: flex;
             align-items: center;
+            gap: 30px;
         }
 
         .nav-menu {
             display: flex;
             list-style: none;
-            gap: 30px;
-            margin-right: 30px;
+            gap: 25px;
         }
 
         .nav-menu a {
@@ -179,11 +638,11 @@
         .nav-menu a::after {
             content: '';
             position: absolute;
+            bottom: -5px;
+            left: 0;
             width: 0;
             height: 2px;
             background: var(--primary);
-            left: 0;
-            bottom: -5px;
             transition: var(--transition);
         }
 
@@ -192,25 +651,21 @@
         }
 
         .cta-button {
-            background-color: var(--primary);
-            color: var(--white);
+            background: var(--primary);
+            color: white;
             padding: 10px 25px;
-            border-radius: 50px;
+            border-radius: 25px;
             text-decoration: none;
-            font-weight: 600;
+            font-weight: 500;
             transition: var(--transition);
-            border: none;
-            cursor: pointer;
-            font-size: 1rem;
         }
 
         .cta-button:hover {
-            background-color: var(--primary-dark);
-            transform: translateY(-3px);
+            background: var(--primary-dark);
+            transform: translateY(-2px);
             box-shadow: var(--shadow-hover);
         }
 
-        /* Mobile Navigation - COMPACT VERSION */
         .mobile-nav-toggle {
             display: none;
             background: none;
@@ -218,289 +673,141 @@
             font-size: 24px;
             color: var(--primary);
             cursor: pointer;
-            z-index: 1002;
-            width: 44px;
-            height: 44px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: var(--transition);
+            padding: 5px;
         }
 
-        .mobile-nav-toggle:hover {
-            background-color: var(--light);
-        }
-
-        .mobile-nav {
-            position: fixed;
-            top: 0;
-            right: -100%;
-            width: 300px;
-            height: 100vh;
-            background: var(--white);
-            box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
-            z-index: 1001;
-            transition: right 0.3s ease;
-            display: flex;
-            flex-direction: column;
-            padding: 70px 20px 30px;
-            overflow-y: auto;
-        }
-
-        .mobile-nav.active {
-            right: 0;
-        }
-
-        .mobile-nav-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            z-index: 1000;
-            opacity: 0;
-            visibility: hidden;
-            transition: var(--transition);
-        }
-
-        .mobile-nav-overlay.active {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        .mobile-nav-header {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            background: var(--white);
-            padding: 15px 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid var(--light-gray);
-            z-index: 1002;
-        }
-
-        .mobile-nav-close {
-            background: none;
-            border: none;
-            font-size: 22px;
-            color: var(--primary);
-            cursor: pointer;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: var(--transition);
-        }
-
-        .mobile-nav-close:hover {
-            background-color: var(--light);
-        }
-
-        .mobile-nav-menu {
-            list-style: none;
-            margin-bottom: 20px;
-        }
-
-        .mobile-nav-menu li {
-            margin-bottom: 8px;
-        }
-
-        .mobile-nav-menu a {
-            text-decoration: none;
-            color: var(--dark);
-            font-size: 16px;
-            font-weight: 500;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            transition: var(--transition);
-            padding: 12px 15px;
-            border-radius: 8px;
-        }
-
-        .mobile-nav-menu a:hover,
-        .mobile-nav-menu a.active {
-            background-color: var(--light);
-            color: var(--primary);
-        }
-
-        .mobile-nav-icon {
-            width: 20px;
-            text-align: center;
-            color: var(--primary);
-            font-size: 18px;
-        }
-
-        .mobile-nav-footer {
-            margin-top: auto;
-            padding-top: 20px;
-            border-top: 1px solid var(--light-gray);
-        }
-
-        .mobile-social-links {
-            display: flex;
-            justify-content: center;
-            gap: 12px;
-            margin-top: 15px;
-        }
-
-        .mobile-social-links a {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 36px;
-            height: 36px;
-            background-color: var(--light);
-            border-radius: 50%;
-            color: var(--primary);
-            font-size: 16px;
-            transition: var(--transition);
-        }
-
-        .mobile-social-links a:hover {
-            background-color: var(--primary);
-            color: var(--white);
-            transform: translateY(-3px);
-        }
-
-        /* Gallery Hero */
+        /* ===== GALLERY HERO ===== */
         .gallery-hero {
-            background: linear-gradient(rgba(138, 43, 226, 0.85), rgba(255, 105, 180, 0.8)), url('https://images.unsplash.com/photo-1529156069898-49953e39b3ac?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80');
-            background-size: cover;
-            background-position: center;
-            color: var(--white);
-            padding: 180px 0 120px;
+            background: linear-gradient(135deg, rgba(138, 43, 226, 0.9), rgba(255, 105, 180, 0.9));
+            color: white;
             text-align: center;
+            padding: 150px 20px 100px;
             margin-top: 70px;
         }
 
         .gallery-hero h1 {
             font-size: 3.5rem;
-            margin-bottom: 1.5rem;
-            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+            margin-bottom: 20px;
         }
 
         .gallery-hero p {
             font-size: 1.2rem;
             max-width: 800px;
-            margin: 0 auto 2.5rem;
-            opacity: 0.95;
+            margin: 0 auto 40px;
+            opacity: 0.9;
         }
 
-        .btn {
+        .gallery-hero .btn {
             display: inline-block;
-            background-color: var(--accent);
-            color: var(--dark);
-            padding: 14px 32px;
-            border-radius: 50px;
+            background: white;
+            color: var(--primary);
+            padding: 15px 40px;
+            border-radius: 30px;
             text-decoration: none;
             font-weight: 600;
             transition: var(--transition);
-            border: none;
-            cursor: pointer;
-            font-size: 1rem;
+            border: 2px solid white;
         }
 
-        .btn:hover {
-            background-color: var(--white);
+        .gallery-hero .btn-primary {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: var(--dark);
+        }
+
+        .gallery-hero .btn:hover {
             transform: translateY(-3px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            box-shadow: var(--shadow-hover);
         }
 
-        .btn-primary {
-            background-color: var(--primary);
-            color: var(--white);
-        }
-
-        .btn-primary:hover {
-            background-color: var(--primary-dark);
-        }
-
-        /* Section Styling */
-        section {
-            padding: 100px 0;
-            scroll-margin-top: 80px;
+        /* ===== GALLERY SECTIONS ===== */
+        .gallery-section {
+            padding: 100px 20px;
         }
 
         .section-title {
             text-align: center;
-            margin-bottom: 60px;
+            margin-bottom: 20px;
         }
 
         .section-title h2 {
             font-size: 2.5rem;
             color: var(--primary);
-            position: relative;
-            display: inline-block;
-            padding-bottom: 15px;
-        }
-
-        .section-title h2::after {
-            content: '';
-            position: absolute;
-            width: 70px;
-            height: 3px;
-            background-color: var(--secondary);
-            bottom: 0;
-            left: 50%;
-            transform: translateX(-50%);
         }
 
         .section-subtitle {
             text-align: center;
-            color: var(--gray);
             max-width: 700px;
-            margin: 0 auto 40px;
-            font-size: 1.1rem;
+            margin: 0 auto 50px;
+            color: var(--gray);
         }
 
-        /* Gallery Content */
-        .gallery-section {
-            padding: 100px 0;
-        }
-
-        /* Gallery Filter */
+        /* ===== GALLERY FILTER ===== */
         .gallery-filter {
             display: flex;
             justify-content: center;
             flex-wrap: wrap;
-            gap: 15px;
-            margin-bottom: 40px;
+            gap: 10px;
+            margin-bottom: 50px;
         }
 
         .filter-btn {
-            background-color: var(--light);
-            color: var(--dark);
-            border: none;
             padding: 10px 25px;
-            border-radius: 50px;
+            background: var(--light-gray);
+            border: none;
+            border-radius: 25px;
             font-family: 'Poppins', sans-serif;
             font-weight: 500;
             cursor: pointer;
             transition: var(--transition);
         }
 
-        .filter-btn:hover,
-        .filter-btn.active {
-            background-color: var(--primary);
-            color: var(--white);
-            transform: translateY(-3px);
-            box-shadow: var(--shadow);
+        .filter-btn:hover {
+            background: var(--primary);
+            color: white;
         }
 
-        /* Gallery Grid */
+        .filter-btn.active {
+            background: var(--primary);
+            color: white;
+            transform: scale(1.05);
+        }
+
+        /* ===== GALLERY STATS ===== */
+        .gallery-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 50px;
+        }
+
+        .stat-item {
+            background: var(--light);
+            padding: 30px;
+            border-radius: var(--border-radius);
+            text-align: center;
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(138, 43, 226, 0.1);
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            line-height: 1;
+            margin-bottom: 10px;
+        }
+
+        .stat-label {
+            color: var(--gray);
+            font-size: 14px;
+        }
+
+        /* ===== GALLERY GRID ===== */
         .gallery-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 25px;
-            margin-bottom: 50px;
+            gap: 30px;
         }
 
         .gallery-item {
@@ -508,9 +815,9 @@
             border-radius: var(--border-radius);
             overflow: hidden;
             box-shadow: var(--shadow);
-            transition: var(--transition);
             cursor: pointer;
-            aspect-ratio: 1 / 1;
+            height: 300px;
+            transition: var(--transition);
         }
 
         .gallery-item:hover {
@@ -535,8 +842,8 @@
             left: 0;
             right: 0;
             background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+            color: white;
             padding: 20px;
-            color: var(--white);
             transform: translateY(100%);
             transition: var(--transition);
         }
@@ -546,151 +853,31 @@
         }
 
         .gallery-category {
-            display: inline-block;
-            background-color: var(--primary);
-            color: var(--white);
+            background: var(--primary);
+            color: white;
             padding: 5px 15px;
-            border-radius: 50px;
-            font-size: 0.8rem;
-            font-weight: 600;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+            display: inline-block;
             margin-bottom: 10px;
         }
 
         .gallery-title {
-            font-size: 1.2rem;
+            font-size: 18px;
             font-weight: 600;
             margin-bottom: 5px;
         }
 
         .gallery-date {
-            font-size: 0.9rem;
-            opacity: 0.9;
+            font-size: 12px;
+            opacity: 0.8;
         }
 
-        /* Modal */
-        .modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.9);
-            z-index: 10000;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            opacity: 0;
-            visibility: hidden;
-            transition: var(--transition);
-        }
-
-        .modal.active {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        .modal-content {
-            position: relative;
-            max-width: 90%;
-            max-height: 90%;
-            background: var(--white);
-            border-radius: var(--border-radius);
-            overflow: hidden;
-        }
-
-        .modal-img {
-            width: 100%;
-            height: auto;
-            max-height: 70vh;
-            object-fit: contain;
-        }
-
-        .modal-info {
-            padding: 20px;
-            background: var(--white);
-        }
-
-        .modal-category {
-            display: inline-block;
-            background-color: var(--primary);
-            color: var(--white);
-            padding: 5px 15px;
-            border-radius: 50px;
-            font-size: 0.9rem;
-            font-weight: 600;
-            margin-bottom: 10px;
-        }
-
-        .modal-title {
-            font-size: 1.5rem;
-            color: var(--dark);
-            margin-bottom: 10px;
-        }
-
-        .modal-description {
-            color: var(--gray);
-            margin-bottom: 15px;
-        }
-
-        .modal-date {
-            font-size: 0.9rem;
-            color: var(--primary);
-            font-weight: 600;
-        }
-
-        .modal-close {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            background: rgba(255, 255, 255, 0.9);
-            color: var(--dark);
-            border: none;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            font-size: 20px;
-            cursor: pointer;
-            z-index: 10001;
-            transition: var(--transition);
-        }
-
-        .modal-close:hover {
-            background: var(--white);
-            transform: rotate(90deg);
-        }
-
-        .modal-nav {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            background: rgba(255, 255, 255, 0.9);
-            color: var(--dark);
-            border: none;
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            font-size: 20px;
-            cursor: pointer;
-            z-index: 10001;
-            transition: var(--transition);
-        }
-
-        .modal-nav:hover {
-            background: var(--white);
-        }
-
-        .modal-prev {
-            left: 20px;
-        }
-
-        .modal-next {
-            right: 20px;
-        }
-
-        /* Video Gallery */
+        /* ===== VIDEO GALLERY ===== */
         .video-gallery {
-            background-color: var(--light);
-            padding: 100px 0;
+            padding: 100px 20px;
+            background: var(--light);
         }
 
         .video-grid {
@@ -704,8 +891,9 @@
             border-radius: var(--border-radius);
             overflow: hidden;
             box-shadow: var(--shadow);
-            transition: var(--transition);
             cursor: pointer;
+            transition: var(--transition);
+            background: white;
         }
 
         .video-item:hover {
@@ -715,7 +903,7 @@
 
         .video-thumbnail {
             width: 100%;
-            height: 200px;
+            height: 250px;
             object-fit: cover;
             display: block;
         }
@@ -725,125 +913,261 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            background: rgba(138, 43, 226, 0.9);
-            color: var(--white);
+            background: var(--primary);
             width: 60px;
             height: 60px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
+            color: white;
             font-size: 24px;
             transition: var(--transition);
         }
 
         .video-item:hover .video-play-btn {
-            background: var(--primary);
+            background: var(--primary-dark);
             transform: translate(-50%, -50%) scale(1.1);
         }
 
         .video-info {
             padding: 20px;
-            background: var(--white);
         }
 
         .video-info h3 {
-            color: var(--primary);
-            font-size: 1.3rem;
+            font-size: 18px;
             margin-bottom: 10px;
+            color: var(--dark);
         }
 
         .video-info p {
             color: var(--gray);
-            font-size: 0.95rem;
-        }
-
-        /* Stats */
-        .gallery-stats {
-            display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
-            gap: 40px;
-            margin: 60px 0;
-            text-align: center;
-        }
-
-        .stat-item {
-            flex: 1;
-            min-width: 150px;
-        }
-
-        .stat-number {
-            font-size: 3rem;
-            font-weight: 700;
-            color: var(--primary);
+            font-size: 14px;
             margin-bottom: 10px;
         }
 
-        .stat-label {
-            font-size: 1.1rem;
-            color: var(--dark);
-            font-weight: 600;
+        /* ===== IMAGE MODAL ===== */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 2000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
         }
 
-        /* Footer */
+        .modal.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        .modal-content {
+            position: relative;
+            max-width: 90%;
+            max-height: 90%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-img {
+            max-width: 100%;
+            max-height: 70vh;
+            object-fit: contain;
+            border-radius: 10px;
+        }
+
+        .modal-info {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 20px;
+            border-bottom-left-radius: 10px;
+            border-bottom-right-radius: 10px;
+        }
+
+        .modal-category {
+            background: var(--primary);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+            display: inline-block;
+            margin-bottom: 10px;
+        }
+
+        .modal-title {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .modal-description {
+            font-size: 14px;
+            opacity: 0.9;
+            margin-bottom: 10px;
+        }
+
+        .modal-date {
+            font-size: 12px;
+            opacity: 0.7;
+        }
+
+        .modal-close,
+        .modal-prev,
+        .modal-next {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            font-size: 20px;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-close:hover,
+        .modal-prev:hover,
+        .modal-next:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .modal-close {
+            top: 20px;
+            right: 20px;
+        }
+
+        .modal-prev {
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .modal-next {
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        /* ===== VIDEO MODAL ===== */
+        .video-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 2000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .video-modal-content {
+            position: relative;
+            width: 90%;
+            max-width: 800px;
+            background: black;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .video-modal-close {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            font-size: 24px;
+            cursor: pointer;
+            z-index: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .video-modal-close:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        /* ===== BACK TO HOME ===== */
+        .back-to-home {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: var(--primary);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            font-size: 20px;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            z-index: 1000;
+        }
+
+        .back-to-home:hover {
+            background: var(--primary-dark);
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        /* ===== FOOTER ===== */
         footer {
-            background-color: var(--dark);
-            color: var(--white);
-            padding: 70px 0 30px;
+            background: var(--dark);
+            color: white;
+            padding: 80px 20px 30px;
         }
 
         .footer-content {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 50px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
             margin-bottom: 50px;
-        }
-
-        .footer-col {
-            flex: 1;
-            min-width: 250px;
         }
 
         .footer-logo {
             font-family: 'Playfair Display', serif;
             font-size: 28px;
             font-weight: 700;
-            color: var(--white);
             margin-bottom: 20px;
         }
 
         .footer-logo span {
-            color: var(--secondary);
-        }
-
-        .footer-col h3 {
-            color: var(--white);
-            font-size: 1.3rem;
-            margin-bottom: 25px;
-            position: relative;
-            padding-bottom: 10px;
-        }
-
-        .footer-col h3::after {
-            content: '';
-            position: absolute;
-            width: 40px;
-            height: 2px;
-            background-color: var(--secondary);
-            bottom: 0;
-            left: 0;
+            color: var(--primary);
         }
 
         .footer-col p {
+            color: #aaa;
             margin-bottom: 20px;
-            opacity: 0.8;
+            line-height: 1.6;
         }
 
         .social-links {
             display: flex;
             gap: 15px;
-            margin-top: 20px;
         }
 
         .social-links a {
@@ -852,16 +1176,34 @@
             justify-content: center;
             width: 40px;
             height: 40px;
-            background-color: rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.1);
             border-radius: 50%;
-            color: var(--white);
-            font-size: 18px;
+            color: white;
+            text-decoration: none;
             transition: var(--transition);
         }
 
         .social-links a:hover {
-            background-color: var(--primary);
+            background: var(--primary);
             transform: translateY(-3px);
+        }
+
+        .footer-col h3 {
+            color: white;
+            font-size: 20px;
+            margin-bottom: 25px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .footer-col h3::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 2px;
+            background: var(--primary);
         }
 
         .footer-links {
@@ -873,736 +1215,128 @@
         }
 
         .footer-links a {
-            color: rgba(255, 255, 255, 0.8);
+            color: #aaa;
             text-decoration: none;
             transition: var(--transition);
+            display: block;
         }
 
         .footer-links a:hover {
-            color: var(--accent);
+            color: var(--primary);
             padding-left: 5px;
+        }
+
+        .footer-links a.active {
+            color: var(--primary);
         }
 
         .copyright {
             text-align: center;
             padding-top: 30px;
             border-top: 1px solid rgba(255, 255, 255, 0.1);
-            font-size: 0.9rem;
-            opacity: 0.7;
+            color: #aaa;
+            font-size: 14px;
         }
 
-        /* Back to Home Button */
-        .back-to-home {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            background-color: var(--primary);
-            color: var(--white);
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 20px;
-            text-decoration: none;
-            box-shadow: var(--shadow-hover);
-            z-index: 100;
-            transition: var(--transition);
-        }
-
-        .back-to-home:hover {
-            background-color: var(--primary-dark);
-            transform: translateY(-5px);
-        }
-
-        /* =========================== */
-        /* ADMIN DASHBOARD STYLES */
-        /* =========================== */
-        
-        /* Admin Login Modal */
-        .admin-login-modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.8);
-            z-index: 10000;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            opacity: 0;
-            visibility: hidden;
-            transition: var(--transition);
-        }
-
-        .admin-login-modal.active {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        /* Admin Dashboard Modal */
-        .admin-dashboard-modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.8);
-            z-index: 10000;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            opacity: 0;
-            visibility: hidden;
-            transition: var(--transition);
-        }
-
-        .admin-dashboard-modal.active {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        /* Admin Dashboard */
-        .admin-dashboard {
-            background: var(--white);
-            padding: 40px;
-            border-radius: var(--border-radius);
-            width: 90%;
-            max-width: 900px;
-            box-shadow: var(--shadow-hover);
-            max-height: 90vh;
-            overflow-y: auto;
-        }
-
-        .admin-dashboard-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 30px;
-            padding-bottom: 20px;
-            border-bottom: 2px solid var(--light);
-        }
-
-        .admin-dashboard-header h3 {
-            color: var(--primary);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin: 0;
-        }
-
-        .admin-dashboard-header h3 i {
-            color: var(--secondary);
-        }
-
-        .admin-dashboard-tabs {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 30px;
-            border-bottom: 2px solid var(--light-gray);
-        }
-
-        .admin-tab-btn {
-            background: none;
-            border: none;
-            padding: 12px 25px;
-            font-family: 'Poppins', sans-serif;
-            font-size: 1rem;
-            font-weight: 500;
-            color: var(--gray);
-            cursor: pointer;
-            transition: var(--transition);
-            position: relative;
-        }
-
-        .admin-tab-btn.active {
-            color: var(--primary);
-        }
-
-        .admin-tab-btn.active::after {
-            content: '';
-            position: absolute;
-            bottom: -2px;
-            left: 0;
-            width: 100%;
-            height: 2px;
-            background-color: var(--primary);
-        }
-
-        .admin-tab-btn:hover:not(.active) {
-            color: var(--primary);
-        }
-
-        .admin-tab-content {
-            display: none;
-        }
-
-        .admin-tab-content.active {
-            display: block;
-        }
-
-        .admin-form-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-            margin-bottom: 25px;
-        }
-
-        .admin-form-full-width {
-            grid-column: 1 / -1;
-        }
-
-        .admin-form-group {
-            margin-bottom: 20px;
-        }
-
-        .admin-form-group label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 500;
-            color: var(--dark);
-        }
-
-        .admin-form-group label.required::after {
-            content: " *";
-            color: #ff4757;
-        }
-
-        .admin-form-group input,
-        .admin-form-group select,
-        .admin-form-group textarea {
-            width: 100%;
-            padding: 12px 15px;
-            border: 2px solid var(--light-gray);
-            border-radius: 8px;
-            font-family: 'Poppins', sans-serif;
-            font-size: 1rem;
-            transition: var(--transition);
-        }
-
-        .admin-form-group input:focus,
-        .admin-form-group select:focus,
-        .admin-form-group textarea:focus {
-            outline: none;
-            border-color: var(--primary);
-        }
-
-        .admin-form-group textarea {
-            min-height: 100px;
-            resize: vertical;
-        }
-
-        /* File Input Styling */
-        .file-input-container {
-            position: relative;
-            border: 2px dashed var(--light-gray);
-            border-radius: 8px;
-            padding: 30px 20px;
-            text-align: center;
-            transition: var(--transition);
-            cursor: pointer;
-        }
-
-        .file-input-container:hover {
-            border-color: var(--primary);
-            background-color: var(--light);
-        }
-
-        .file-input-container i {
-            font-size: 40px;
-            color: var(--primary);
-            margin-bottom: 15px;
-        }
-
-        .file-input-container p {
-            margin-bottom: 10px;
-            color: var(--gray);
-        }
-
-        .file-input-container .file-info {
-            font-size: 0.9rem;
-            color: var(--secondary);
-            font-weight: 500;
-        }
-
-        .file-input-container input[type="file"] {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            opacity: 0;
-            cursor: pointer;
-        }
-
-        /* Upload Preview */
-        .upload-preview {
-            margin-top: 20px;
-            text-align: center;
-        }
-
-        .upload-preview h4 {
-            margin-bottom: 15px;
-            color: var(--dark);
-        }
-
-        .preview-container {
-            display: flex;
-            gap: 20px;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-
-        .preview-thumbnail {
-            width: 150px;
-            height: 150px;
-            object-fit: cover;
-            border-radius: 8px;
-            border: 2px solid var(--light-gray);
-        }
-
-        .preview-video {
-            width: 100%;
-            max-width: 300px;
-            border-radius: 8px;
-            border: 2px solid var(--light-gray);
-        }
-
-        /* Admin Form Buttons */
-        .admin-form-buttons {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            margin-top: 30px;
-        }
-
-        .admin-form-buttons button {
-            padding: 12px 30px;
-            border-radius: 50px;
-            font-family: 'Poppins', sans-serif;
-            font-weight: 600;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: var(--transition);
-            border: none;
-        }
-
-        .btn-submit {
-            background-color: var(--primary);
-            color: white;
-        }
-
-        .btn-submit:hover {
-            background-color: var(--primary-dark);
-            transform: translateY(-3px);
-            box-shadow: var(--shadow);
-        }
-
-        .btn-cancel {
-            background-color: var(--light-gray);
-            color: var(--dark);
-        }
-
-        .btn-cancel:hover {
-            background-color: #e0e0e0;
-            transform: translateY(-3px);
-            box-shadow: var(--shadow);
-        }
-
-        /* Success Message */
-        .admin-success-message {
-            background-color: #d4edda;
-            color: #155724;
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            text-align: center;
-            display: none;
-        }
-
-        .admin-success-message.active {
-            display: block;
-            animation: fadeIn 0.3s ease;
-        }
-
-        /* Media List */
-        .admin-media-list {
-            margin-top: 40px;
-            border-top: 2px solid var(--light-gray);
-            padding-top: 30px;
-        }
-
-        .admin-media-list h4 {
-            color: var(--primary);
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .admin-media-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 20px;
-            margin-bottom: 30px;
-        }
-
-        .admin-media-item {
-            background: var(--light);
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: var(--shadow);
-            transition: var(--transition);
-        }
-
-        .admin-media-item:hover {
-            transform: translateY(-5px);
-            box-shadow: var(--shadow-hover);
-        }
-
-        .admin-media-thumbnail {
-            width: 100%;
-            height: 150px;
-            object-fit: cover;
-        }
-
-        .admin-media-info {
-            padding: 15px;
-        }
-
-        .admin-media-info h5 {
-            color: var(--dark);
-            margin-bottom: 5px;
-            font-size: 0.9rem;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .admin-media-info p {
-            color: var(--gray);
-            font-size: 0.8rem;
-            margin-bottom: 5px;
-        }
-
-        .admin-media-actions {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            padding: 10px 15px;
-            background: rgba(255, 255, 255, 0.9);
-        }
-
-        .admin-media-actions button {
-            background: none;
-            border: none;
-            color: var(--primary);
-            cursor: pointer;
-            font-size: 16px;
-            transition: var(--transition);
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .admin-media-actions button:hover {
-            background-color: rgba(138, 43, 226, 0.1);
-        }
-
-        .admin-media-actions .delete-btn {
-            color: #ff4757;
-        }
-
-        .admin-media-actions .delete-btn:hover {
-            background-color: rgba(255, 71, 87, 0.1);
-        }
-
-        /* Video Modal (for playing videos) */
-        .video-modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.9);
-            z-index: 10000;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .video-modal-content {
-            position: relative;
-            width: 90%;
-            max-width: 900px;
-            background: #000;
-            border-radius: 10px;
-            overflow: hidden;
-        }
-
-        .video-modal-close {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            background: rgba(255, 255, 255, 0.9);
-            color: #333;
-            border: none;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            font-size: 24px;
-            cursor: pointer;
-            z-index: 10001;
-        }
-
-        .video-modal-close:hover {
-            background: white;
-        }
-
-        /* Animations */
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        /* Admin Login Form */
-        .admin-login-form {
-            background: var(--white);
-            padding: 40px;
-            border-radius: var(--border-radius);
-            width: 90%;
-            max-width: 400px;
-            box-shadow: var(--shadow-hover);
-        }
-
-        .admin-login-form h3 {
-            color: var(--primary);
-            margin-bottom: 20px;
-            text-align: center;
-        }
-
-        .admin-input-group {
-            margin-bottom: 20px;
-        }
-
-        .admin-input-group label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 500;
-            color: var(--dark);
-        }
-
-        .admin-input-group input {
-            width: 100%;
-            padding: 12px 15px;
-            border: 2px solid var(--light-gray);
-            border-radius: 8px;
-            font-family: 'Poppins', sans-serif;
-            font-size: 1rem;
-            transition: var(--transition);
-        }
-
-        .admin-input-group input:focus {
-            outline: none;
-            border-color: var(--primary);
-        }
-
-        /* Admin Stats */
-        .admin-stats {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 20px;
-            margin-bottom: 30px;
-        }
-
-        .admin-stat-card {
-            background: var(--light);
-            padding: 20px;
-            border-radius: 8px;
-            text-align: center;
-            box-shadow: var(--shadow);
-        }
-
-        .admin-stat-number {
-            font-size: 2rem;
-            font-weight: 700;
-            color: var(--primary);
-            margin-bottom: 5px;
-        }
-
-        .admin-stat-label {
-            font-size: 0.9rem;
-            color: var(--gray);
-            font-weight: 500;
-        }
-
-        /* =========================== */
-        /* RESPONSIVE DESIGN */
-        /* =========================== */
-        @media (max-width: 992px) {
-            .gallery-hero h1 {
-                font-size: 2.8rem;
-            }
-            
-            .gallery-grid {
-                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            }
-            
-            .video-grid {
-                grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            }
-            
-            .slider-nav {
-                right: 10px;
-            }
-            
-            /* Admin Dashboard Responsive */
-            .admin-stats {
-                grid-template-columns: repeat(2, 1fr);
-            }
-            
-            .admin-media-grid {
-                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-            }
-        }
-
+        /* ===== RESPONSIVE DESIGN ===== */
         @media (max-width: 768px) {
             .desktop-nav {
                 display: none;
             }
             
             .mobile-nav-toggle {
-                display: flex;
+                display: block;
             }
             
             .gallery-hero {
-                padding: 150px 0 90px;
+                padding: 120px 20px 80px;
             }
             
             .gallery-hero h1 {
-                font-size: 2.3rem;
-            }
-            
-            section {
-                padding: 70px 0;
-            }
-            
-            .section-title h2 {
-                font-size: 2rem;
+                font-size: 2.5rem;
             }
             
             .slider-nav {
                 display: none;
             }
             
-            /* Admin Dashboard Responsive */
             .admin-form-grid {
                 grid-template-columns: 1fr;
             }
             
-            .admin-dashboard {
-                padding: 25px;
-            }
-            
-            .admin-form-buttons {
-                flex-direction: column;
-            }
-            
-            .admin-form-buttons button {
-                width: 100%;
+            .admin-stats {
+                grid-template-columns: repeat(2, 1fr);
             }
             
             .admin-dashboard-tabs {
-                flex-wrap: wrap;
+                flex-direction: column;
+            }
+            
+            .gallery-grid,
+            .video-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .modal-info {
+                position: static;
+                margin-top: 20px;
+            }
+            
+            .modal-img {
+                max-height: 50vh;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .gallery-hero h1 {
+                font-size: 2rem;
             }
             
             .admin-stats {
                 grid-template-columns: 1fr;
             }
-        }
-
-        @media (min-width: 769px) {
-            .mobile-nav-toggle,
-            .mobile-nav,
-            .mobile-nav-overlay {
-                display: none;
-            }
-        }
-
-        @media (max-width: 576px) {
-            .gallery-hero h1 {
-                font-size: 1.8rem;
+            
+            .gallery-stats {
+                grid-template-columns: repeat(2, 1fr);
             }
             
-            .gallery-hero p {
-                font-size: 1rem;
-            }
-            
-            .gallery-grid {
-                grid-template-columns: 1fr;
+            .gallery-filter {
+                flex-direction: column;
+                align-items: stretch;
             }
             
             .filter-btn {
-                padding: 8px 20px;
-                font-size: 0.9rem;
-            }
-            
-            .video-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .stat-item {
-                min-width: 120px;
-            }
-            
-            .stat-number {
-                font-size: 2.2rem;
-            }
-            
-            .modal-content {
-                max-width: 95%;
-            }
-            
-            /* Admin Dashboard Responsive */
-            .admin-login-form,
-            .admin-dashboard {
-                padding: 20px;
-            }
-            
-            .preview-container {
-                flex-direction: column;
-                align-items: center;
-            }
-            
-            .preview-thumbnail,
-            .preview-video {
-                width: 100%;
-                max-width: 100%;
-            }
-            
-            .admin-media-grid {
-                grid-template-columns: 1fr;
+                text-align: center;
             }
         }
     </style>
 </head>
 <body>
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-spinner" style="width: 40px; height: 40px;"></div>
+        <div>Loading...</div>
+    </div>
+
     <!-- Admin Login Modal -->
     <div class="admin-login-modal" id="adminLoginModal">
         <div class="admin-login-form">
             <h3>Admin Dashboard Login</h3>
+            <div class="error-message" id="loginError"></div>
             <div class="admin-input-group">
-                <label for="adminPassword">Enter Admin Password</label>
+                <label for="adminEmail">Email</label>
+                <input type="email" id="adminEmail" placeholder="Enter admin email">
+            </div>
+            <div class="admin-input-group">
+                <label for="adminPassword">Password</label>
                 <input type="password" id="adminPassword" placeholder="Enter password">
-                <small style="color: var(--gray); margin-top: 5px; display: block;">Default password: femiforge123</small>
+                <small style="color: var(--gray); margin-top: 5px; display: block;">Default: admin@femiforge.org / ChangeThisPassword123</small>
             </div>
             <div class="admin-form-buttons">
-                <button class="btn-submit" id="adminLoginBtn">Login</button>
+                <button class="btn-submit" id="adminLoginBtn">
+                    <span id="loginBtnText">Login</span>
+                    <span id="loginBtnSpinner" class="loading-spinner" style="display: none;"></span>
+                </button>
                 <button class="btn-cancel" id="cancelLoginBtn">Cancel</button>
             </div>
         </div>
@@ -1621,22 +1355,28 @@
             <!-- Admin Stats -->
             <div class="admin-stats">
                 <div class="admin-stat-card">
-                    <div class="admin-stat-number" id="totalPhotos">12</div>
+                    <div class="admin-stat-number" id="totalPhotos">0</div>
                     <div class="admin-stat-label">Total Photos</div>
                 </div>
                 <div class="admin-stat-card">
-                    <div class="admin-stat-number" id="totalVideos">4</div>
+                    <div class="admin-stat-number" id="totalVideos">0</div>
                     <div class="admin-stat-label">Total Videos</div>
                 </div>
                 <div class="admin-stat-card">
-                    <div class="admin-stat-number" id="totalCategories">6</div>
+                    <div class="admin-stat-number" id="totalCategories">0</div>
                     <div class="admin-stat-label">Categories</div>
                 </div>
                 <div class="admin-stat-card">
-                    <div class="admin-stat-number" id="storageUsed">16</div>
+                    <div class="admin-stat-number" id="storageUsed">0</div>
                     <div class="admin-stat-label">Items</div>
                 </div>
             </div>
+            
+            <!-- Success/Error Messages -->
+            <div class="admin-success-message" id="successMessage">
+                <i class="fas fa-check-circle"></i> Operation completed successfully!
+            </div>
+            <div class="error-message" id="dashboardError"></div>
             
             <!-- Admin Tabs -->
             <div class="admin-dashboard-tabs">
@@ -1652,11 +1392,6 @@
                 <button class="admin-tab-btn" data-tab="manage-videos">
                     <i class="fas fa-film"></i> Manage Videos
                 </button>
-            </div>
-            
-            <!-- Success Message -->
-            <div class="admin-success-message" id="successMessage">
-                <i class="fas fa-check-circle"></i> Operation completed successfully!
             </div>
             
             <!-- Upload Photo Tab -->
@@ -1689,36 +1424,18 @@
                             <label for="photoDate" class="required">Date</label>
                             <input type="date" id="photoDate" required>
                         </div>
-                        
-                        <div class="admin-form-group">
-                            <label for="photoSource" class="required">Photo Source</label>
-                            <select id="photoSource" required>
-                                <option value="">Select source</option>
-                                <option value="upload">Upload from PC</option>
-                                <option value="url">Image URL</option>
-                            </select>
-                        </div>
                     </div>
                     
                     <!-- File Upload -->
-                    <div class="admin-form-group" id="photoFileUploadInput">
+                    <div class="admin-form-group">
                         <label class="required">Photo File</label>
                         <div class="file-input-container">
                             <i class="fas fa-cloud-upload-alt"></i>
                             <p>Click to upload photo from your PC</p>
                             <p class="file-info">Max file size: 10MB, JPG, PNG or GIF</p>
-                            <input type="file" id="photoFile" accept="image/*">
+                            <input type="file" id="photoFile" accept="image/*" required>
                         </div>
                         <div id="photoFileName" style="margin-top: 10px; color: var(--primary); font-weight: 500;"></div>
-                    </div>
-                    
-                    <!-- URL Input -->
-                    <div class="admin-form-group" id="photoUrlInput" style="display: none;">
-                        <label for="photoUrl" class="required">Image URL</label>
-                        <input type="url" id="photoUrl" placeholder="Enter image URL">
-                        <small style="color: var(--gray); margin-top: 5px; display: block;">
-                            Example: https://example.com/image.jpg
-                        </small>
                     </div>
                     
                     <!-- Preview Section -->
@@ -1730,8 +1447,9 @@
                     </div>
                     
                     <div class="admin-form-buttons">
-                        <button type="submit" class="btn-submit">
-                            <i class="fas fa-upload"></i> Upload Photo
+                        <button type="submit" class="btn-submit" id="submitPhotoBtn">
+                            <span id="submitPhotoText"><i class="fas fa-upload"></i> Upload Photo</span>
+                            <span id="submitPhotoSpinner" class="loading-spinner" style="display: none; margin-left: 10px;"></span>
                         </button>
                         <button type="reset" class="btn-cancel">
                             <i class="fas fa-redo"></i> Reset Form
@@ -1790,7 +1508,7 @@
                         </small>
                     </div>
                     
-                    <!-- File Upload -->
+                    <!-- File Upload for Video -->
                     <div class="admin-form-group" id="videoFileUploadInput" style="display: none;">
                         <label class="required">Video File</label>
                         <div class="file-input-container">
@@ -1809,7 +1527,7 @@
                             <i class="fas fa-image"></i>
                             <p>Click to upload thumbnail image</p>
                             <p class="file-info">Recommended: 800x450px, JPG or PNG</p>
-                            <input type="file" id="thumbnailFile" accept="image/*">
+                            <input type="file" id="thumbnailFile" accept="image/*" required>
                         </div>
                         <div id="thumbnailFileName" style="margin-top: 10px; color: var(--primary); font-weight: 500;"></div>
                     </div>
@@ -1832,8 +1550,9 @@
                     </div>
                     
                     <div class="admin-form-buttons">
-                        <button type="submit" class="btn-submit">
-                            <i class="fas fa-upload"></i> Upload Video
+                        <button type="submit" class="btn-submit" id="submitVideoBtn">
+                            <span id="submitVideoText"><i class="fas fa-upload"></i> Upload Video</span>
+                            <span id="submitVideoSpinner" class="loading-spinner" style="display: none; margin-left: 10px;"></span>
                         </button>
                         <button type="reset" class="btn-cancel">
                             <i class="fas fa-redo"></i> Reset Form
@@ -1846,8 +1565,16 @@
             <div class="admin-tab-content" id="manage-photos">
                 <div class="admin-media-list">
                     <h4><i class="fas fa-images"></i> Manage Photos</h4>
+                    <div id="photosLoading" style="text-align: center; padding: 20px; color: var(--gray);">
+                        <div class="loading-spinner"></div> Loading photos...
+                    </div>
                     <div class="admin-media-grid" id="photosGrid">
-                        <!-- Photos will be listed here -->
+                        <!-- Photos will be loaded here -->
+                    </div>
+                    <div id="noPhotosMessage" style="text-align: center; padding: 30px; color: var(--gray); display: none;">
+                        <i class="fas fa-image" style="font-size: 48px; margin-bottom: 15px; opacity: 0.5;"></i>
+                        <h4>No photos found</h4>
+                        <p>Upload your first photo using the "Upload Photo" tab.</p>
                     </div>
                 </div>
             </div>
@@ -1856,8 +1583,16 @@
             <div class="admin-tab-content" id="manage-videos">
                 <div class="admin-media-list">
                     <h4><i class="fas fa-film"></i> Manage Videos</h4>
+                    <div id="videosLoading" style="text-align: center; padding: 20px; color: var(--gray);">
+                        <div class="loading-spinner"></div> Loading videos...
+                    </div>
                     <div class="admin-media-grid" id="videosGrid">
-                        <!-- Videos will be listed here -->
+                        <!-- Videos will be loaded here -->
+                    </div>
+                    <div id="noVideosMessage" style="text-align: center; padding: 30px; color: var(--gray); display: none;">
+                        <i class="fas fa-video" style="font-size: 48px; margin-bottom: 15px; opacity: 0.5;"></i>
+                        <h4>No videos found</h4>
+                        <p>Upload your first video using the "Upload Video" tab.</p>
                     </div>
                 </div>
             </div>
@@ -1904,89 +1639,6 @@
         </div>
     </header>
 
-    <!-- Mobile Navigation Overlay -->
-    <div class="mobile-nav-overlay" id="mobileNavOverlay"></div>
-
-    <!-- Mobile Navigation Menu - COMPACT VERSION -->
-    <div class="mobile-nav" id="mobileNav">
-        <div class="mobile-nav-header">
-            <div class="logo">
-                <div class="logo-icon">
-                    <img src="images/logo.jpg" alt="FemiForge Logo" style="width: 32px; height: 32px;">
-                </div>
-                <div class="logo-text">Femi<span>Forge</span></div>
-            </div>
-            <button class="mobile-nav-close" id="mobileNavClose">
-                <i class="fas fa-times"></i>
-            </button>
-        </div>
-        
-        <ul class="mobile-nav-menu">
-            <li>
-                <a href="index.html">
-                    <span class="mobile-nav-icon"><i class="fas fa-home"></i></span>
-                    <span>Home</span>
-                </a>
-            </li>
-            <li>
-                <a href="index.html#about">
-                    <span class="mobile-nav-icon"><i class="fas fa-info-circle"></i></span>
-                    <span>About</span>
-                </a>
-            </li>
-            <li>
-                <a href="index.html#programs">
-                    <span class="mobile-nav-icon"><i class="fas fa-graduation-cap"></i></span>
-                    <span>Programs</span>
-                </a>
-            </li>
-            <li>
-                <a href="index.html#services">
-                    <span class="mobile-nav-icon"><i class="fas fa-concierge-bell"></i></span>
-                    <span>Services</span>
-                </a>
-            </li>
-            <li>
-                <a href="index.html#board-sponsors">
-                    <span class="mobile-nav-icon"><i class="fas fa-users"></i></span>
-                    <span>Board & Sponsors</span>
-                </a>
-            </li>
-            <li>
-                <a href="#" id="mobileAdminLink">
-                    <span class="mobile-nav-icon"><i class="fas fa-cogs"></i></span>
-                    <span>Admin</span>
-                </a>
-            </li>
-            <li>
-                <a href="#" class="active">
-                    <span class="mobile-nav-icon"><i class="fas fa-images"></i></span>
-                    <span>Gallery</span>
-                </a>
-            </li>
-            <li>
-                <a href="index.html#contact">
-                    <span class="mobile-nav-icon"><i class="fas fa-envelope"></i></span>
-                    <span>Contact</span>
-                </a>
-            </li>
-        </ul>
-        
-        <div class="mobile-nav-footer">
-            <a href="index.html" class="btn btn-primary" style="display: block; text-align: center; margin-bottom: 15px; padding: 12px 20px; font-size: 14px;">
-                <i class="fas fa-home"></i> Back to Home
-            </a>
-            
-            <div class="mobile-social-links">
-                <a href="https://www.tiktok.com/@femiforge._empowe?_r=1&_t=ZM-92AcVwKijbk"><i class="fab fa-tiktok"></i></a>
-                <a href="#"><i class="fab fa-twitter"></i></a>
-                <a href="https://www.instagram.com/femiforge_empowerment_nexus?igsh=MXkwYWFucWZiaG5rdA=="><i class="fab fa-instagram"></i></a>
-                <a href="https://www.linkedin.com/company/femiforge-empowerment-nexus/"><i class="fab fa-linkedin-in"></i></a>
-                <a href="https://whatsapp.com/channel/0029VbBkLGuGJP8HMp453w2D"><i class="fab fa-whatsapp"></i></a>
-            </div>
-        </div>
-    </div>
-
     <!-- Gallery Hero -->
     <section class="gallery-hero" id="photo-gallery">
         <div class="container">
@@ -2020,7 +1672,7 @@
             <!-- Gallery Stats -->
             <div class="gallery-stats">
                 <div class="stat-item">
-                    <div class="stat-number">250+</div>
+                    <div class="stat-number" id="photoCount">0</div>
                     <div class="stat-label">Photos</div>
                 </div>
                 <div class="stat-item">
@@ -2037,9 +1689,22 @@
                 </div>
             </div>
             
+            <!-- Loading State -->
+            <div id="photosLoadingState" style="text-align: center; padding: 40px; display: none;">
+                <div class="loading-spinner" style="width: 40px; height: 40px; margin: 0 auto 20px;"></div>
+                <p>Loading photos...</p>
+            </div>
+            
+            <!-- Empty State -->
+            <div id="noPhotosState" style="text-align: center; padding: 60px; display: none;">
+                <i class="fas fa-image" style="font-size: 60px; color: var(--light-gray); margin-bottom: 20px;"></i>
+                <h3>No Photos Yet</h3>
+                <p style="color: var(--gray); max-width: 500px; margin: 0 auto;">Check back soon for gallery updates!</p>
+            </div>
+            
             <!-- Gallery Grid -->
             <div class="gallery-grid" id="photoGallery">
-                <!-- Photos will be dynamically loaded here -->
+                <!-- Photos will be loaded dynamically -->
             </div>
         </div>
     </section>
@@ -2054,8 +1719,21 @@
                 <p>Watch inspiring stories, event highlights, and program documentaries that bring our mission to life.</p>
             </div>
             
+            <!-- Loading State -->
+            <div id="videosLoadingState" style="text-align: center; padding: 40px; display: none;">
+                <div class="loading-spinner" style="width: 40px; height: 40px; margin: 0 auto 20px;"></div>
+                <p>Loading videos...</p>
+            </div>
+            
+            <!-- Empty State -->
+            <div id="noVideosState" style="text-align: center; padding: 60px; display: none;">
+                <i class="fas fa-video" style="font-size: 60px; color: var(--light-gray); margin-bottom: 20px;"></i>
+                <h3>No Videos Yet</h3>
+                <p style="color: var(--gray); max-width: 500px; margin: 0 auto;">Check back soon for video content!</p>
+            </div>
+            
             <div class="video-grid" id="videoGallery">
-                <!-- Videos will be dynamically loaded here -->
+                <!-- Videos will be loaded dynamically -->
             </div>
         </div>
     </section>
@@ -2131,114 +1809,256 @@
     </footer>
 
     <script>
-        // Gallery Data
-        let galleryData = [
-            {
-                id: 1,
-                category: "workshops",
-                title: "Digital Literacy Workshop",
-                description: "Participants learning essential computer skills during our digital literacy workshop in Lagos.",
-                date: "March 15, 2024",
-                image: "images/lunch img.jpg",
-                type: "photo"
+        // ============================================
+        // API CONFIGURATION
+        // ============================================
+        const API_CONFIG = {
+            BASE_URL: 'http://localhost:5000/api', // Change this to your backend URL
+            ENDPOINTS: {
+                LOGIN: '/auth/login',
+                PHOTOS: '/photos',
+                VIDEOS: '/videos',
+                STATS: {
+                    PHOTOS: '/photos/stats/totals',
+                    VIDEOS: '/videos/stats/totals'
+                }
             },
-            {
-                id: 2,
-                category: "events",
-                title: "Annual Empowerment Conference",
-                description: "Our annual conference bringing together women leaders from across the region to share experiences and insights.",
-                date: "February 22, 2024",
-                image: "images/lunch img.jpg",
-                type: "photo"
-            },
-            {
-                id: 3,
-                category: "community",
-                title: "Rural Community Outreach",
-                description: "Team members engaging with women in rural communities to understand their challenges and provide support.",
-                date: "January 30, 2024",
-                image: "images/lunch img.jpg",
-                type: "photo"
-            },
-            {
-                id: 4,
-                category: "success",
-                title: "Graduation Ceremony",
-                description: "Celebrating the achievements of our program graduates who have successfully completed skills training.",
-                date: "December 12, 2023",
-                image: "images/lunch img.jpg",
-                type: "photo"
-            },
-            {
-                id: 5,
-                category: "training",
-                title: "Entrepreneurship Training",
-                description: "Practical business training session where participants learn about business planning and management.",
-                date: "November 8, 2023",
-                image: "images/lunch img.jpg",
-                type: "photo"
-            },
-            {
-                id: 6,
-                category: "workshops",
-                title: "Financial Literacy Session",
-                description: "Women learning about budgeting, savings, and investment during our financial literacy workshop.",
-                date: "October 20, 2023",
-                image: "images/lunch img.jpg",
-                type: "photo"
+            DEFAULT_CREDENTIALS: {
+                email: 'admin@femiforge.org',
+                password: 'ChangeThisPassword123'
             }
-        ];
+        };
 
-        // Video Data
-        let videoData = [
-            {
-                id: 1,
-                title: "Journey to Empowerment: Ada's Story",
-                description: "Follow Ada's transformation from a shy young woman to a confident entrepreneur running her own business.",
-                category: "success",
-                thumbnail: "https://images.unsplash.com/photo-1551836026-d5c2e0c49b61?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-                videoId: "demo1",
-                type: "youtube",
-                date: "March 10, 2024"
-            },
-            {
-                id: 2,
-                title: "Digital Skills Workshop Highlights",
-                description: "Highlights from our 3-day digital literacy workshop that equipped 50 women with essential tech skills.",
-                category: "workshops",
-                thumbnail: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-                videoId: "demo2",
-                type: "youtube",
-                date: "February 15, 2024"
+        // ============================================
+        // API SERVICE CLASS
+        // ============================================
+        class FemiForgeAPI {
+            constructor() {
+                this.token = localStorage.getItem('femiforge_token');
+                this.user = JSON.parse(localStorage.getItem('femiforge_user') || 'null');
             }
-        ];
 
-        // Admin Panel Variables
+            async request(endpoint, options = {}) {
+                const url = `${API_CONFIG.BASE_URL}${endpoint}`;
+                const defaultOptions = {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        ...(this.token ? { 'Authorization': `Bearer ${this.token}` } : {})
+                    }
+                };
+
+                const config = { ...defaultOptions, ...options };
+                
+                try {
+                    const response = await fetch(url, config);
+                    const data = await response.json();
+                    
+                    if (!response.ok) {
+                        throw new Error(data.message || `HTTP ${response.status}`);
+                    }
+                    
+                    return data;
+                } catch (error) {
+                    console.error(`API Error (${endpoint}):`, error);
+                    throw error;
+                }
+            }
+
+            async login(email, password) {
+                try {
+                    const data = await this.request(API_CONFIG.ENDPOINTS.LOGIN, {
+                        method: 'POST',
+                        body: JSON.stringify({ email, password })
+                    });
+
+                    if (data.success) {
+                        this.token = data.token;
+                        this.user = data.user;
+                        localStorage.setItem('femiforge_token', data.token);
+                        localStorage.setItem('femiforge_user', JSON.stringify(data.user));
+                    }
+
+                    return data;
+                } catch (error) {
+                    return { 
+                        success: false, 
+                        message: error.message || 'Login failed. Please check your credentials.' 
+                    };
+                }
+            }
+
+            async getPhotos(category = 'all') {
+                try {
+                    const endpoint = category === 'all' 
+                        ? API_CONFIG.ENDPOINTS.PHOTOS
+                        : `${API_CONFIG.ENDPOINTS.PHOTOS}?category=${category}`;
+                    
+                    const data = await this.request(endpoint);
+                    return data.success ? data.data : [];
+                } catch (error) {
+                    console.error('Error fetching photos:', error);
+                    return [];
+                }
+            }
+
+            async getVideos() {
+                try {
+                    const data = await this.request(API_CONFIG.ENDPOINTS.VIDEOS);
+                    return data.success ? data.data : [];
+                } catch (error) {
+                    console.error('Error fetching videos:', error);
+                    return [];
+                }
+            }
+
+            async uploadPhoto(formData) {
+                try {
+                    const response = await fetch(`${API_CONFIG.BASE_URL}${API_CONFIG.ENDPOINTS.PHOTOS}`, {
+                        method: 'POST',
+                        headers: {
+                            'Authorization': `Bearer ${this.token}`
+                        },
+                        body: formData
+                    });
+                    
+                    const data = await response.json();
+                    
+                    if (!response.ok) {
+                        throw new Error(data.message || 'Upload failed');
+                    }
+                    
+                    return data;
+                } catch (error) {
+                    return { success: false, message: error.message || 'Photo upload failed' };
+                }
+            }
+
+            async uploadVideo(formData) {
+                try {
+                    const response = await fetch(`${API_CONFIG.BASE_URL}${API_CONFIG.ENDPOINTS.VIDEOS}`, {
+                        method: 'POST',
+                        headers: {
+                            'Authorization': `Bearer ${this.token}`
+                        },
+                        body: formData
+                    });
+                    
+                    const data = await response.json();
+                    
+                    if (!response.ok) {
+                        throw new Error(data.message || 'Upload failed');
+                    }
+                    
+                    return data;
+                } catch (error) {
+                    return { success: false, message: error.message || 'Video upload failed' };
+                }
+            }
+
+            async deletePhoto(id) {
+                try {
+                    const data = await this.request(`${API_CONFIG.ENDPOINTS.PHOTOS}/${id}`, {
+                        method: 'DELETE'
+                    });
+                    return data;
+                } catch (error) {
+                    return { success: false, message: error.message || 'Delete failed' };
+                }
+            }
+
+            async deleteVideo(id) {
+                try {
+                    const data = await this.request(`${API_CONFIG.ENDPOINTS.VIDEOS}/${id}`, {
+                        method: 'DELETE'
+                    });
+                    return data;
+                } catch (error) {
+                    return { success: false, message: error.message || 'Delete failed' };
+                }
+            }
+
+            async getStats() {
+                try {
+                    const [photoStats, videoStats] = await Promise.all([
+                        this.request(API_CONFIG.ENDPOINTS.STATS.PHOTOS),
+                        this.request(API_CONFIG.ENDPOINTS.STATS.VIDEOS)
+                    ]);
+                    
+                    return {
+                        photos: photoStats.success ? photoStats.data : null,
+                        videos: videoStats.success ? videoStats.data : null
+                    };
+                } catch (error) {
+                    console.error('Error fetching stats:', error);
+                    return { photos: null, videos: null };
+                }
+            }
+
+            isLoggedIn() {
+                return !!this.token && !!this.user;
+            }
+
+            logout() {
+                this.token = null;
+                this.user = null;
+                localStorage.removeItem('femiforge_token');
+                localStorage.removeItem('femiforge_user');
+            }
+        }
+
+        // ============================================
+        // GLOBAL VARIABLES AND INITIALIZATION
+        // ============================================
+        const api = new FemiForgeAPI();
+        let galleryData = [];
+        let videoData = [];
+
+        // DOM Elements
+        const loadingOverlay = document.getElementById('loadingOverlay');
         const adminLoginModal = document.getElementById('adminLoginModal');
         const adminDashboardModal = document.getElementById('adminDashboardModal');
+        const adminEmailInput = document.getElementById('adminEmail');
         const adminPasswordInput = document.getElementById('adminPassword');
         const adminLoginBtn = document.getElementById('adminLoginBtn');
+        const loginBtnText = document.getElementById('loginBtnText');
+        const loginBtnSpinner = document.getElementById('loginBtnSpinner');
+        const loginError = document.getElementById('loginError');
         const cancelLoginBtn = document.getElementById('cancelLoginBtn');
         const closeDashboardBtn = document.getElementById('closeDashboardBtn');
         const successMessage = document.getElementById('successMessage');
+        const dashboardError = document.getElementById('dashboardError');
         
-        // Navigation links for admin
+        // Navigation links
         const adminNavLink = document.getElementById('adminNavLink');
-        const mobileAdminLink = document.getElementById('mobileAdminLink');
         const footerAdminLink = document.getElementById('footerAdminLink');
         
-        // Tab elements
+        // Stats elements
+        const totalPhotosElement = document.getElementById('totalPhotos');
+        const totalVideosElement = document.getElementById('totalVideos');
+        const totalCategoriesElement = document.getElementById('totalCategories');
+        const storageUsedElement = document.getElementById('storageUsed');
+        const photoCountElement = document.getElementById('photoCount');
+        
+        // Photo gallery elements
+        const photoGallery = document.getElementById('photoGallery');
+        const photosLoadingState = document.getElementById('photosLoadingState');
+        const noPhotosState = document.getElementById('noPhotosState');
+        
+        // Video gallery elements
+        const videoGallery = document.getElementById('videoGallery');
+        const videosLoadingState = document.getElementById('videosLoadingState');
+        const noVideosState = document.getElementById('noVideosState');
+        
+        // Admin tab elements
         const adminTabBtns = document.querySelectorAll('.admin-tab-btn');
         const adminTabContents = document.querySelectorAll('.admin-tab-content');
         
         // Photo upload elements
         const photoUploadForm = document.getElementById('photoUploadForm');
-        const photoSourceSelect = document.getElementById('photoSource');
-        const photoFileUploadInput = document.getElementById('photoFileUploadInput');
-        const photoUrlInput = document.getElementById('photoUrlInput');
         const photoFileInput = document.getElementById('photoFile');
-        const photoPreviewSection = document.getElementById('photoPreviewSection');
-        const photoPreview = document.getElementById('photoPreview');
+        const submitPhotoBtn = document.getElementById('submitPhotoBtn');
+        const submitPhotoText = document.getElementById('submitPhotoText');
+        const submitPhotoSpinner = document.getElementById('submitPhotoSpinner');
         
         // Video upload elements
         const videoUploadForm = document.getElementById('videoUploadForm');
@@ -2247,334 +2067,444 @@
         const videoFileUploadInput = document.getElementById('videoFileUploadInput');
         const videoFileInput = document.getElementById('videoFile');
         const thumbnailFileInput = document.getElementById('thumbnailFile');
-        const videoPreviewSection = document.getElementById('videoPreviewSection');
-        const thumbnailPreview = document.getElementById('thumbnailPreview');
-        const videoPreview = document.getElementById('videoPreview');
-        const videoPreviewContainer = document.getElementById('videoPreviewContainer');
+        const submitVideoBtn = document.getElementById('submitVideoBtn');
+        const submitVideoText = document.getElementById('submitVideoText');
+        const submitVideoSpinner = document.getElementById('submitVideoSpinner');
         
-        // Media grid elements
+        // Admin management elements
         const photosGrid = document.getElementById('photosGrid');
         const videosGrid = document.getElementById('videosGrid');
-        
-        // Stats elements
-        const totalPhotosElement = document.getElementById('totalPhotos');
-        const totalVideosElement = document.getElementById('totalVideos');
-        const totalCategoriesElement = document.getElementById('totalCategories');
-        const storageUsedElement = document.getElementById('storageUsed');
-        
-        // Default admin password
-        const ADMIN_PASSWORD = "femiforge123";
-        
-        // Check if user is already logged in
-        let isAdminLoggedIn = localStorage.getItem('femiforgeAdminLoggedIn') === 'true';
-        
-        // Initialize admin dashboard
-        function initAdminDashboard() {
-            // Load saved data from localStorage
-            loadSavedData();
-            
-            // Update admin stats
-            updateAdminStats();
-            
-            // Update media grids
-            updatePhotosGrid();
-            updateVideosGrid();
-            
-            // Set today's date as default for forms
-            document.getElementById('photoDate').valueAsDate = new Date();
-            document.getElementById('videoDate').valueAsDate = new Date();
+        const photosLoading = document.getElementById('photosLoading');
+        const videosLoading = document.getElementById('videosLoading');
+        const noPhotosMessage = document.getElementById('noPhotosMessage');
+        const noVideosMessage = document.getElementById('noVideosMessage');
+
+        // ============================================
+        // UTILITY FUNCTIONS
+        // ============================================
+        function showLoading(show = true) {
+            loadingOverlay.style.display = show ? 'flex' : 'none';
+            document.body.style.overflow = show ? 'hidden' : 'auto';
         }
-        
-        // Load saved data from localStorage
-        function loadSavedData() {
-            const savedGalleryData = localStorage.getItem('femiforgeGalleryData');
-            const savedVideoData = localStorage.getItem('femiforgeVideoData');
-            
-            if (savedGalleryData) {
-                try {
-                    const parsedData = JSON.parse(savedGalleryData);
-                    galleryData = parsedData;
-                } catch (e) {
-                    console.error('Error loading saved gallery data:', e);
-                }
-            }
-            
-            if (savedVideoData) {
-                try {
-                    const parsedData = JSON.parse(savedVideoData);
-                    videoData = parsedData;
-                } catch (e) {
-                    console.error('Error loading saved video data:', e);
-                }
-            }
+
+        function showError(element, message) {
+            element.textContent = message;
+            element.classList.add('active');
+            setTimeout(() => element.classList.remove('active'), 5000);
         }
-        
-        // Save data to localStorage
-        function saveDataToStorage() {
-            localStorage.setItem('femiforgeGalleryData', JSON.stringify(galleryData));
-            localStorage.setItem('femiforgeVideoData', JSON.stringify(videoData));
+
+        function showSuccess(message) {
+            successMessage.innerHTML = `<i class="fas fa-check-circle"></i> ${message}`;
+            successMessage.classList.add('active');
+            setTimeout(() => successMessage.classList.remove('active'), 3000);
         }
-        
-        // Update admin stats
-        function updateAdminStats() {
-            const totalPhotos = galleryData.length;
-            const totalVideos = videoData.length;
-            
-            // Get unique categories
-            const allCategories = [...galleryData.map(item => item.category), ...videoData.map(item => item.category)];
-            const uniqueCategories = [...new Set(allCategories)].length;
-            
-            totalPhotosElement.textContent = totalPhotos;
-            totalVideosElement.textContent = totalVideos;
-            totalCategoriesElement.textContent = uniqueCategories;
-            storageUsedElement.textContent = totalPhotos + totalVideos;
-        }
-        
-        // Update photos grid in admin panel
-        function updatePhotosGrid() {
-            photosGrid.innerHTML = '';
-            
-            galleryData.forEach(photo => {
-                const photoItem = document.createElement('div');
-                photoItem.className = 'admin-media-item';
-                photoItem.innerHTML = `
-                    <img src="${photo.image}" alt="${photo.title}" class="admin-media-thumbnail">
-                    <div class="admin-media-info">
-                        <h5>${photo.title}</h5>
-                        <p>${photo.category} • ${photo.date}</p>
-                    </div>
-                    <div class="admin-media-actions">
-                        <button class="view-btn" title="View Photo" onclick="viewPhoto(${photo.id})">
-                            <i class="fas fa-eye"></i>
-                        </button>
-                        <button class="delete-btn" title="Delete Photo" onclick="deletePhoto(${photo.id})">
-                            <i class="fas fa-trash"></i>
-                        </button>
-                    </div>
-                `;
-                photosGrid.appendChild(photoItem);
+
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
             });
         }
-        
-        // Update videos grid in admin panel
-        function updateVideosGrid() {
-            videosGrid.innerHTML = '';
+
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        }
+
+        // ============================================
+        // GALLERY FUNCTIONS
+        // ============================================
+        async function loadGalleryData() {
+            try {
+                photosLoadingState.style.display = 'block';
+                noPhotosState.style.display = 'none';
+                photoGallery.innerHTML = '';
+                
+                galleryData = await api.getPhotos();
+                photoCountElement.textContent = galleryData.length;
+                
+                if (galleryData.length === 0) {
+                    photosLoadingState.style.display = 'none';
+                    noPhotosState.style.display = 'block';
+                    return;
+                }
+                
+                renderGallery();
+                photosLoadingState.style.display = 'none';
+            } catch (error) {
+                console.error('Error loading gallery:', error);
+                photosLoadingState.style.display = 'none';
+                noPhotosState.style.display = 'block';
+            }
+        }
+
+        async function loadVideoGalleryData() {
+            try {
+                videosLoadingState.style.display = 'block';
+                noVideosState.style.display = 'none';
+                videoGallery.innerHTML = '';
+                
+                videoData = await api.getVideos();
+                
+                if (videoData.length === 0) {
+                    videosLoadingState.style.display = 'none';
+                    noVideosState.style.display = 'block';
+                    return;
+                }
+                
+                renderVideoGallery();
+                videosLoadingState.style.display = 'none';
+            } catch (error) {
+                console.error('Error loading videos:', error);
+                videosLoadingState.style.display = 'none';
+                noVideosState.style.display = 'block';
+            }
+        }
+
+        function renderGallery(filter = 'all') {
+            photoGallery.innerHTML = '';
+            
+            const filteredData = filter === 'all' 
+                ? galleryData 
+                : galleryData.filter(item => item.category === filter);
+            
+            if (filteredData.length === 0) {
+                photoGallery.innerHTML = `
+                    <div style="grid-column: 1 / -1; text-align: center; padding: 40px; color: var(--gray);">
+                        <i class="fas fa-image" style="font-size: 48px; margin-bottom: 15px; opacity: 0.5;"></i>
+                        <h4>No photos found in this category</h4>
+                    </div>
+                `;
+                return;
+            }
+            
+            filteredData.forEach(item => {
+                const galleryItem = document.createElement('div');
+                galleryItem.className = 'gallery-item';
+                galleryItem.setAttribute('data-category', item.category);
+                galleryItem.setAttribute('data-id', item._id || item.id);
+                
+                // Use absolute URL for images if they're from backend
+                const imageUrl = item.imageUrl?.startsWith('http') 
+                    ? item.imageUrl 
+                    : `http://localhost:5000${item.imageUrl}`;
+                
+                galleryItem.innerHTML = `
+                    <img src="${imageUrl}" alt="${item.title}" onerror="this.src='https://images.unsplash.com/photo-1529156069898-49953e39b3ac?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80'">
+                    <div class="gallery-overlay">
+                        <span class="gallery-category">${item.category.charAt(0).toUpperCase() + item.category.slice(1)}</span>
+                        <div class="gallery-title">${item.title}</div>
+                        <div class="gallery-date">${formatDate(item.date)}</div>
+                    </div>
+                `;
+                
+                galleryItem.addEventListener('click', () => openModal(item._id || item.id));
+                photoGallery.appendChild(galleryItem);
+            });
+        }
+
+        function renderVideoGallery() {
+            videoGallery.innerHTML = '';
             
             videoData.forEach(video => {
                 const videoItem = document.createElement('div');
-                videoItem.className = 'admin-media-item';
+                videoItem.className = 'video-item';
+                
+                // Use absolute URL for thumbnails
+                const thumbnailUrl = video.thumbnailUrl?.startsWith('http')
+                    ? video.thumbnailUrl
+                    : `http://localhost:5000${video.thumbnailUrl}`;
+                
                 videoItem.innerHTML = `
-                    <img src="${video.thumbnail}" alt="${video.title}" class="admin-media-thumbnail">
-                    <div class="admin-media-info">
-                        <h5>${video.title}</h5>
-                        <p>${video.category} • ${video.date}</p>
-                        <small>${video.type === 'youtube' ? 'YouTube' : 'Uploaded'}</small>
+                    <img src="${thumbnailUrl}" alt="${video.title}" class="video-thumbnail" onerror="this.src='https://images.unsplash.com/photo-1551836026-d5c2e0c49b61?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80'">
+                    <div class="video-play-btn">
+                        <i class="fas fa-play"></i>
                     </div>
-                    <div class="admin-media-actions">
-                        <button class="view-btn" title="Play Video" onclick="playVideo('${video.videoId}', '${video.title}', '${video.type}')">
-                            <i class="fas fa-play"></i>
-                        </button>
-                        <button class="delete-btn" title="Delete Video" onclick="deleteVideo(${video.id})">
-                            <i class="fas fa-trash"></i>
-                        </button>
+                    <div class="video-info">
+                        <h3>${video.title}</h3>
+                        <p>${video.description}</p>
+                        <small style="color: var(--primary); font-weight: 500;">${formatDate(video.date)}</small>
                     </div>
                 `;
-                videosGrid.appendChild(videoItem);
+                
+                videoItem.addEventListener('click', () => playVideo(video));
+                videoGallery.appendChild(videoItem);
             });
         }
-        
-        // Admin navigation click handlers
+
+        // ============================================
+        // ADMIN DASHBOARD FUNCTIONS
+        // ============================================
+        async function loadAdminStats() {
+            try {
+                const stats = await api.getStats();
+                
+                if (stats.photos) {
+                    totalPhotosElement.textContent = stats.photos.totalPhotos || 0;
+                    totalCategoriesElement.textContent = stats.photos.photosByCategory?.length || 0;
+                }
+                
+                if (stats.videos) {
+                    totalVideosElement.textContent = stats.videos.totalVideos || 0;
+                }
+                
+                const totalItems = (stats.photos?.totalPhotos || 0) + (stats.videos?.totalVideos || 0);
+                storageUsedElement.textContent = totalItems;
+            } catch (error) {
+                console.error('Error loading admin stats:', error);
+            }
+        }
+
+        async function loadAdminPhotos() {
+            try {
+                photosLoading.style.display = 'block';
+                photosGrid.style.display = 'none';
+                noPhotosMessage.style.display = 'none';
+                
+                const photos = await api.getPhotos();
+                
+                photosLoading.style.display = 'none';
+                
+                if (photos.length === 0) {
+                    noPhotosMessage.style.display = 'block';
+                    return;
+                }
+                
+                photosGrid.innerHTML = '';
+                photosGrid.style.display = 'grid';
+                
+                photos.forEach(photo => {
+                    const photoItem = document.createElement('div');
+                    photoItem.className = 'admin-media-item';
+                    
+                    const imageUrl = photo.imageUrl?.startsWith('http')
+                        ? photo.imageUrl
+                        : `http://localhost:5000${photo.imageUrl}`;
+                    
+                    photoItem.innerHTML = `
+                        <img src="${imageUrl}" alt="${photo.title}" class="admin-media-thumbnail" onerror="this.src='https://images.unsplash.com/photo-1529156069898-49953e39b3ac?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80'">
+                        <div class="admin-media-info">
+                            <h5>${photo.title}</h5>
+                            <p>${photo.category} • ${formatDate(photo.date)}</p>
+                            <small>Views: ${photo.views || 0}</small>
+                        </div>
+                        <div class="admin-media-actions">
+                            <button class="view-btn" title="View Photo" onclick="viewPhoto('${photo._id || photo.id}')">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            <button class="delete-btn" title="Delete Photo" onclick="deleteAdminPhoto('${photo._id || photo.id}', this)">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    `;
+                    photosGrid.appendChild(photoItem);
+                });
+            } catch (error) {
+                console.error('Error loading admin photos:', error);
+                photosLoading.style.display = 'none';
+                noPhotosMessage.style.display = 'block';
+            }
+        }
+
+        async function loadAdminVideos() {
+            try {
+                videosLoading.style.display = 'block';
+                videosGrid.style.display = 'none';
+                noVideosMessage.style.display = 'none';
+                
+                const videos = await api.getVideos();
+                
+                videosLoading.style.display = 'none';
+                
+                if (videos.length === 0) {
+                    noVideosMessage.style.display = 'block';
+                    return;
+                }
+                
+                videosGrid.innerHTML = '';
+                videosGrid.style.display = 'grid';
+                
+                videos.forEach(video => {
+                    const videoItem = document.createElement('div');
+                    videoItem.className = 'admin-media-item';
+                    
+                    const thumbnailUrl = video.thumbnailUrl?.startsWith('http')
+                        ? video.thumbnailUrl
+                        : `http://localhost:5000${video.thumbnailUrl}`;
+                    
+                    videoItem.innerHTML = `
+                        <img src="${thumbnailUrl}" alt="${video.title}" class="admin-media-thumbnail" onerror="this.src='https://images.unsplash.com/photo-1551836026-d5c2e0c49b61?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80'">
+                        <div class="admin-media-info">
+                            <h5>${video.title}</h5>
+                            <p>${video.category} • ${formatDate(video.date)}</p>
+                            <small>${video.videoType === 'youtube' ? 'YouTube' : 'Uploaded'} • Views: ${video.views || 0}</small>
+                        </div>
+                        <div class="admin-media-actions">
+                            <button class="view-btn" title="Play Video" onclick="playVideo(${JSON.stringify(video).replace(/"/g, '&quot;')})">
+                                <i class="fas fa-play"></i>
+                            </button>
+                            <button class="delete-btn" title="Delete Video" onclick="deleteAdminVideo('${video._id || video.id}', this)">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    `;
+                    videosGrid.appendChild(videoItem);
+                });
+            } catch (error) {
+                console.error('Error loading admin videos:', error);
+                videosLoading.style.display = 'none';
+                noVideosMessage.style.display = 'block';
+            }
+        }
+
+        async function deleteAdminPhoto(photoId, button) {
+            if (!confirm('Are you sure you want to delete this photo?')) return;
+            
+            const originalText = button.innerHTML;
+            button.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+            button.disabled = true;
+            
+            try {
+                const result = await api.deletePhoto(photoId);
+                
+                if (result.success) {
+                    showSuccess('Photo deleted successfully');
+                    await loadAdminPhotos();
+                    await loadGalleryData();
+                    await loadAdminStats();
+                } else {
+                    showError(dashboardError, result.message || 'Failed to delete photo');
+                }
+            } catch (error) {
+                showError(dashboardError, 'Error deleting photo');
+            } finally {
+                button.innerHTML = originalText;
+                button.disabled = false;
+            }
+        }
+
+        async function deleteAdminVideo(videoId, button) {
+            if (!confirm('Are you sure you want to delete this video?')) return;
+            
+            const originalText = button.innerHTML;
+            button.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+            button.disabled = true;
+            
+            try {
+                const result = await api.deleteVideo(videoId);
+                
+                if (result.success) {
+                    showSuccess('Video deleted successfully');
+                    await loadAdminVideos();
+                    await loadVideoGalleryData();
+                    await loadAdminStats();
+                } else {
+                    showError(dashboardError, result.message || 'Failed to delete video');
+                }
+            } catch (error) {
+                showError(dashboardError, 'Error deleting video');
+            } finally {
+                button.innerHTML = originalText;
+                button.disabled = false;
+            }
+        }
+
+        // ============================================
+        // EVENT HANDLERS AND INITIALIZATION
+        // ============================================
+        // Admin navigation
         adminNavLink.addEventListener('click', (e) => {
             e.preventDefault();
             showAdminLogin();
         });
-        
-        mobileAdminLink.addEventListener('click', (e) => {
-            e.preventDefault();
-            closeMobileNav();
-            showAdminLogin();
-        });
-        
+
         footerAdminLink.addEventListener('click', (e) => {
             e.preventDefault();
             showAdminLogin();
         });
-        
-        // Show admin login
+
         function showAdminLogin() {
+            adminEmailInput.value = API_CONFIG.DEFAULT_CREDENTIALS.email;
+            adminPasswordInput.value = API_CONFIG.DEFAULT_CREDENTIALS.password;
             adminLoginModal.classList.add('active');
             document.body.style.overflow = 'hidden';
-            adminPasswordInput.focus();
+            loginError.classList.remove('active');
         }
-        
+
         // Admin login
-        adminLoginBtn.addEventListener('click', () => {
+        adminLoginBtn.addEventListener('click', async () => {
+            const email = adminEmailInput.value;
             const password = adminPasswordInput.value;
             
-            if (password === ADMIN_PASSWORD) {
-                isAdminLoggedIn = true;
-                localStorage.setItem('femiforgeAdminLoggedIn', 'true');
-                adminLoginModal.classList.remove('active');
-                adminDashboardModal.classList.add('active');
-            } else {
-                alert('Incorrect password. Please try again.');
-                adminPasswordInput.value = '';
-                adminPasswordInput.focus();
+            if (!email || !password) {
+                showError(loginError, 'Please enter both email and password');
+                return;
+            }
+            
+            loginBtnText.style.display = 'none';
+            loginBtnSpinner.style.display = 'inline-block';
+            adminLoginBtn.disabled = true;
+            
+            try {
+                const result = await api.login(email, password);
+                
+                if (result.success) {
+                    adminLoginModal.classList.remove('active');
+                    adminDashboardModal.classList.add('active');
+                    document.body.style.overflow = 'hidden';
+                    
+                    // Load admin data
+                    await loadAdminStats();
+                    await loadAdminPhotos();
+                    await loadAdminVideos();
+                    
+                    // Set today's date as default for forms
+                    document.getElementById('photoDate').valueAsDate = new Date();
+                    document.getElementById('videoDate').valueAsDate = new Date();
+                } else {
+                    showError(loginError, result.message || 'Login failed');
+                }
+            } catch (error) {
+                showError(loginError, 'Login error. Please check your backend server.');
+            } finally {
+                loginBtnText.style.display = 'inline-block';
+                loginBtnSpinner.style.display = 'none';
+                adminLoginBtn.disabled = false;
             }
         });
-        
+
         // Cancel login
         cancelLoginBtn.addEventListener('click', () => {
             adminLoginModal.classList.remove('active');
             document.body.style.overflow = 'auto';
+            adminEmailInput.value = '';
             adminPasswordInput.value = '';
         });
-        
+
         // Close dashboard
         closeDashboardBtn.addEventListener('click', () => {
             adminDashboardModal.classList.remove('active');
             document.body.style.overflow = 'auto';
         });
-        
+
         // Tab switching
         adminTabBtns.forEach(btn => {
             btn.addEventListener('click', () => {
                 const tabId = btn.getAttribute('data-tab');
                 
-                // Remove active class from all tabs
                 adminTabBtns.forEach(b => b.classList.remove('active'));
                 adminTabContents.forEach(content => content.classList.remove('active'));
                 
-                // Add active class to clicked tab
                 btn.classList.add('active');
                 document.getElementById(tabId).classList.add('active');
             });
         });
-        
-        // Photo source change
-        photoSourceSelect.addEventListener('change', function() {
-            if (this.value === 'upload') {
-                photoFileUploadInput.style.display = 'block';
-                photoUrlInput.style.display = 'none';
-                photoFileInput.required = true;
-                document.getElementById('photoUrl').required = false;
-            } else if (this.value === 'url') {
-                photoFileUploadInput.style.display = 'none';
-                photoUrlInput.style.display = 'block';
-                photoFileInput.required = false;
-                document.getElementById('photoUrl').required = true;
-            } else {
-                photoFileUploadInput.style.display = 'none';
-                photoUrlInput.style.display = 'none';
-            }
-        });
-        
-        // Photo file selection
-        photoFileInput.addEventListener('change', function() {
-            const fileName = this.files[0] ? this.files[0].name : 'No file selected';
-            document.getElementById('photoFileName').textContent = fileName;
-            
-            // Show preview if file selected
-            if (this.files && this.files[0]) {
-                const file = this.files[0];
-                const reader = new FileReader();
-                
-                reader.onload = function(e) {
-                    photoPreview.src = e.target.result;
-                    photoPreviewSection.style.display = 'block';
-                };
-                
-                reader.readAsDataURL(file);
-            }
-        });
-        
-        // Photo URL input
-        document.getElementById('photoUrl').addEventListener('input', function() {
-            if (this.value) {
-                photoPreview.src = this.value;
-                photoPreviewSection.style.display = 'block';
-            } else {
-                photoPreviewSection.style.display = 'none';
-            }
-        });
-        
-        // Photo form submission
-        photoUploadForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            // Get form values
-            const title = document.getElementById('photoTitle').value;
-            const category = document.getElementById('photoCategory').value;
-            const description = document.getElementById('photoDescription').value;
-            const date = document.getElementById('photoDate').value;
-            const source = document.getElementById('photoSource').value;
-            
-            // Generate new photo ID
-            const newId = galleryData.length > 0 ? Math.max(...galleryData.map(p => p.id)) + 1 : 1;
-            
-            // Create new photo object
-            const newPhoto = {
-                id: newId,
-                title: title,
-                category: category,
-                description: description,
-                date: formatDate(date),
-                type: "photo"
-            };
-            
-            // Handle photo source
-            if (source === 'upload') {
-                if (!photoFileInput.files[0]) {
-                    alert('Please select a photo file to upload');
-                    return;
-                }
-                
-                // Convert photo to data URL for storage
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    newPhoto.image = e.target.result;
-                    completePhotoUpload(newPhoto);
-                };
-                reader.readAsDataURL(photoFileInput.files[0]);
-            } else if (source === 'url') {
-                const photoUrl = document.getElementById('photoUrl').value;
-                if (!photoUrl) {
-                    alert('Please enter an image URL');
-                    return;
-                }
-                newPhoto.image = photoUrl;
-                completePhotoUpload(newPhoto);
-            }
-        });
-        
-        // Complete photo upload
-        function completePhotoUpload(newPhoto) {
-            // Add to galleryData array
-            galleryData.push(newPhoto);
-            
-            // Save to localStorage
-            saveDataToStorage();
-            
-            // Update the photo gallery
-            renderGallery();
-            
-            // Update admin stats
-            updateAdminStats();
-            
-            // Update photos grid
-            updatePhotosGrid();
-            
-            // Show success message
-            showSuccessMessage('Photo uploaded successfully!');
-            
-            // Reset form
-            photoUploadForm.reset();
-            photoPreviewSection.style.display = 'none';
-            document.getElementById('photoDate').valueAsDate = new Date();
-            photoFileUploadInput.style.display = 'block';
-            photoUrlInput.style.display = 'none';
-        }
-        
+
         // Video type change
         videoTypeSelect.addEventListener('change', function() {
             if (this.value === 'youtube') {
@@ -2587,430 +2517,194 @@
                 videoFileUploadInput.style.display = 'block';
                 document.getElementById('youtubeId').required = false;
                 videoFileInput.required = true;
-            } else {
-                youtubeInput.style.display = 'none';
-                videoFileUploadInput.style.display = 'none';
             }
         });
-        
-        // Video file selection
+
+        // Photo file preview
+        photoFileInput.addEventListener('change', function() {
+            const fileName = this.files[0] ? this.files[0].name : 'No file selected';
+            document.getElementById('photoFileName').textContent = fileName;
+            
+            if (this.files && this.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('photoPreview').src = e.target.result;
+                    document.getElementById('photoPreviewSection').style.display = 'block';
+                };
+                reader.readAsDataURL(this.files[0]);
+            }
+        });
+
+        // Video file preview
         videoFileInput.addEventListener('change', function() {
             const fileName = this.files[0] ? this.files[0].name : 'No file selected';
             document.getElementById('videoFileName').textContent = fileName;
             
-            // Show preview if file selected
             if (this.files && this.files[0]) {
-                const file = this.files[0];
-                const videoURL = URL.createObjectURL(file);
-                videoPreview.src = videoURL;
-                videoPreviewContainer.style.display = 'block';
-                videoPreviewSection.style.display = 'block';
+                const videoURL = URL.createObjectURL(this.files[0]);
+                document.getElementById('videoPreview').src = videoURL;
+                document.getElementById('videoPreviewContainer').style.display = 'block';
+                document.getElementById('videoPreviewSection').style.display = 'block';
             }
         });
-        
-        // Thumbnail file selection
+
+        // Thumbnail preview
         thumbnailFileInput.addEventListener('change', function() {
             const fileName = this.files[0] ? this.files[0].name : 'No file selected';
             document.getElementById('thumbnailFileName').textContent = fileName;
             
-            // Show preview if file selected
             if (this.files && this.files[0]) {
-                const file = this.files[0];
                 const reader = new FileReader();
-                
                 reader.onload = function(e) {
-                    thumbnailPreview.src = e.target.result;
-                    videoPreviewSection.style.display = 'block';
+                    document.getElementById('thumbnailPreview').src = e.target.result;
+                    document.getElementById('videoPreviewSection').style.display = 'block';
                 };
-                
-                reader.readAsDataURL(file);
+                reader.readAsDataURL(this.files[0]);
             }
         });
-        
-        // Video form submission
-        videoUploadForm.addEventListener('submit', function(e) {
+
+        // Photo upload form
+        photoUploadForm.addEventListener('submit', async (e) => {
             e.preventDefault();
             
-            // Get form values
+            const title = document.getElementById('photoTitle').value;
+            const category = document.getElementById('photoCategory').value;
+            const description = document.getElementById('photoDescription').value;
+            const date = document.getElementById('photoDate').value;
+            const file = photoFileInput.files[0];
+            
+            if (!file) {
+                showError(dashboardError, 'Please select a photo file');
+                return;
+            }
+            
+            const formData = new FormData();
+            formData.append('title', title);
+            formData.append('category', category);
+            formData.append('description', description);
+            formData.append('date', date);
+            formData.append('image', file);
+            
+            submitPhotoText.style.display = 'none';
+            submitPhotoSpinner.style.display = 'inline-block';
+            submitPhotoBtn.disabled = true;
+            
+            try {
+                const result = await api.uploadPhoto(formData);
+                
+                if (result.success) {
+                    showSuccess('Photo uploaded successfully');
+                    photoUploadForm.reset();
+                    document.getElementById('photoPreviewSection').style.display = 'none';
+                    document.getElementById('photoDate').valueAsDate = new Date();
+                    
+                    // Reload data
+                    await loadAdminPhotos();
+                    await loadGalleryData();
+                    await loadAdminStats();
+                } else {
+                    showError(dashboardError, result.message || 'Upload failed');
+                }
+            } catch (error) {
+                showError(dashboardError, 'Upload error. Please try again.');
+            } finally {
+                submitPhotoText.style.display = 'inline-block';
+                submitPhotoSpinner.style.display = 'none';
+                submitPhotoBtn.disabled = false;
+            }
+        });
+
+        // Video upload form
+        videoUploadForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
             const title = document.getElementById('videoTitle').value;
             const category = document.getElementById('videoCategory').value;
             const description = document.getElementById('videoDescription').value;
             const date = document.getElementById('videoDate').value;
             const videoType = document.getElementById('videoType').value;
+            const youtubeId = document.getElementById('youtubeId').value;
+            const videoFile = videoFileInput.files[0];
+            const thumbnailFile = thumbnailFileInput.files[0];
             
-            // Generate new video ID
-            const newId = videoData.length > 0 ? Math.max(...videoData.map(v => v.id)) + 1 : 1;
+            if (!thumbnailFile) {
+                showError(dashboardError, 'Please select a thumbnail image');
+                return;
+            }
             
-            // Create new video object
-            const newVideo = {
-                id: newId,
-                title: title,
-                category: category,
-                description: description,
-                date: formatDate(date),
-                type: videoType
-            };
+            if (videoType === 'youtube' && !youtubeId) {
+                showError(dashboardError, 'Please enter YouTube video ID');
+                return;
+            }
             
-            // Handle YouTube video
+            if (videoType === 'upload' && !videoFile) {
+                showError(dashboardError, 'Please select a video file');
+                return;
+            }
+            
+            const formData = new FormData();
+            formData.append('title', title);
+            formData.append('category', category);
+            formData.append('description', description);
+            formData.append('date', date);
+            formData.append('videoType', videoType);
+            
             if (videoType === 'youtube') {
-                const youtubeId = document.getElementById('youtubeId').value;
-                if (!youtubeId) {
-                    alert('Please enter a YouTube video ID');
-                    return;
-                }
-                newVideo.videoId = youtubeId;
-                newVideo.thumbnail = `https://img.youtube.com/vi/${youtubeId}/hqdefault.jpg`;
-                completeVideoUpload(newVideo);
+                formData.append('videoId', youtubeId);
+            } else {
+                formData.append('video', videoFile);
             }
-            // Handle uploaded video
-            else if (videoType === 'upload') {
-                if (!videoFileInput.files[0]) {
-                    alert('Please select a video file to upload');
-                    return;
-                }
+            
+            formData.append('thumbnail', thumbnailFile);
+            
+            submitVideoText.style.display = 'none';
+            submitVideoSpinner.style.display = 'inline-block';
+            submitVideoBtn.disabled = true;
+            
+            try {
+                const result = await api.uploadVideo(formData);
                 
-                newVideo.videoId = `uploaded_${newId}_${Date.now()}`;
-                
-                // For thumbnail
-                if (thumbnailFileInput.files[0]) {
-                    // Convert thumbnail to data URL for storage
-                    const reader = new FileReader();
-                    reader.onload = function(e) {
-                        newVideo.thumbnail = e.target.result;
-                        completeVideoUpload(newVideo);
-                    };
-                    reader.readAsDataURL(thumbnailFileInput.files[0]);
+                if (result.success) {
+                    showSuccess('Video uploaded successfully');
+                    videoUploadForm.reset();
+                    document.getElementById('videoPreviewSection').style.display = 'none';
+                    document.getElementById('videoDate').valueAsDate = new Date();
+                    youtubeInput.style.display = 'none';
+                    videoFileUploadInput.style.display = 'none';
+                    
+                    // Reload data
+                    await loadAdminVideos();
+                    await loadVideoGalleryData();
+                    await loadAdminStats();
                 } else {
-                    // Use default thumbnail if none provided
-                    newVideo.thumbnail = 'https://images.unsplash.com/photo-1551836026-d5c2e0c49b61?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80';
-                    completeVideoUpload(newVideo);
+                    showError(dashboardError, result.message || 'Upload failed');
                 }
+            } catch (error) {
+                showError(dashboardError, 'Upload error. Please try again.');
+            } finally {
+                submitVideoText.style.display = 'inline-block';
+                submitVideoSpinner.style.display = 'none';
+                submitVideoBtn.disabled = false;
             }
         });
-        
-        // Complete video upload
-        function completeVideoUpload(newVideo) {
-            // Add to videoData array
-            videoData.push(newVideo);
-            
-            // Save to localStorage
-            saveDataToStorage();
-            
-            // Update the video gallery
-            renderVideoGallery();
-            
-            // Update admin stats
-            updateAdminStats();
-            
-            // Update videos grid
-            updateVideosGrid();
-            
-            // Show success message
-            showSuccessMessage('Video uploaded successfully!');
-            
-            // Reset form
-            videoUploadForm.reset();
-            videoPreviewSection.style.display = 'none';
-            document.getElementById('videoDate').valueAsDate = new Date();
-            youtubeInput.style.display = 'none';
-            videoFileUploadInput.style.display = 'none';
-        }
-        
-        // Show success message
-        function showSuccessMessage(message) {
-            successMessage.innerHTML = `<i class="fas fa-check-circle"></i> ${message}`;
-            successMessage.classList.add('active');
-            
-            // Hide success message after 3 seconds
-            setTimeout(() => {
-                successMessage.classList.remove('active');
-            }, 3000);
-        }
-        
-        // Format date from YYYY-MM-DD to Month DD, YYYY
-        function formatDate(dateString) {
-            const date = new Date(dateString);
-            return date.toLocaleDateString('en-US', {
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric'
-            });
-        }
-        
-        // View photo
-        function viewPhoto(photoId) {
-            const photo = galleryData.find(p => p.id === photoId);
-            if (photo) {
-                openModal(photoId);
-            }
-        }
-        
-        // Delete photo
-        function deletePhoto(photoId) {
-            if (confirm('Are you sure you want to delete this photo?')) {
-                // Remove from galleryData array
-                const index = galleryData.findIndex(p => p.id === photoId);
-                if (index !== -1) {
-                    galleryData.splice(index, 1);
-                    
-                    // Save to localStorage
-                    saveDataToStorage();
-                    
-                    // Update the photo gallery
-                    renderGallery();
-                    
-                    // Update admin stats
-                    updateAdminStats();
-                    
-                    // Update photos grid
-                    updatePhotosGrid();
-                    
-                    showSuccessMessage('Photo deleted successfully!');
-                }
-            }
-        }
-        
-        // Delete video
-        function deleteVideo(videoId) {
-            if (confirm('Are you sure you want to delete this video?')) {
-                // Remove from videoData array
-                const index = videoData.findIndex(v => v.id === videoId);
-                if (index !== -1) {
-                    videoData.splice(index, 1);
-                    
-                    // Save to localStorage
-                    saveDataToStorage();
-                    
-                    // Update the video gallery
-                    renderVideoGallery();
-                    
-                    // Update admin stats
-                    updateAdminStats();
-                    
-                    // Update videos grid
-                    updateVideosGrid();
-                    
-                    showSuccessMessage('Video deleted successfully!');
-                }
-            }
-        }
-        
-        // Modified playVideo function
-        function playVideo(videoId, title, type = 'youtube') {
-            if (type === 'youtube') {
-                // Create YouTube modal
-                const videoModal = document.createElement('div');
-                videoModal.className = 'video-modal';
-                videoModal.innerHTML = `
-                    <div class="video-modal-content">
-                        <button class="video-modal-close" onclick="this.parentElement.parentElement.remove()">&times;</button>
-                        <iframe 
-                            width="100%" 
-                            height="500" 
-                            src="https://www.youtube.com/embed/${videoId}" 
-                            title="${title}" 
-                            frameborder="0" 
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                            allowfullscreen>
-                        </iframe>
-                    </div>
-                `;
-                
-                document.body.appendChild(videoModal);
-            } else {
-                // For uploaded videos, show a message
-                alert(`Playing uploaded video: "${title}"\n\nIn a real implementation with a backend, this would play the uploaded video file.`);
-            }
-        }
-        
-        // Initialize admin dashboard
-        initAdminDashboard();
-        
+
         // ============================================
-        // ALL YOUR EXISTING JAVASCRIPT FUNCTIONS BELOW
+        // GALLERY FILTER FUNCTIONALITY
         // ============================================
-        
-        // Mobile Navigation Toggle
-        const mobileNavToggle = document.getElementById('mobileNavToggle');
-        const mobileNavClose = document.getElementById('mobileNavClose');
-        const mobileNav = document.getElementById('mobileNav');
-        const mobileNavOverlay = document.getElementById('mobileNavOverlay');
-        
-        function openMobileNav() {
-            mobileNav.classList.add('active');
-            mobileNavOverlay.classList.add('active');
-            document.body.style.overflow = 'hidden';
-        }
-        
-        function closeMobileNav() {
-            mobileNav.classList.remove('active');
-            mobileNavOverlay.classList.remove('active');
-            document.body.style.overflow = 'auto';
-        }
-        
-        mobileNavToggle.addEventListener('click', openMobileNav);
-        mobileNavClose.addEventListener('click', closeMobileNav);
-        mobileNavOverlay.addEventListener('click', closeMobileNav);
-        
-        // Close mobile nav when clicking a link
-        document.querySelectorAll('.mobile-nav-menu a').forEach(link => {
-            link.addEventListener('click', function(e) {
-                if (!this.getAttribute('href').startsWith('#')) {
-                    closeMobileNav();
-                }
-            });
-        });
-        
-        // Smooth scrolling for anchor links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
-                e.preventDefault();
-                
-                const targetId = this.getAttribute('href');
-                if(targetId === '#') return;
-                
-                const targetElement = document.querySelector(targetId);
-                if(targetElement) {
-                    window.scrollTo({
-                        top: targetElement.offsetTop - 80,
-                        behavior: 'smooth'
-                    });
-                }
-            });
-        });
-        
-        // Header background on scroll
-        window.addEventListener('scroll', () => {
-            const header = document.querySelector('header');
-            if (window.scrollY > 50) {
-                header.style.boxShadow = '0 5px 20px rgba(0, 0, 0, 0.1)';
-            } else {
-                header.style.boxShadow = 'var(--shadow)';
-            }
-        });
-        
-        // Slider Navigation
-        const navDots = document.querySelectorAll('.nav-dot');
-        const sections = document.querySelectorAll('section');
-        
-        // Function to update active nav dot
-        function updateActiveNav() {
-            let currentSection = '';
-            
-            sections.forEach(section => {
-                const sectionTop = section.offsetTop;
-                const sectionHeight = section.clientHeight;
-                if (window.scrollY >= (sectionTop - 200)) {
-                    currentSection = section.getAttribute('id');
-                }
-            });
-            
-            navDots.forEach(dot => {
-                dot.classList.remove('active');
-                if (dot.getAttribute('data-section') === currentSection) {
-                    dot.classList.add('active');
-                }
-            });
-        }
-        
-        // Initial update
-        updateActiveNav();
-        
-        // Update on scroll
-        window.addEventListener('scroll', updateActiveNav);
-        
-        // Click functionality for nav dots
-        navDots.forEach(dot => {
-            dot.addEventListener('click', () => {
-                const sectionId = dot.getAttribute('data-section');
-                const targetSection = document.getElementById(sectionId);
-                
-                if (targetSection) {
-                    window.scrollTo({
-                        top: targetSection.offsetTop - 80,
-                        behavior: 'smooth'
-                    });
-                }
-            });
-        });
-        
-        // Gallery Filter Functionality
         const filterButtons = document.querySelectorAll('.filter-btn');
-        const photoGallery = document.getElementById('photoGallery');
-        const videoGalleryElement = document.getElementById('videoGallery');
         
-        // Render Gallery Items
-        function renderGallery(filter = 'all') {
-            photoGallery.innerHTML = '';
-            
-            const filteredData = filter === 'all' 
-                ? galleryData 
-                : galleryData.filter(item => item.category === filter);
-            
-            filteredData.forEach(item => {
-                const galleryItem = document.createElement('div');
-                galleryItem.className = 'gallery-item';
-                galleryItem.setAttribute('data-category', item.category);
-                galleryItem.setAttribute('data-id', item.id);
-                
-                galleryItem.innerHTML = `
-                    <img src="${item.image}" alt="${item.title}">
-                    <div class="gallery-overlay">
-                        <span class="gallery-category">${item.category.charAt(0).toUpperCase() + item.category.slice(1)}</span>
-                        <div class="gallery-title">${item.title}</div>
-                        <div class="gallery-date">${item.date}</div>
-                    </div>
-                `;
-                
-                galleryItem.addEventListener('click', () => openModal(item.id));
-                photoGallery.appendChild(galleryItem);
-            });
-        }
-        
-        // Render Video Gallery
-        function renderVideoGallery() {
-            videoGalleryElement.innerHTML = '';
-            
-            videoData.forEach(video => {
-                const videoItem = document.createElement('div');
-                videoItem.className = 'video-item';
-                
-                videoItem.innerHTML = `
-                    <img src="${video.thumbnail}" alt="${video.title}" class="video-thumbnail">
-                    <div class="video-play-btn">
-                        <i class="fas fa-play"></i>
-                    </div>
-                    <div class="video-info">
-                        <h3>${video.title}</h3>
-                        <p>${video.description}</p>
-                        <small style="color: var(--primary); font-weight: 500;">${video.date}</small>
-                    </div>
-                `;
-                
-                videoItem.addEventListener('click', () => playVideo(video.videoId, video.title, video.type));
-                videoGalleryElement.appendChild(videoItem);
-            });
-        }
-        
-        // Initialize galleries
-        renderGallery();
-        renderVideoGallery();
-        
-        // Filter button click handlers
         filterButtons.forEach(button => {
             button.addEventListener('click', () => {
-                // Remove active class from all buttons
                 filterButtons.forEach(btn => btn.classList.remove('active'));
-                // Add active class to clicked button
                 button.classList.add('active');
-                // Get filter value
                 const filter = button.getAttribute('data-filter');
-                // Render filtered gallery
                 renderGallery(filter);
             });
         });
-        
-        // Modal functionality
+
+        // ============================================
+        // MODAL FUNCTIONALITY
+        // ============================================
         const modal = document.getElementById('imageModal');
         const modalClose = document.getElementById('modalClose');
         const modalPrev = document.getElementById('modalPrev');
@@ -3024,101 +2718,213 @@
         let currentImageIndex = 0;
         let currentFilter = 'all';
         let filteredImages = [...galleryData];
-        
+
+        function viewPhoto(photoId) {
+            const photo = galleryData.find(p => (p._id || p.id) === photoId);
+            if (photo) {
+                openModal(photoId);
+            }
+        }
+
         function openModal(imageId) {
-            // Get current filter
-            const activeFilter = document.querySelector('.filter-btn.active');
-            currentFilter = activeFilter.getAttribute('data-filter');
-            
-            // Filter images based on current filter
+            currentFilter = document.querySelector('.filter-btn.active').getAttribute('data-filter');
             filteredImages = currentFilter === 'all' 
-                ? [...galleryData] 
+                ? galleryData 
                 : galleryData.filter(item => item.category === currentFilter);
             
-            // Find image index
-            currentImageIndex = filteredImages.findIndex(item => item.id === imageId);
+            currentImageIndex = filteredImages.findIndex(item => (item._id || item.id) === imageId);
             
-            // Update modal with image data
+            if (currentImageIndex === -1) return;
+            
             updateModal();
-            
-            // Show modal
             modal.classList.add('active');
             document.body.style.overflow = 'hidden';
         }
-        
+
         function updateModal() {
             const image = filteredImages[currentImageIndex];
             
-            modalImage.src = image.image;
+            // Use absolute URL for modal image
+            const imageUrl = image.imageUrl?.startsWith('http')
+                ? image.imageUrl
+                : `http://localhost:5000${image.imageUrl}`;
+            
+            modalImage.src = imageUrl;
             modalImage.alt = image.title;
             modalCategory.textContent = image.category.charAt(0).toUpperCase() + image.category.slice(1);
             modalTitle.textContent = image.title;
             modalDescription.textContent = image.description;
-            modalDate.textContent = image.date;
+            modalDate.textContent = formatDate(image.date);
         }
-        
+
         function closeModal() {
             modal.classList.remove('active');
             document.body.style.overflow = 'auto';
         }
-        
+
         function showNextImage() {
             currentImageIndex = (currentImageIndex + 1) % filteredImages.length;
             updateModal();
         }
-        
+
         function showPrevImage() {
             currentImageIndex = (currentImageIndex - 1 + filteredImages.length) % filteredImages.length;
             updateModal();
         }
-        
+
         // Modal event listeners
         modalClose.addEventListener('click', closeModal);
         modalNext.addEventListener('click', showNextImage);
         modalPrev.addEventListener('click', showPrevImage);
         
-        // Close modal when clicking outside
         modal.addEventListener('click', (e) => {
-            if (e.target === modal) {
-                closeModal();
-            }
+            if (e.target === modal) closeModal();
         });
-        
-        // Keyboard navigation for modal
+
         document.addEventListener('keydown', (e) => {
             if (!modal.classList.contains('active')) return;
-            
-            if (e.key === 'Escape') {
-                closeModal();
-            } else if (e.key === 'ArrowRight') {
-                showNextImage();
-            } else if (e.key === 'ArrowLeft') {
-                showPrevImage();
-            }
+            if (e.key === 'Escape') closeModal();
+            if (e.key === 'ArrowRight') showNextImage();
+            if (e.key === 'ArrowLeft') showPrevImage();
         });
+
+        // ============================================
+        // VIDEO PLAY FUNCTION
+        // ============================================
+        function playVideo(video) {
+            if (video.videoType === 'youtube') {
+                const videoModal = document.createElement('div');
+                videoModal.className = 'video-modal';
+                videoModal.innerHTML = `
+                    <div class="video-modal-content">
+                        <button class="video-modal-close" onclick="this.parentElement.parentElement.remove()">&times;</button>
+                        <iframe 
+                            width="100%" 
+                            height="500" 
+                            src="https://www.youtube.com/embed/${video.videoId}" 
+                            title="${video.title}" 
+                            frameborder="0" 
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                            allowfullscreen>
+                        </iframe>
+                    </div>
+                `;
+                document.body.appendChild(videoModal);
+            } else {
+                const videoUrl = video.videoUrl?.startsWith('http')
+                    ? video.videoUrl
+                    : `http://localhost:5000${video.videoUrl}`;
+                
+                const videoModal = document.createElement('div');
+                videoModal.className = 'video-modal';
+                videoModal.innerHTML = `
+                    <div class="video-modal-content">
+                        <button class="video-modal-close" onclick="this.parentElement.parentElement.remove()">&times;</button>
+                        <video controls width="100%" height="500">
+                            <source src="${videoUrl}" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                    </div>
+                `;
+                document.body.appendChild(videoModal);
+            }
+        }
+
+        // ============================================
+        // INITIALIZATION
+        // ============================================
+        document.addEventListener('DOMContentLoaded', async () => {
+            // Load gallery data
+            await loadGalleryData();
+            await loadVideoGalleryData();
+            
+            // Initialize other functionalities
+            updateActiveNav();
+            highlightActiveMobileNav();
+            
+            // Add event listeners for smooth scrolling
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    if(targetId === '#') return;
+                    const targetElement = document.querySelector(targetId);
+                    if(targetElement) {
+                        window.scrollTo({
+                            top: targetElement.offsetTop - 80,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+            
+            // Header scroll effect
+            window.addEventListener('scroll', () => {
+                const header = document.querySelector('header');
+                header.style.boxShadow = window.scrollY > 50 
+                    ? '0 5px 20px rgba(0, 0, 0, 0.1)' 
+                    : 'var(--shadow)';
+            });
+        });
+
+        // Slider Navigation
+        const navDots = document.querySelectorAll('.nav-dot');
+        const sections = document.querySelectorAll('section');
         
-        // Close mobile nav on window resize if it becomes desktop
+        function updateActiveNav() {
+            let currentSection = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (window.scrollY >= (sectionTop - 200)) {
+                    currentSection = section.getAttribute('id');
+                }
+            });
+            navDots.forEach(dot => {
+                dot.classList.remove('active');
+                if (dot.getAttribute('data-section') === currentSection) {
+                    dot.classList.add('active');
+                }
+            });
+        }
+        
+        window.addEventListener('scroll', updateActiveNav);
+        
+        navDots.forEach(dot => {
+            dot.addEventListener('click', () => {
+                const sectionId = dot.getAttribute('data-section');
+                const targetSection = document.getElementById(sectionId);
+                if (targetSection) {
+                    window.scrollTo({
+                        top: targetSection.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        function highlightActiveMobileNav() {
+            document.querySelectorAll('.mobile-nav-menu a').forEach(link => {
+                link.classList.remove('active');
+            });
+            const galleryLink = document.querySelector('.mobile-nav-menu a[href="#"]');
+            if (galleryLink) galleryLink.classList.add('active');
+        }
+
+        // Window resize handler
         window.addEventListener('resize', function() {
             if (window.innerWidth > 768) {
                 closeMobileNav();
             }
         });
-        
-        // Highlight active section in mobile nav
-        function highlightActiveMobileNav() {
-            // Since this is the gallery page, highlight the gallery link
-            document.querySelectorAll('.mobile-nav-menu a').forEach(link => {
-                link.classList.remove('active');
-            });
-            
-            const galleryLink = document.querySelector('.mobile-nav-menu a[href="#"]');
-            if (galleryLink) {
-                galleryLink.classList.add('active');
-            }
+
+        // Mobile navigation functions (you'll need to add mobile nav HTML)
+        function openMobileNav() {
+            // Implementation for mobile nav
         }
         
-        // Initial highlight update
-        highlightActiveMobileNav();
+        function closeMobileNav() {
+            // Implementation for mobile nav
+        }
     </script>
 </body>
 </html>
