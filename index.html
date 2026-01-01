@@ -210,6 +210,27 @@
             box-shadow: var(--shadow-hover);
         }
 
+        /* Portal Button in Header */
+        .portal-button {
+            background-color: var(--secondary);
+            color: var(--white);
+            padding: 10px 25px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: var(--transition);
+            margin-left: 15px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .portal-button:hover {
+            background-color: #ff4081;
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-hover);
+        }
+
         /* Mobile Navigation - COMPACT VERSION */
         .mobile-nav-toggle {
             display: none;
@@ -423,6 +444,30 @@
 
         .btn-primary:hover {
             background-color: var(--primary-dark);
+        }
+
+        /* Portal Button in Hero */
+        .portal-hero-btn {
+            background: linear-gradient(45deg, var(--secondary), #ff4081);
+            color: white;
+            padding: 14px 32px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            margin-left: 10px;
+            border: 2px solid transparent;
+        }
+
+        .portal-hero-btn:hover {
+            background: transparent;
+            border-color: var(--secondary);
+            color: var(--secondary);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
         }
 
         /* Section Styling */
@@ -1030,6 +1075,45 @@
             box-shadow: var(--shadow-hover);
         }
 
+        /* Student Portal Section in Footer */
+        .portal-footer-section {
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            padding: 60px 0;
+            text-align: center;
+            color: white;
+            margin-top: 40px;
+        }
+
+        .portal-footer-content h3 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+
+        .portal-footer-content p {
+            max-width: 600px;
+            margin: 0 auto 30px;
+            opacity: 0.9;
+        }
+
+        .portal-footer-btn {
+            background-color: var(--accent);
+            color: var(--dark);
+            padding: 15px 40px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            transition: var(--transition);
+        }
+
+        .portal-footer-btn:hover {
+            background-color: white;
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
         /* Responsive Design */
         @media (max-width: 992px) {
             .hero h1 {
@@ -1046,6 +1130,18 @@
             
             .slider-nav {
                 right: 10px;
+            }
+            
+            .hero .btn-container {
+                display: flex;
+                flex-direction: column;
+                gap: 15px;
+                align-items: center;
+            }
+            
+            .portal-hero-btn {
+                margin-left: 0;
+                margin-top: 10px;
             }
         }
 
@@ -1077,6 +1173,10 @@
             .slider-nav {
                 display: none;
             }
+            
+            .portal-footer-content h3 {
+                font-size: 1.8rem;
+            }
         }
 
         @media (min-width: 769px) {
@@ -1096,8 +1196,9 @@
                 font-size: 1rem;
             }
             
-            .btn {
+            .btn, .portal-hero-btn {
                 padding: 12px 25px;
+                font-size: 0.9rem;
             }
             
             .stat-card {
@@ -1128,6 +1229,11 @@
                 font-size: 16px;
                 width: 18px;
             }
+            
+            .portal-footer-btn {
+                padding: 12px 30px;
+                font-size: 0.9rem;
+            }
         }
 
         @media (max-width: 400px) {
@@ -1141,6 +1247,12 @@
             
             .logo-icon {
                 font-size: 24px;
+            }
+            
+            .hero .btn-container {
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
             }
         }
     </style>
@@ -1189,6 +1301,9 @@
                     <li><a href="#services">Services</a></li>
                     <li><a href="#board-sponsors">Board & Sponsors</a></li>
                 </ul>
+                <a href="login.html" class="portal-button">
+                    <i class="fas fa-graduation-cap"></i> Student Portal
+                </a>
                 <a href="#contact" class="cta-button">Contact Us</a>
             </div>
             
@@ -1248,6 +1363,12 @@
                 </a>
             </li>
             <li>
+                <a href="login.html" class="portal-mobile-btn" style="background: var(--secondary); color: white;">
+                    <span class="mobile-nav-icon"><i class="fas fa-graduation-cap"></i></span>
+                    <span>Student Portal</span>
+                </a>
+            </li>
+            <li>
                 <a href="#testimonials">
                     <span class="mobile-nav-icon"><i class="fas fa-quote-left"></i></span>
                     <span>Testimonials</span>
@@ -1293,8 +1414,13 @@
         <div class="container">
             <h1>Empowering Women, Transforming Communities</h1>
             <p>FemiForge Empowerment Nexus is a registered non-profit organization dedicated to empowering women and young ladies through education, mentorship, and skill development.</p>
-            <a href="#programs" class="btn">Explore Our Programs</a>
-            <a href="#support" class="btn btn-primary" style="margin-left: 10px;">Support Our Mission</a>
+            <div class="btn-container">
+                <a href="#programs" class="btn">Explore Our Programs</a>
+                <a href="#support" class="btn btn-primary" style="margin-left: 10px;">Support Our Mission</a>
+                <a href="login.html" class="portal-hero-btn">
+                    <i class="fas fa-graduation-cap"></i> Access Student Portal
+                </a>
+            </div>
         </div>
     </section>
 
@@ -1647,6 +1773,17 @@
         </div>
     </section>
 
+    <!-- Student Portal Footer Section -->
+    <section class="portal-footer-section">
+        <div class="container portal-footer-content">
+            <h3>Ready to Start Your Learning Journey?</h3>
+            <p>Access our comprehensive student portal to enroll in courses, track your progress, connect with mentors, and join a community of empowered women.</p>
+            <a href="login.html" class="portal-footer-btn">
+                <i class="fas fa-graduation-cap"></i> Access Student Portal
+            </a>
+        </div>
+    </section>
+
     <!-- Footer -->
     <footer>
         <div class="container">
@@ -1679,7 +1816,8 @@
                         <li><a href="#impact">Our Impact</a></li>
                         <li><a href="#support">Support Us</a></li>
                         <li><a href="#contact">Contact</a></li>
-                        <li><a href="#">Gallery</a></li>
+                        <li><a href="gallary.html">Gallery</a></li>
+                        <li><a href="login.html">Student Portal</a></li>
                     </ul>
                 </div>
             </div>

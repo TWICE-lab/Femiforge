@@ -1,0 +1,1706 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile | FemiForge Student Portal</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #8a2be2;
+            --primary-dark: #6a1cb0;
+            --secondary: #ff69b4;
+            --accent: #ffd700;
+            --light: #f9f0ff;
+            --dark: #333333;
+            --gray: #666666;
+            --light-gray: #f5f5f5;
+            --white: #ffffff;
+            --success: #28a745;
+            --warning: #ffc107;
+            --info: #17a2b8;
+            --danger: #dc3545;
+            --shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            --shadow-hover: 0 10px 25px rgba(0, 0, 0, 0.15);
+            --transition: all 0.3s ease;
+            --border-radius: 10px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--light-gray);
+            color: var(--dark);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        /* Header Styles */
+        .dashboard-header {
+            background-color: var(--white);
+            box-shadow: var(--shadow);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            text-decoration: none;
+        }
+
+        .logo-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+
+        .logo-text {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .logo-text span {
+            color: var(--secondary);
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .header-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+        }
+
+        .header-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Main Layout */
+        .dashboard {
+            display: flex;
+            min-height: 100vh;
+            padding-top: 70px;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 250px;
+            background: var(--white);
+            box-shadow: var(--shadow);
+            padding: 2rem 0;
+            position: fixed;
+            height: calc(100vh - 70px);
+            overflow-y: auto;
+            transition: var(--transition);
+            z-index: 100;
+        }
+
+        .sidebar-header {
+            padding: 0 1.5rem 1.5rem;
+            border-bottom: 1px solid var(--light-gray);
+            margin-bottom: 1.5rem;
+        }
+
+        .sidebar-header h2 {
+            color: var(--primary);
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+
+        .sidebar-menu {
+            list-style: none;
+        }
+
+        .sidebar-menu li {
+            margin-bottom: 0.25rem;
+        }
+
+        .sidebar-menu a {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1.5rem;
+            color: var(--dark);
+            text-decoration: none;
+            transition: var(--transition);
+            border-left: 3px solid transparent;
+        }
+
+        .sidebar-menu a:hover,
+        .sidebar-menu a.active {
+            background: var(--light);
+            color: var(--primary);
+            border-left-color: var(--primary);
+        }
+
+        .sidebar-menu i {
+            width: 20px;
+            font-size: 1rem;
+            text-align: center;
+        }
+
+        .sidebar-footer {
+            padding: 1.5rem;
+            margin-top: auto;
+            border-top: 1px solid var(--light-gray);
+        }
+
+        .sidebar-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .sidebar-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            margin-left: 250px;
+            padding: 2rem;
+            transition: var(--transition);
+            min-height: calc(100vh - 70px);
+        }
+
+        /* Page Header */
+        .page-header {
+            margin-bottom: 2rem;
+        }
+
+        .page-header h1 {
+            color: var(--primary);
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .page-header p {
+            color: var(--gray);
+        }
+
+        /* Profile Card */
+        .profile-card {
+            background: var(--white);
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            margin-bottom: 2rem;
+        }
+
+        .profile-header {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .profile-picture-container {
+            position: relative;
+            text-align: center;
+        }
+
+        .profile-avatar {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
+            border: 5px solid var(--white);
+            box-shadow: var(--shadow);
+            margin: 0 auto 1rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            font-size: 3rem;
+            font-weight: bold;
+        }
+
+        .profile-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        .profile-picture-actions {
+            display: flex;
+            gap: 0.5rem;
+            justify-content: center;
+            margin-top: 1rem;
+        }
+
+        .upload-status {
+            background: var(--light-gray);
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            margin-top: 0.5rem;
+            display: none;
+            color: var(--gray);
+        }
+
+        .profile-info h2 {
+            color: var(--dark);
+            margin-bottom: 0.5rem;
+        }
+
+        .profile-info p {
+            color: var(--gray);
+            margin-bottom: 0.25rem;
+        }
+
+        .member-since {
+            font-size: 0.9rem;
+            color: var(--gray);
+        }
+
+        /* Profile Stats */
+        .profile-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            text-align: center;
+            padding: 1rem;
+            background: var(--light);
+            border-radius: var(--border-radius);
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary);
+            margin-bottom: 0.25rem;
+        }
+
+        .stat-label {
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+
+        /* Form Sections */
+        .form-section {
+            background: var(--white);
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            margin-bottom: 2rem;
+        }
+
+        .form-section h3 {
+            color: var(--dark);
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--light);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--gray);
+            font-weight: 500;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(138, 43, 226, 0.1);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        textarea.form-control {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-family: inherit;
+            font-size: 0.9rem;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: var(--white);
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+        }
+
+        .btn-outline:hover {
+            background: var(--primary);
+            color: var(--white);
+        }
+
+        .btn-danger {
+            background: var(--danger);
+            color: var(--white);
+        }
+
+        .btn-danger:hover {
+            background: #c82333;
+        }
+
+        .btn-sm {
+            padding: 0.5rem 1rem;
+            font-size: 0.85rem;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        /* Image Preview Modal */
+        .image-preview-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 3000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .image-preview-modal.active {
+            display: flex;
+        }
+
+        .image-preview-content {
+            background: var(--white);
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+        }
+
+        .preview-image {
+            max-width: 100%;
+            max-height: 300px;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+        }
+
+        .preview-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+        }
+
+        /* Danger Zone */
+        .danger-zone {
+            background: var(--white);
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            border: 2px solid #fee;
+        }
+
+        .danger-zone h3 {
+            color: var(--danger);
+            margin-bottom: 1rem;
+        }
+
+        .danger-zone p {
+            color: var(--gray);
+            margin-bottom: 1.5rem;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: var(--white);
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            max-width: 400px;
+            width: 100%;
+        }
+
+        .modal-header {
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-header h3 {
+            color: var(--dark);
+        }
+
+        .modal-footer {
+            margin-top: 2rem;
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+        }
+
+        /* File Input */
+        .file-input-wrapper {
+            position: relative;
+            margin-top: 1rem;
+        }
+
+        .file-input-wrapper input[type="file"] {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        .file-input-label {
+            display: inline-block;
+            padding: 0.75rem 1.5rem;
+            background: var(--primary);
+            color: var(--white);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .file-input-label:hover {
+            background: var(--primary-dark);
+        }
+
+        /* Progress Bar */
+        .upload-progress {
+            width: 100%;
+            height: 6px;
+            background: var(--light-gray);
+            border-radius: 3px;
+            margin-top: 0.5rem;
+            overflow: hidden;
+            display: none;
+        }
+
+        .upload-progress-fill {
+            height: 100%;
+            background: var(--primary);
+            border-radius: 3px;
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        /* Custom Notification */
+        .custom-notification {
+            position: fixed;
+            top: 100px;
+            right: 20px;
+            background: var(--success);
+            color: var(--white);
+            padding: 15px 25px;
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            animation: slideIn 0.3s ease;
+        }
+
+        .custom-notification.error {
+            background: var(--danger);
+        }
+
+        .custom-notification.info {
+            background: var(--info);
+        }
+
+        .custom-notification.warning {
+            background: var(--warning);
+            color: var(--dark);
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideOut {
+            from {
+                transform: translateX(0);
+                opacity: 1;
+            }
+            to {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 992px) {
+            .sidebar {
+                width: 70px;
+            }
+            
+            .sidebar-header h2,
+            .sidebar-menu span {
+                display: none;
+            }
+            
+            .sidebar-menu a {
+                justify-content: center;
+                padding: 0.75rem;
+            }
+            
+            .main-content {
+                margin-left: 70px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .dashboard {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: static;
+                margin-bottom: 1rem;
+            }
+            
+            .main-content {
+                margin-left: 0;
+                padding: 1rem;
+            }
+            
+            .sidebar-menu {
+                display: flex;
+                overflow-x: auto;
+                padding-bottom: 0.5rem;
+            }
+            
+            .sidebar-menu li {
+                flex-shrink: 0;
+            }
+            
+            .sidebar-menu a {
+                flex-direction: column;
+                text-align: center;
+                padding: 0.5rem;
+                font-size: 0.75rem;
+            }
+            
+            .sidebar-menu i {
+                margin-bottom: 0.25rem;
+                font-size: 0.9rem;
+            }
+            
+            .profile-header {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .profile-stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .header-container {
+                padding: 1rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .profile-stats {
+                grid-template-columns: 1fr;
+            }
+            
+            .profile-picture-actions {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .btn-group {
+                flex-direction: column;
+            }
+            
+            .preview-actions {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="dashboard-header">
+        <div class="header-container">
+            <a href="dashboard.html" class="logo">
+                <div class="logo-icon">FF</div>
+                <div class="logo-text">Femi<span>Forge</span></div>
+            </a>
+            
+            <div class="header-actions">
+                <a href="dashboard.html" class="btn btn-outline btn-sm" style="text-decoration: none;">
+                    <i class="fas fa-arrow-left"></i> Back to Dashboard
+                </a>
+                <div class="header-avatar" id="headerAvatar">
+                    <!-- Avatar will be dynamically inserted here -->
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Dashboard -->
+    <div class="dashboard">
+        <!-- Sidebar -->
+        <nav class="sidebar">
+            <div class="sidebar-header">
+                <h2>Navigation</h2>
+            </div>
+            
+            <ul class="sidebar-menu">
+                <li><a href="dashboard.html"><i class="fas fa-tachometer-alt"></i> <span>Dashboard</span></a></li>
+                <li><a href="courses.html"><i class="fas fa-book"></i> <span>My Courses</span></a></li>
+                <li><a href="progress.html"><i class="fas fa-chart-line"></i> <span>Progress</span></a></li>
+                <li><a href="assignments.html"><i class="fas fa-tasks"></i> <span>Assignments</span></a></li>
+                <li><a href="schedule.html"><i class="fas fa-calendar-alt"></i> <span>Schedule</span></a></li>
+                <li><a href="resources.html"><i class="fas fa-folder"></i> <span>Resources</span></a></li>
+                <li><a href="profile.html" class="active"><i class="fas fa-user"></i> <span>Profile</span></a></li>
+            </ul>
+            
+            <div class="sidebar-footer">
+                <div class="user-profile">
+                    <div class="sidebar-avatar" id="sidebarAvatar">
+                        <!-- Sidebar avatar will be updated dynamically -->
+                    </div>
+                    <div class="user-info">
+                        <h4 id="sidebarUserName">Loading...</h4>
+                        <p id="sidebarUserCourses">Loading...</p>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Page Header -->
+            <div class="page-header">
+                <h1>My Profile</h1>
+                <p>Manage your account settings and personal information</p>
+            </div>
+
+            <!-- Profile Overview -->
+            <div class="profile-card">
+                <div class="profile-header">
+                    <!-- Profile Picture with Upload -->
+                    <div class="profile-picture-container">
+                        <div class="profile-avatar" id="profileAvatar">
+                            <!-- Initial or image will be inserted here -->
+                        </div>
+                        <div class="profile-picture-actions">
+                            <button type="button" class="btn btn-primary btn-sm" id="uploadAvatarBtn">
+                                <i class="fas fa-camera"></i> Change Photo
+                            </button>
+                            <button type="button" class="btn btn-outline btn-sm" id="removeAvatarBtn" style="display: none;">
+                                <i class="fas fa-trash"></i> Remove
+                            </button>
+                        </div>
+                        <!-- Hidden file input -->
+                        <input type="file" id="avatarInput" accept="image/*" style="display: none;">
+                        <div class="upload-progress" id="uploadProgress">
+                            <div class="upload-progress-fill" id="uploadProgressFill"></div>
+                        </div>
+                        <div class="upload-status" id="uploadStatus">
+                            <i class="fas fa-spinner fa-spin"></i> Uploading...
+                        </div>
+                    </div>
+                    
+                    <div class="profile-info">
+                        <h2 id="profileName">Loading...</h2>
+                        <p id="profileEmail">Loading...</p>
+                        <p id="profileRole">Student</p>
+                        <p class="member-since" id="memberSince">Member since Loading...</p>
+                    </div>
+                </div>
+
+                <!-- Profile Stats -->
+                <div class="profile-stats">
+                    <div class="stat-card">
+                        <div class="stat-value" id="statCourses">0</div>
+                        <div class="stat-label">Courses Enrolled</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="statProgress">0%</div>
+                        <div class="stat-label">Overall Progress</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="statStreak">0</div>
+                        <div class="stat-label">Day Streak</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="statHours">0</div>
+                        <div class="stat-label">Hours Learned</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Personal Information -->
+            <div class="form-section">
+                <h3>Personal Information</h3>
+                <form id="personalInfoForm">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="firstName">First Name</label>
+                            <input type="text" id="firstName" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="lastName">Last Name</label>
+                            <input type="text" id="lastName" class="form-control" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" class="form-control" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="phone">Phone Number</label>
+                        <input type="tel" id="phone" class="form-control">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="bio">Bio</label>
+                        <textarea id="bio" class="form-control" rows="3" placeholder="Tell us about yourself..."></textarea>
+                    </div>
+                    
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-primary" id="savePersonalInfo">
+                            <i class="fas fa-save"></i> Save Changes
+                        </button>
+                        <button type="reset" class="btn btn-outline">
+                            <i class="fas fa-undo"></i> Reset
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Password Change -->
+            <div class="form-section">
+                <h3>Change Password</h3>
+                <form id="passwordForm">
+                    <div class="form-group">
+                        <label for="currentPassword">Current Password</label>
+                        <input type="password" id="currentPassword" class="form-control" required>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="newPassword">New Password</label>
+                            <input type="password" id="newPassword" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="confirmPassword">Confirm New Password</label>
+                            <input type="password" id="confirmPassword" class="form-control" required>
+                        </div>
+                    </div>
+                    
+                    <div class="btn-group">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-lock"></i> Change Password
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Danger Zone -->
+            <div class="danger-zone">
+                <h3><i class="fas fa-exclamation-triangle"></i> Danger Zone</h3>
+                <p>Once you delete your account, there is no going back. Please be certain.</p>
+                
+                <div class="btn-group">
+                    <button type="button" class="btn btn-danger" id="deleteAccountBtn">
+                        <i class="fas fa-trash"></i> Delete Account
+                    </button>
+                    <button type="button" class="btn btn-outline" id="exportDataBtn">
+                        <i class="fas fa-download"></i> Export My Data
+                    </button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Delete Account Modal -->
+    <div class="modal" id="deleteModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Delete Account</h3>
+            </div>
+            <p>Are you sure you want to delete your account? This action cannot be undone.</p>
+            <p>All your data, including course progress, will be permanently deleted.</p>
+            
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline" id="cancelDelete">
+                    <i class="fas fa-times"></i> Cancel
+                </button>
+                <button type="button" class="btn btn-danger" id="confirmDelete">
+                    <i class="fas fa-trash"></i> Delete Account
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = 'http://localhost:5000/api';
+
+        class ProfilePage {
+            constructor() {
+                this.user = null;
+                this.avatarBase64 = null;
+                this.uploadInProgress = false;
+            }
+            
+            async init() {
+                // Check authentication
+                if (!await this.checkAuth()) {
+                    return;
+                }
+                
+                // Load user data
+                await this.loadUserData();
+                
+                // Setup event listeners
+                this.setupEventListeners();
+                
+                // Update all avatar displays
+                this.updateAllAvatarDisplays();
+            }
+            
+            async checkAuth() {
+                const token = localStorage.getItem('token');
+                if (!token) {
+                    window.location.href = 'login.html';
+                    return false;
+                }
+                return true;
+            }
+            
+            async loadUserData() {
+                try {
+                    const token = localStorage.getItem('token');
+                    
+                    // Load user profile
+                    const response = await fetch(`${API_BASE}/users/profile`, {
+                        headers: {
+                            'Authorization': `Bearer ${token}`,
+                            'Content-Type': 'application/json'
+                        }
+                    });
+                    
+                    const data = await response.json();
+                    
+                    if (data.success) {
+                        this.user = data.data.user;
+                        this.avatarBase64 = this.user.avatar || null;
+                        this.populateUserData(data.data.stats);
+                        
+                        // Update localStorage
+                        localStorage.setItem('user', JSON.stringify(this.user));
+                    } else {
+                        throw new Error(data.error || 'Failed to load profile');
+                    }
+                    
+                } catch (error) {
+                    console.error('Error loading user data:', error);
+                    this.showNotification('Failed to load profile', 'error');
+                }
+            }
+            
+            populateUserData(stats) {
+                if (!this.user) return;
+                
+                const name = this.user.name || 'User';
+                const email = this.user.email || 'user@example.com';
+                
+                // Update profile information
+                document.getElementById('profileName').textContent = name;
+                document.getElementById('profileEmail').textContent = email;
+                document.getElementById('sidebarUserName').textContent = name;
+                
+                // Set member since date
+                const joinDate = this.user.createdAt ? new Date(this.user.createdAt) : new Date();
+                document.getElementById('memberSince').textContent = 
+                    `Member since ${joinDate.toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}`;
+                
+                // Populate form fields
+                const nameParts = name.split(' ');
+                document.getElementById('firstName').value = nameParts[0] || '';
+                document.getElementById('lastName').value = nameParts.slice(1).join(' ') || '';
+                document.getElementById('email').value = email;
+                document.getElementById('phone').value = this.user.phone || '';
+                document.getElementById('bio').value = this.user.bio || '';
+                
+                // Update stats
+                if (stats) {
+                    document.getElementById('statCourses').textContent = stats.totalCourses || 0;
+                    document.getElementById('statProgress').textContent = (stats.averageProgress || 0) + '%';
+                    document.getElementById('statStreak').textContent = stats.streakDays || 0;
+                    document.getElementById('statHours').textContent = Math.round(stats.totalLearningHours || 0);
+                    
+                    // Update sidebar course count
+                    const enrolledCount = stats.totalCourses || 0;
+                    const coursesText = enrolledCount === 1 ? 
+                        'Enrolled in 1 course' : 
+                        `Enrolled in ${enrolledCount} courses`;
+                    document.getElementById('sidebarUserCourses').textContent = coursesText;
+                }
+            }
+            
+            updateAllAvatarDisplays() {
+                const userStr = localStorage.getItem('user');
+                let user, avatarBase64, initial;
+                
+                if (userStr) {
+                    user = JSON.parse(userStr);
+                    avatarBase64 = user.avatar;
+                    initial = user.name ? user.name.charAt(0).toUpperCase() : 'U';
+                } else if (this.user) {
+                    user = this.user;
+                    avatarBase64 = this.user.avatar;
+                    initial = this.user.name ? this.user.name.charAt(0).toUpperCase() : 'U';
+                } else {
+                    initial = 'U';
+                }
+                
+                // Update profile avatar
+                this.updateAvatarDisplay(avatarBase64, initial);
+                
+                // Update header avatar
+                this.updateHeaderAvatar(avatarBase64, initial);
+                
+                // Update sidebar avatar
+                this.updateSidebarAvatar(avatarBase64, initial);
+            }
+            
+            updateAvatarDisplay(avatarBase64 = null, initial = 'U') {
+                const profileAvatar = document.getElementById('profileAvatar');
+                const removeAvatarBtn = document.getElementById('removeAvatarBtn');
+                
+                if (avatarBase64 && avatarBase64.trim() !== '') {
+                    profileAvatar.innerHTML = `
+                        <img src="${avatarBase64}" alt="Profile Picture" 
+                             onerror="this.onerror=null; this.style.display='none'; this.parentElement.innerHTML='${initial}'; this.parentElement.style.background='linear-gradient(135deg, #8a2be2, #ff69b4)'; this.parentElement.style.color='white'; this.parentElement.style.display='flex'; this.parentElement.style.alignItems='center'; this.parentElement.style.justifyContent='center';">
+                    `;
+                    removeAvatarBtn.style.display = 'block';
+                } else {
+                    profileAvatar.innerHTML = initial;
+                    profileAvatar.style.background = 'linear-gradient(135deg, #8a2be2, #ff69b4)';
+                    profileAvatar.style.color = 'white';
+                    profileAvatar.style.display = 'flex';
+                    profileAvatar.style.alignItems = 'center';
+                    profileAvatar.style.justifyContent = 'center';
+                    profileAvatar.style.fontSize = '3rem';
+                    profileAvatar.style.fontWeight = 'bold';
+                    removeAvatarBtn.style.display = 'none';
+                }
+            }
+            
+            updateHeaderAvatar(avatarBase64 = null, initial = 'U') {
+                const headerAvatar = document.getElementById('headerAvatar');
+                if (!headerAvatar) return;
+                
+                if (avatarBase64 && avatarBase64.trim() !== '') {
+                    headerAvatar.innerHTML = `
+                        <img src="${avatarBase64}" alt="Profile" 
+                             onerror="this.onerror=null; this.style.display='none'; this.parentElement.innerHTML='${initial}'; this.parentElement.style.background='linear-gradient(135deg, #8a2be2, #ff69b4)'; this.parentElement.style.color='white'; this.parentElement.style.display='flex'; this.parentElement.style.alignItems='center'; this.parentElement.style.justifyContent='center';">
+                    `;
+                } else {
+                    headerAvatar.innerHTML = initial;
+                    headerAvatar.style.background = 'linear-gradient(135deg, #8a2be2, #ff69b4)';
+                    headerAvatar.style.color = 'white';
+                    headerAvatar.style.display = 'flex';
+                    headerAvatar.style.alignItems = 'center';
+                    headerAvatar.style.justifyContent = 'center';
+                    headerAvatar.style.fontWeight = '600';
+                    headerAvatar.style.fontSize = '1rem';
+                }
+            }
+            
+            updateSidebarAvatar(avatarBase64 = null, initial = 'U') {
+                const sidebarAvatar = document.getElementById('sidebarAvatar');
+                if (!sidebarAvatar) return;
+                
+                if (avatarBase64 && avatarBase64.trim() !== '') {
+                    sidebarAvatar.innerHTML = `
+                        <img src="${avatarBase64}" alt="Profile" 
+                             onerror="this.onerror=null; this.style.display='none'; this.parentElement.innerHTML='${initial}'; this.parentElement.style.background='linear-gradient(135deg, #8a2be2, #ff69b4)'; this.parentElement.style.color='white'; this.parentElement.style.display='flex'; this.parentElement.style.alignItems='center'; this.parentElement.style.justifyContent='center';">
+                    `;
+                } else {
+                    sidebarAvatar.innerHTML = initial;
+                    sidebarAvatar.style.background = 'linear-gradient(135deg, #8a2be2, #ff69b4)';
+                    sidebarAvatar.style.color = 'white';
+                    sidebarAvatar.style.display = 'flex';
+                    sidebarAvatar.style.alignItems = 'center';
+                    sidebarAvatar.style.justifyContent = 'center';
+                    sidebarAvatar.style.fontWeight = '600';
+                }
+            }
+            
+            async uploadAvatar(file) {
+                if (this.uploadInProgress) {
+                    this.showNotification('An upload is already in progress', 'warning');
+                    return;
+                }
+                
+                // Validate file
+                if (!file) {
+                    this.showNotification('Please select an image file', 'error');
+                    return;
+                }
+                
+                // Check file size (2MB limit for Base64)
+                if (file.size > 2 * 1024 * 1024) {
+                    this.showNotification('File size must be less than 2MB for best performance', 'warning');
+                    // Continue anyway, but warn user
+                }
+                
+                // Check file type
+                const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp'];
+                if (!allowedTypes.includes(file.type)) {
+                    this.showNotification('Only JPG, PNG, GIF, and WebP images are allowed', 'error');
+                    return;
+                }
+                
+                // Show preview
+                this.showImagePreview(file);
+            }
+            
+            async confirmUpload(file) {
+                this.uploadInProgress = true;
+                
+                // Show upload status
+                const uploadStatus = document.getElementById('uploadStatus');
+                const uploadProgress = document.getElementById('uploadProgress');
+                const uploadProgressFill = document.getElementById('uploadProgressFill');
+                
+                if (uploadStatus) {
+                    uploadStatus.style.display = 'block';
+                    uploadStatus.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Converting image...';
+                }
+                
+                if (uploadProgress) {
+                    uploadProgress.style.display = 'block';
+                    uploadProgressFill.style.width = '0%';
+                }
+                
+                try {
+                    // Convert image to Base64
+                    const base64String = await this.fileToBase64(file);
+                    
+                    if (uploadStatus) {
+                        uploadStatus.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Uploading...';
+                    }
+                    
+                    if (uploadProgressFill) {
+                        uploadProgressFill.style.width = '50%';
+                    }
+                    
+                    const token = localStorage.getItem('token');
+                    
+                    // Send Base64 string to backend
+                    const response = await fetch(`${API_BASE}/users/avatar-base64`, {
+                        method: 'POST',
+                        headers: {
+                            'Authorization': `Bearer ${token}`,
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            avatar: base64String,
+                            filename: file.name,
+                            filetype: file.type
+                        })
+                    });
+                    
+                    if (uploadProgressFill) {
+                        uploadProgressFill.style.width = '100%';
+                    }
+                    
+                    const data = await response.json();
+                    
+                    if (!response.ok) {
+                        throw new Error(data.error || `Upload failed with status ${response.status}`);
+                    }
+                    
+                    if (data.success) {
+                        // Get the Base64 string from response
+                        const avatarBase64 = data.data?.avatar || data.avatar;
+                        
+                        if (!avatarBase64) {
+                            throw new Error('No avatar data in response');
+                        }
+                        
+                        console.log('Upload successful');
+                        
+                        this.avatarBase64 = avatarBase64;
+                        this.user.avatar = avatarBase64;
+                        
+                        // Update localStorage
+                        localStorage.setItem('user', JSON.stringify(this.user));
+                        
+                        // Update all avatar displays
+                        this.updateAllAvatarDisplays();
+                        
+                        this.showNotification('Profile picture updated successfully!', 'success');
+                        
+                        // Update avatar on all pages by triggering storage event
+                        localStorage.setItem('avatarUpdated', Date.now().toString());
+                        
+                    } else {
+                        throw new Error(data.error || 'Upload failed');
+                    }
+                    
+                } catch (error) {
+                    console.error('Error uploading avatar:', error);
+                    this.showNotification(error.message || 'Failed to upload picture', 'error');
+                } finally {
+                    this.uploadInProgress = false;
+                    
+                    // Hide upload status
+                    if (uploadStatus) {
+                        uploadStatus.style.display = 'none';
+                    }
+                    
+                    if (uploadProgress) {
+                        uploadProgress.style.display = 'none';
+                        uploadProgressFill.style.width = '0%';
+                    }
+                    
+                    // Hide preview modal
+                    this.hideImagePreview();
+                    
+                    // Reset file input
+                    document.getElementById('avatarInput').value = '';
+                }
+            }
+            
+            fileToBase64(file) {
+                return new Promise((resolve, reject) => {
+                    const reader = new FileReader();
+                    reader.readAsDataURL(file);
+                    reader.onload = () => resolve(reader.result);
+                    reader.onerror = error => reject(error);
+                });
+            }
+            
+            async removeAvatar() {
+                if (!confirm('Are you sure you want to remove your profile picture?')) {
+                    return;
+                }
+                
+                try {
+                    const token = localStorage.getItem('token');
+                    const response = await fetch(`${API_BASE}/users/avatar-base64`, {
+                        method: 'DELETE',
+                        headers: {
+                            'Authorization': `Bearer ${token}`,
+                            'Content-Type': 'application/json'
+                        }
+                    });
+                    
+                    const data = await response.json();
+                    
+                    if (data.success) {
+                        this.avatarBase64 = null;
+                        this.user.avatar = null;
+                        
+                        // Update localStorage
+                        localStorage.setItem('user', JSON.stringify(this.user));
+                        
+                        // Update all avatar displays
+                        this.updateAllAvatarDisplays();
+                        
+                        this.showNotification('Profile picture removed', 'success');
+                        
+                        // Update avatar on all pages
+                        localStorage.setItem('avatarUpdated', Date.now().toString());
+                        
+                    } else {
+                        throw new Error(data.error || 'Failed to remove avatar');
+                    }
+                    
+                } catch (error) {
+                    console.error('Error removing avatar:', error);
+                    this.showNotification(error.message || 'Failed to remove picture', 'error');
+                }
+            }
+            
+            showImagePreview(file) {
+                // Create preview modal
+                let previewModal = document.getElementById('imagePreviewModal');
+                
+                if (!previewModal) {
+                    previewModal = document.createElement('div');
+                    previewModal.id = 'imagePreviewModal';
+                    previewModal.className = 'image-preview-modal';
+                    previewModal.innerHTML = `
+                        <div class="image-preview-content">
+                            <h3>Preview Your Photo</h3>
+                            <img class="preview-image" id="previewImage" alt="Preview">
+                            <p style="margin: 1rem 0; color: #666;">Make sure your face is clearly visible</p>
+                            <div class="preview-actions">
+                                <button type="button" class="btn btn-outline" id="cancelPreviewBtn">
+                                    <i class="fas fa-times"></i> Cancel
+                                </button>
+                                <button type="button" class="btn btn-primary" id="confirmUploadBtn">
+                                    <i class="fas fa-check"></i> Use This Photo
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                    document.body.appendChild(previewModal);
+                    
+                    // Add event listeners
+                    document.getElementById('cancelPreviewBtn').addEventListener('click', () => {
+                        this.hideImagePreview();
+                    });
+                    
+                    document.getElementById('confirmUploadBtn').addEventListener('click', () => {
+                        this.confirmUpload(file);
+                    });
+                    
+                    // Close on outside click
+                    previewModal.addEventListener('click', (e) => {
+                        if (e.target === previewModal) {
+                            this.hideImagePreview();
+                        }
+                    });
+                }
+                
+                // Show preview image
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const previewImage = document.getElementById('previewImage');
+                    if (previewImage) {
+                        previewImage.src = e.target.result;
+                    }
+                };
+                reader.readAsDataURL(file);
+                
+                // Show modal
+                previewModal.classList.add('active');
+            }
+            
+            hideImagePreview() {
+                const previewModal = document.getElementById('imagePreviewModal');
+                if (previewModal) {
+                    previewModal.classList.remove('active');
+                }
+            }
+            
+            async savePersonalInfo() {
+                try {
+                    const firstName = document.getElementById('firstName').value.trim();
+                    const lastName = document.getElementById('lastName').value.trim();
+                    const email = document.getElementById('email').value.trim();
+                    const phone = document.getElementById('phone').value.trim();
+                    const bio = document.getElementById('bio').value.trim();
+                    
+                    const updates = {
+                        name: `${firstName} ${lastName}`.trim(),
+                        email,
+                        phone,
+                        bio
+                    };
+                    
+                    const token = localStorage.getItem('token');
+                    const response = await fetch(`${API_BASE}/users/profile`, {
+                        method: 'PUT',
+                        headers: {
+                            'Authorization': `Bearer ${token}`,
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(updates)
+                    });
+                    
+                    const data = await response.json();
+                    
+                    if (data.success) {
+                        // Update local storage
+                        const currentUser = JSON.parse(localStorage.getItem('user'));
+                        const updatedUser = { ...currentUser, ...updates };
+                        localStorage.setItem('user', JSON.stringify(updatedUser));
+                        
+                        // Update UI
+                        this.populateUserData();
+                        this.updateAllAvatarDisplays();
+                        
+                        this.showNotification('Profile updated successfully!', 'success');
+                    } else {
+                        throw new Error(data.error || 'Failed to update profile');
+                    }
+                    
+                } catch (error) {
+                    console.error('Error updating profile:', error);
+                    this.showNotification(error.message || 'Failed to update profile', 'error');
+                }
+            }
+            
+            async changePassword() {
+                try {
+                    const currentPassword = document.getElementById('currentPassword').value;
+                    const newPassword = document.getElementById('newPassword').value;
+                    const confirmPassword = document.getElementById('confirmPassword').value;
+                    
+                    // Validation
+                    if (newPassword !== confirmPassword) {
+                        this.showNotification('New passwords do not match!', 'error');
+                        return;
+                    }
+                    
+                    if (newPassword.length < 6) {
+                        this.showNotification('Password must be at least 6 characters!', 'error');
+                        return;
+                    }
+                    
+                    const token = localStorage.getItem('token');
+                    const response = await fetch(`${API_BASE}/users/change-password`, {
+                        method: 'PUT',
+                        headers: {
+                            'Authorization': `Bearer ${token}`,
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            currentPassword,
+                            newPassword
+                        })
+                    });
+                    
+                    const data = await response.json();
+                    
+                    if (data.success) {
+                        // Clear form
+                        document.getElementById('passwordForm').reset();
+                        this.showNotification('Password changed successfully!', 'success');
+                    } else {
+                        throw new Error(data.error || 'Failed to change password');
+                    }
+                    
+                } catch (error) {
+                    console.error('Error changing password:', error);
+                    this.showNotification(error.message || 'Failed to change password', 'error');
+                }
+            }
+            
+            async exportData() {
+                try {
+                    const token = localStorage.getItem('token');
+                    const response = await fetch(`${API_BASE}/users/enrollments`, {
+                        headers: {
+                            'Authorization': `Bearer ${token}`,
+                            'Content-Type': 'application/json'
+                        }
+                    });
+                    
+                    const data = await response.json();
+                    
+                    if (data.success) {
+                        // Create export data
+                        const exportData = {
+                            user: this.user,
+                            enrollments: data.data,
+                            exportedAt: new Date().toISOString()
+                        };
+                        
+                        // Create download
+                        const dataStr = JSON.stringify(exportData, null, 2);
+                        const dataBlob = new Blob([dataStr], { type: 'application/json' });
+                        const url = URL.createObjectURL(dataBlob);
+                        
+                        const a = document.createElement('a');
+                        a.href = url;
+                        a.download = `femiforge-data-${Date.now()}.json`;
+                        document.body.appendChild(a);
+                        a.click();
+                        document.body.removeChild(a);
+                        URL.revokeObjectURL(url);
+                        
+                        this.showNotification('Data exported successfully!', 'success');
+                    }
+                    
+                } catch (error) {
+                    console.error('Error exporting data:', error);
+                    this.showNotification('Failed to export data', 'error');
+                }
+            }
+            
+            async deleteAccount() {
+                if (!confirm('Are you sure you want to delete your account? This action cannot be undone!')) {
+                    return;
+                }
+                
+                try {
+                    const token = localStorage.getItem('token');
+                    const response = await fetch(`${API_BASE}/users/account`, {
+                        method: 'DELETE',
+                        headers: {
+                            'Authorization': `Bearer ${token}`,
+                            'Content-Type': 'application/json'
+                        }
+                    });
+                    
+                    const data = await response.json();
+                    
+                    if (data.success) {
+                        // Clear local storage
+                        localStorage.removeItem('token');
+                        localStorage.removeItem('user');
+                        
+                        // Show success and redirect
+                        this.showNotification('Account deleted successfully!', 'success');
+                        setTimeout(() => {
+                            window.location.href = 'index.html';
+                        }, 1500);
+                    } else {
+                        throw new Error(data.error || 'Failed to delete account');
+                    }
+                    
+                } catch (error) {
+                    console.error('Error deleting account:', error);
+                    this.showNotification(error.message || 'Failed to delete account', 'error');
+                }
+            }
+            
+            showNotification(message, type = 'success') {
+                const notification = document.createElement('div');
+                notification.className = `custom-notification ${type}`;
+                notification.innerHTML = `
+                    <i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'}"></i>
+                    <span>${message}</span>
+                `;
+                
+                document.body.appendChild(notification);
+                
+                setTimeout(() => {
+                    notification.style.animation = 'slideOut 0.3s ease';
+                    setTimeout(() => notification.remove(), 300);
+                }, 3000);
+            }
+            
+            setupEventListeners() {
+                // Upload avatar button
+                const uploadAvatarBtn = document.getElementById('uploadAvatarBtn');
+                const avatarInput = document.getElementById('avatarInput');
+                
+                if (uploadAvatarBtn && avatarInput) {
+                    uploadAvatarBtn.addEventListener('click', () => {
+                        avatarInput.click();
+                    });
+                    
+                    avatarInput.addEventListener('change', (e) => {
+                        if (e.target.files && e.target.files[0]) {
+                            this.uploadAvatar(e.target.files[0]);
+                        }
+                    });
+                }
+                
+                // Remove avatar button
+                const removeAvatarBtn = document.getElementById('removeAvatarBtn');
+                if (removeAvatarBtn) {
+                    removeAvatarBtn.addEventListener('click', () => {
+                        this.removeAvatar();
+                    });
+                }
+                
+                // Save personal info
+                const savePersonalBtn = document.getElementById('savePersonalInfo');
+                if (savePersonalBtn) {
+                    savePersonalBtn.addEventListener('click', () => {
+                        this.savePersonalInfo();
+                    });
+                }
+                
+                // Change password
+                const passwordForm = document.getElementById('passwordForm');
+                if (passwordForm) {
+                    passwordForm.addEventListener('submit', (e) => {
+                        e.preventDefault();
+                        this.changePassword();
+                    });
+                }
+                
+                // Export data
+                const exportBtn = document.getElementById('exportDataBtn');
+                if (exportBtn) {
+                    exportBtn.addEventListener('click', () => {
+                        this.exportData();
+                    });
+                }
+                
+                // Delete account
+                const deleteBtn = document.getElementById('deleteAccountBtn');
+                if (deleteBtn) {
+                    deleteBtn.addEventListener('click', () => {
+                        document.getElementById('deleteModal').classList.add('active');
+                    });
+                }
+                
+                // Delete modal buttons
+                const cancelDelete = document.getElementById('cancelDelete');
+                const confirmDelete = document.getElementById('confirmDelete');
+                
+                if (cancelDelete) {
+                    cancelDelete.addEventListener('click', () => {
+                        document.getElementById('deleteModal').classList.remove('active');
+                    });
+                }
+                
+                if (confirmDelete) {
+                    confirmDelete.addEventListener('click', () => {
+                        this.deleteAccount();
+                        document.getElementById('deleteModal').classList.remove('active');
+                    });
+                }
+                
+                // Close modal when clicking outside
+                const deleteModal = document.getElementById('deleteModal');
+                if (deleteModal) {
+                    deleteModal.addEventListener('click', (e) => {
+                        if (e.target === e.currentTarget) {
+                            e.currentTarget.classList.remove('active');
+                        }
+                    });
+                }
+                
+                // Listen for avatar updates from other pages
+                window.addEventListener('storage', (e) => {
+                    if (e.key === 'user' || e.key === 'avatarUpdated') {
+                        console.log('User data updated, refreshing...');
+                        setTimeout(() => {
+                            this.updateAllAvatarDisplays();
+                        }, 100);
+                    }
+                });
+            }
+        }
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', () => {
+            const profilePage = new ProfilePage();
+            profilePage.init();
+        });
+    </script>
+</body>
+</html>

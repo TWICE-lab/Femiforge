@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Progress Tracking | FemiForge Student Portal</title>
+    <style>
+        /* Reuse base styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        /* Header */
+        .header {
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            text-decoration: none;
+            color: #8a2be2;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .logo span {
+            color: #ff69b4;
+        }
+
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #8a2be2, #ff69b4);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        /* Main Layout */
+        .dashboard {
+            display: flex;
+            min-height: 100vh;
+            padding-top: 70px;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 250px;
+            background: white;
+            border-right: 1px solid #e1e5eb;
+            padding: 2rem 0;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.75rem 2rem;
+            color: #555;
+            text-decoration: none;
+            border-left: 3px solid transparent;
+        }
+
+        .nav-item:hover,
+        .nav-item.active {
+            background: #f0f2ff;
+            color: #8a2be2;
+            border-left-color: #8a2be2;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            padding: 2rem;
+        }
+
+        /* Page Header */
+        .page-header {
+            margin-bottom: 2rem;
+        }
+
+        .page-header h1 {
+            color: #333;
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .page-header p {
+            color: #666;
+        }
+
+        /* Progress Overview */
+        .progress-overview {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        @media (max-width: 768px) {
+            .progress-overview {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Overall Progress Card */
+        .overall-progress {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .progress-circle {
+            width: 150px;
+            height: 150px;
+            margin: 0 auto 2rem;
+            position: relative;
+        }
+
+        .progress-circle-bg {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: #f0f2ff;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .progress-circle-fill {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: conic-gradient(#8a2be2 0% var(--progress), #f0f2ff var(--progress) 100%);
+        }
+
+        .progress-circle-inner {
+            position: absolute;
+            width: 120px;
+            height: 120px;
+            background: white;
+            border-radius: 50%;
+            top: 15px;
+            left: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+
+        .progress-percentage {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #8a2be2;
+        }
+
+        .progress-label {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        /* Weekly Activity */
+        .weekly-activity {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .activity-chart {
+            height: 200px;
+            display: flex;
+            align-items: flex-end;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .activity-bar {
+            flex: 1;
+            background: #e1e5eb;
+            border-radius: 4px 4px 0 0;
+            position: relative;
+        }
+
+        .activity-bar-fill {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            background: #8a2be2;
+            border-radius: 4px 4px 0 0;
+            transition: height 0.3s ease;
+        }
+
+        .activity-day {
+            text-align: center;
+            font-size: 0.8rem;
+            color: #666;
+            margin-top: 0.5rem;
+        }
+
+        /* Course Progress List */
+        .course-progress-list {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .progress-item {
+            display: flex;
+            align-items: center;
+            padding: 1rem 0;
+            border-bottom: 1px solid #e1e5eb;
+        }
+
+        .progress-item:last-child {
+            border-bottom: none;
+        }
+
+        .course-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            background: #f0f2ff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1rem;
+            color: #8a2be2;
+            font-weight: bold;
+        }
+
+        .course-info {
+            flex: 1;
+        }
+
+        .course-name {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .course-category {
+            color: #666;
+            font-size: 0.85rem;
+        }
+
+        .progress-bar {
+            flex: 2;
+            height: 8px;
+            background: #e1e5eb;
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 0 1rem;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: #8a2be2;
+            border-radius: 4px;
+        }
+
+        .progress-percent {
+            width: 60px;
+            text-align: right;
+            font-weight: 600;
+            color: #8a2be2;
+        }
+
+        /* Achievements */
+        .achievements-section {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            margin-top: 2rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .achievements-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .achievement-card {
+            text-align: center;
+            padding: 1rem;
+            border: 2px solid #e1e5eb;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .achievement-card.earned {
+            border-color: #8a2be2;
+            background: #f0f2ff;
+        }
+
+        .achievement-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .achievement-name {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .achievement-desc {
+            font-size: 0.8rem;
+            color: #666;
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 3rem;
+            color: #666;
+        }
+
+        .empty-state i {
+            font-size: 3rem;
+            color: #ccc;
+            margin-bottom: 1rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 70px;
+            }
+
+            .nav-item span {
+                display: none;
+            }
+
+            .nav-item {
+                justify-content: center;
+                padding: 0.75rem;
+            }
+
+            .progress-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.5rem;
+            }
+
+            .progress-bar {
+                width: 100%;
+                margin: 0.5rem 0;
+            }
+
+            .progress-percent {
+                text-align: left;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-container">
+            <a href="dashboard.html" class="logo">
+                <div class="logo-icon">FF</div>
+                <div>Femi<span>Forge</span></div>
+            </a>
+            
+            <div class="user-menu">
+                 <div class="user-avatar" id="headerAvatar">
+            <!-- This will be updated with image or initial -->
+        </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Dashboard -->
+    <div class="dashboard">
+        <!-- Sidebar -->
+        <nav class="sidebar">
+            <a href="dashboard.html" class="nav-item">
+                <span>📊</span>
+                <span>Dashboard</span>
+            </a>
+            <a href="courses.html" class="nav-item">
+                <span>📚</span>
+                <span>My Courses</span>
+            </a>
+            <a href="progress.html" class="nav-item active">
+                <span>📈</span>
+                <span>Progress</span>
+            </a>
+            <a href="assignments.html" class="nav-item">
+                <span>✓</span>
+                <span>Assignments</span>
+            </a>
+            <a href="profile.html" class="nav-item">
+                <span>👤</span>
+                <span>Profile</span>
+            </a>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Page Header -->
+            <div class="page-header">
+                <h1>My Progress</h1>
+                <p>Track your learning journey and achievements</p>
+            </div>
+
+            <!-- Progress Overview -->
+            <div class="progress-overview">
+                <!-- Overall Progress -->
+                <div class="overall-progress">
+                    <h2>Overall Progress</h2>
+                    <div class="progress-circle">
+                        <div class="progress-circle-bg">
+                            <div class="progress-circle-fill" id="overallProgressFill"></div>
+                        </div>
+                        <div class="progress-circle-inner">
+                            <div class="progress-percentage" id="overallProgress">0%</div>
+                            <div class="progress-label">Complete</div>
+                        </div>
+                    </div>
+                    <div style="text-align: center;">
+                        <p>You've completed <strong id="completedCourses">0</strong> out of <strong id="totalCourses">0</strong> courses</p>
+                    </div>
+                </div>
+
+                <!-- Weekly Activity -->
+                <div class="weekly-activity">
+                    <h2>Weekly Activity</h2>
+                    <div class="activity-chart" id="activityChart">
+                        <!-- Activity bars will be generated here -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Course Progress -->
+            <div class="course-progress-list">
+                <h2 style="margin-bottom: 1.5rem;">Course Progress</h2>
+                <div id="courseProgressList">
+                    <!-- Course progress items will be loaded here -->
+                </div>
+            </div>
+
+            <!-- Achievements -->
+            <div class="achievements-section">
+                <h2>Recent Achievements</h2>
+                <div class="achievements-grid" id="achievementsGrid">
+                    <!-- Achievements will be loaded here -->
+                </div>
+            </div>
+        </main>
+    </div>
+
+      <!-- Add at the bottom, before closing body tag -->
+<script src="js/auth-check.js"></script>
+    <script>
+       const API_BASE = 'http://localhost:5000/api';
+
+class ProgressPage {
+    constructor() {
+        this.enrollments = [];
+        this.progressData = [];
+    }
+    
+    async init() {
+        // Check authentication
+        if (!await this.checkAuth()) {
+            return;
+        }
+        
+        // Load user data
+        await this.loadUserData();
+        
+        // Load progress data
+        await this.loadProgressData();
+        
+        // Render progress
+        this.renderProgress();
+        this.renderActivityChart();
+        this.renderAchievements();
+        
+        // Setup event listeners
+        this.setupEventListeners();
+    }
+    
+    async checkAuth() {
+        const token = localStorage.getItem('token');
+        if (!token) {
+            window.location.href = 'login.html';
+            return false;
+        }
+        return true;
+    }
+    
+    async loadUserData() {
+        try {
+            const token = localStorage.getItem('token');
+            const userStr = localStorage.getItem('user');
+            
+            if (userStr) {
+                const user = JSON.parse(userStr);
+                const avatar = document.getElementById('userAvatar');
+                if (avatar) avatar.textContent = user.name.charAt(0).toUpperCase();
+            }
+        } catch (error) {
+            console.error('Error loading user data:', error);
+        }
+    }
+    
+    async loadProgressData() {
+        try {
+            const token = localStorage.getItem('token');
+            
+            // Load user progress
+            const progressResponse = await fetch(`${API_BASE}/users/progress`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                }
+            });
+            
+            const progressData = await progressResponse.json();
+            
+            if (progressData.success) {
+                this.progressData = progressData.data.courses || [];
+                
+                // Update overall progress
+                this.updateOverallProgress(progressData.data.overall);
+            }
+            
+            // Load enrollments for course list
+            const enrollmentsResponse = await fetch(`${API_BASE}/users/enrollments`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                }
+            });
+            
+            const enrollmentsData = await enrollmentsResponse.json();
+            
+            if (enrollmentsData.success) {
+                this.enrollments = enrollmentsData.data || [];
+                this.renderCourseProgress();
+            }
+            
+        } catch (error) {
+            console.error('Error loading progress data:', error);
+            this.showNotification('Failed to load progress data', 'error');
+        }
+    }
+    
+    updateOverallProgress(overall) {
+        if (!overall) return;
+        
+        // Update overall progress circle
+        const progressPercentage = overall.averageProgress || 0;
+        const progressFill = document.getElementById('overallProgressFill');
+        const progressText = document.getElementById('overallProgress');
+        const completedCourses = document.getElementById('completedCourses');
+        const totalCourses = document.getElementById('totalCourses');
+        
+        if (progressFill) {
+            progressFill.style.setProperty('--progress', `${progressPercentage}%`);
+        }
+        
+        if (progressText) {
+            progressText.textContent = progressPercentage + '%';
+        }
+        
+        if (completedCourses && totalCourses) {
+            completedCourses.textContent = overall.completedCourses || 0;
+            totalCourses.textContent = overall.totalCourses || 0;
+        }
+    }
+    
+    renderProgress() {
+        // Progress is already updated in updateOverallProgress
+    }
+    
+    renderCourseProgress() {
+        const list = document.getElementById('courseProgressList');
+        
+        if (!this.enrollments || this.enrollments.length === 0) {
+            list.innerHTML = `
+                <div class="empty-state">
+                    <span>📚</span>
+                    <p>No courses enrolled yet. Start learning!</p>
+                </div>
+            `;
+            return;
+        }
+        
+        list.innerHTML = this.enrollments.map(enrollment => {
+            const course = enrollment.course;
+            const progress = enrollment.progress || 0;
+            
+            return `
+                <div class="progress-item">
+                    <div class="course-icon" style="background: ${course.color || '#8a2be2'}20; color: ${course.color || '#8a2be2'}">
+                        ${course.category ? course.category.charAt(0) : 'C'}
+                    </div>
+                    <div class="course-info">
+                        <div class="course-name">${course.title}</div>
+                        <div class="course-category">${course.category || 'General'} • ${course.instructor?.name || 'Instructor'}</div>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: ${progress}%"></div>
+                    </div>
+                    <div class="progress-percent">${progress}%</div>
+                </div>
+            `;
+        }).join('');
+    }
+    
+    renderActivityChart() {
+        const chart = document.getElementById('activityChart');
+        if (!chart) return;
+        
+        // Simulated activity data
+        const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+        const activity = [3, 5, 7, 4, 6, 2, 8];
+        const maxActivity = Math.max(...activity);
+        
+        chart.innerHTML = days.map((day, index) => `
+            <div style="flex: 1; display: flex; flex-direction: column; align-items: center;">
+                <div class="activity-bar">
+                    <div class="activity-bar-fill" style="height: ${(activity[index] / maxActivity) * 100}%"></div>
+                </div>
+                <div class="activity-day">${day}</div>
+            </div>
+        `).join('');
+    }
+    
+    renderAchievements() {
+        const achievements = [
+            { id: 1, name: 'First Steps', desc: 'Complete your first lesson', icon: '👣', earned: true },
+            { id: 2, name: 'Week Warrior', desc: 'Study for 7 consecutive days', icon: '🏆', earned: true },
+            { id: 3, name: 'Quick Learner', desc: 'Complete a course in 3 days', icon: '⚡', earned: false },
+            { id: 4, name: 'Perfect Score', desc: 'Get 100% on an assignment', icon: '💯', earned: false },
+            { id: 5, name: 'Course Master', desc: 'Complete 5 courses', icon: '🎓', earned: false },
+            { id: 6, name: 'Night Owl', desc: 'Study past midnight', icon: '🦉', earned: true }
+        ];
+        
+        const grid = document.getElementById('achievementsGrid');
+        if (!grid) return;
+        
+        grid.innerHTML = achievements.map(achievement => `
+            <div class="achievement-card ${achievement.earned ? 'earned' : ''}">
+                <div class="achievement-icon">${achievement.icon}</div>
+                <div class="achievement-name">${achievement.name}</div>
+                <div class="achievement-desc">${achievement.desc}</div>
+                ${achievement.earned ? '<div style="color: #8a2be2; font-size: 0.8rem; margin-top: 0.5rem;">✅ Earned</div>' : ''}
+            </div>
+        `).join('');
+    }
+    
+    showNotification(message, type = 'success') {
+        const notification = document.createElement('div');
+        notification.innerHTML = `
+            <i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'}"></i>
+            <span>${message}</span>
+        `;
+        
+        notification.style.cssText = `
+            position: fixed;
+            top: 100px;
+            right: 20px;
+            background: ${type === 'success' ? '#28a745' : type === 'error' ? '#dc3545' : '#17a2b8'};
+            color: white;
+            padding: 15px 25px;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            z-index: 9999;
+            animation: slideIn 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        `;
+        
+        document.body.appendChild(notification);
+        
+        setTimeout(() => {
+            notification.style.animation = 'slideOut 0.3s ease';
+            setTimeout(() => notification.remove(), 300);
+        }, 3000);
+    }
+    
+    setupEventListeners() {
+        // Logout
+        const logoutLinks = document.querySelectorAll('a[href="#logout"]');
+        logoutLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                if (confirm('Are you sure you want to logout?')) {
+                    localStorage.removeItem('token');
+                    localStorage.removeItem('user');
+                    window.location.href = 'login.html';
+                }
+            });
+        });
+    }
+}
+
+// Initialize page
+document.addEventListener('DOMContentLoaded', () => {
+    const progressPage = new ProgressPage();
+    progressPage.init();
+});
+
+// Function to update header avatar
+async function updateHeaderAvatar() {
+    const token = localStorage.getItem('token');
+    const userStr = localStorage.getItem('user');
+    const headerAvatar = document.getElementById('headerAvatar');
+    
+    if (!headerAvatar) return;
+    
+    if (userStr) {
+        const user = JSON.parse(userStr);
+        
+        // Check if user has avatar
+        if (user.avatar) {
+            headerAvatar.innerHTML = `
+                <img src="${user.avatar}" alt="Profile" 
+                     style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;">
+            `;
+        } else {
+            // Show initial
+            headerAvatar.textContent = user.name.charAt(0).toUpperCase();
+        }
+    }
+}
+
+// Call this function when page loads
+updateHeaderAvatar();
+
+
+    </script>
+  
+</body>
+</html>

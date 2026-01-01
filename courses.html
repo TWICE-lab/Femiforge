@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Courses | FemiForge Student Portal</title>
+    <style>
+        /* Reuse dashboard styles with modifications */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        /* Header */
+        .header {
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            text-decoration: none;
+            color: #8a2be2;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .logo span {
+            color: #ff69b4;
+        }
+
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #8a2be2, #ff69b4);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        /* Main Layout */
+        .dashboard {
+            display: flex;
+            min-height: 100vh;
+            padding-top: 70px;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 250px;
+            background: white;
+            border-right: 1px solid #e1e5eb;
+            padding: 2rem 0;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.75rem 2rem;
+            color: #555;
+            text-decoration: none;
+            border-left: 3px solid transparent;
+        }
+
+        .nav-item:hover,
+        .nav-item.active {
+            background: #f0f2ff;
+            color: #8a2be2;
+            border-left-color: #8a2be2;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            padding: 2rem;
+        }
+
+        /* Page Header */
+        .page-header {
+            margin-bottom: 2rem;
+        }
+
+        .page-header h1 {
+            color: #333;
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .page-header p {
+            color: #666;
+        }
+
+        /* Course Filters */
+        .course-filters {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 0.5rem 1rem;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .filter-btn:hover,
+        .filter-btn.active {
+            background: #8a2be2;
+            color: white;
+            border-color: #8a2be2;
+        }
+
+        /* Course Grid */
+        .courses-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .course-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .course-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .course-header {
+            padding: 1.5rem;
+            background: #f8f9ff;
+            border-bottom: 1px solid #e1e5eb;
+        }
+
+        .course-category {
+            display: inline-block;
+            background: #8a2be2;
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+        }
+
+        .course-title {
+            font-size: 1.2rem;
+            color: #333;
+            margin-bottom: 0.5rem;
+        }
+
+        .course-instructor {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .course-body {
+            padding: 1.5rem;
+        }
+
+        .course-description {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 1.5rem;
+            line-height: 1.5;
+        }
+
+        .course-meta {
+            display: flex;
+            justify-content: space-between;
+            color: #888;
+            font-size: 0.85rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .progress-bar {
+            height: 6px;
+            background: #e1e5eb;
+            border-radius: 3px;
+            margin-bottom: 1rem;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: #8a2be2;
+            border-radius: 3px;
+        }
+
+        .progress-text {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.8rem;
+            color: #666;
+            margin-bottom: 1.5rem;
+        }
+
+        .course-actions {
+            display: flex;
+            gap: 0.75rem;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            background: #8a2be2;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: background 0.3s ease;
+            flex: 1;
+            justify-content: center;
+        }
+
+        .btn:hover {
+            background: #6a1cb0;
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid #8a2be2;
+            color: #8a2be2;
+        }
+
+        .btn-outline:hover {
+            background: #8a2be2;
+            color: white;
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 3rem;
+            background: white;
+            border-radius: 12px;
+            color: #666;
+            grid-column: 1 / -1;
+        }
+
+        .empty-state i {
+            font-size: 3rem;
+            color: #ccc;
+            margin-bottom: 1rem;
+        }
+
+        /* Search Bar */
+        .search-container {
+            position: relative;
+            margin-bottom: 2rem;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 1rem 1rem 1rem 3rem;
+            border: 2px solid #e1e5eb;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #8a2be2;
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #666;
+        }
+
+        /* Course Stats */
+        .course-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #8a2be2;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 70px;
+            }
+
+            .nav-item span {
+                display: none;
+            }
+
+            .nav-item {
+                justify-content: center;
+                padding: 0.75rem;
+            }
+
+            .courses-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .course-stats {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-container">
+            <a href="dashboard.html" class="logo">
+                <div class="logo-icon">FF</div>
+                <div>Femi<span>Forge</span></div>
+            </a>
+            
+            <div class="user-menu">
+                 <div class="user-avatar" id="headerAvatar">
+            <!-- This will be updated with image or initial -->
+        </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Dashboard -->
+    <div class="dashboard">
+        <!-- Sidebar -->
+        <nav class="sidebar">
+            <a href="dashboard.html" class="nav-item">
+                <span>📊</span>
+                <span>Dashboard</span>
+            </a>
+            <a href="courses.html" class="nav-item active">
+                <span>📚</span>
+                <span>My Courses</span>
+            </a>
+            <a href="progress.html" class="nav-item">
+                <span>📈</span>
+                <span>Progress</span>
+            </a>
+            <a href="assignments.html" class="nav-item">
+                <span>✓</span>
+                <span>Assignments</span>
+            </a>
+            <a href="profile.html" class="nav-item">
+                <span>👤</span>
+                <span>Profile</span>
+            </a>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Page Header -->
+            <div class="page-header">
+                <h1>My Courses</h1>
+                <p>Track and manage all your enrolled courses</p>
+            </div>
+
+            <!-- Search Bar -->
+            <div class="search-container">
+                <input type="text" class="search-input" placeholder="Search courses..." id="searchInput">
+                <span class="search-icon">🔍</span>
+            </div>
+
+            <!-- Course Stats -->
+            <div class="course-stats">
+                <div class="stat-card">
+                    <div class="stat-value" id="totalCourses">0</div>
+                    <div class="stat-label">Total Courses</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="inProgress">0</div>
+                    <div class="stat-label">In Progress</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="completed">0</div>
+                    <div class="stat-label">Completed</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="avgGrade">0%</div>
+                    <div class="stat-label">Average Grade</div>
+                </div>
+            </div>
+
+            <!-- Course Filters -->
+            <div class="course-filters">
+                <button class="filter-btn active" data-filter="all">All Courses</button>
+                <button class="filter-btn" data-filter="in-progress">In Progress</button>
+                <button class="filter-btn" data-filter="completed">Completed</button>
+                <button class="filter-btn" data-filter="favorites">Favorites</button>
+            </div>
+
+            <!-- Course Grid -->
+            <div class="courses-grid" id="coursesGrid">
+                <!-- Courses will be loaded here -->
+            </div>
+        </main>
+    </div>
+
+    <script src="js/auth-check.js"></script>
+    <script>
+       const API_BASE = 'http://localhost:5000/api';
+
+class CoursesPage {
+    constructor() {
+        this.courses = [];
+        this.enrollments = [];
+        this.currentFilter = 'all';
+        this.searchTerm = '';
+    }
+    
+    async init() {
+        // Check authentication
+        if (!await this.checkAuth()) {
+            return;
+        }
+        
+        // Load data
+        await this.loadUserData();
+        await this.loadCourses();
+        
+        // Setup event listeners
+        this.setupEventListeners();
+        
+        console.log('Courses page initialized');
+    }
+    
+    async checkAuth() {
+        const token = localStorage.getItem('token');
+        
+        if (!token) {
+            window.location.href = 'login.html';
+            return false;
+        }
+        
+        return true;
+    }
+    
+    async loadUserData() {
+        try {
+            const token = localStorage.getItem('token');
+            const userStr = localStorage.getItem('user');
+            
+            if (userStr) {
+                const user = JSON.parse(userStr);
+                const avatar = document.getElementById('userAvatar');
+                if (avatar) avatar.textContent = user.name.charAt(0).toUpperCase();
+            }
+        } catch (error) {
+            console.error('Error loading user data:', error);
+        }
+    }
+    
+    async loadCourses() {
+        try {
+            const token = localStorage.getItem('token');
+            
+            // Load user's enrollments
+            const enrollmentsResponse = await fetch(`${API_BASE}/users/enrollments`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                }
+            });
+            
+            const enrollmentsData = await enrollmentsResponse.json();
+            
+            if (enrollmentsData.success) {
+                this.enrollments = enrollmentsData.data || [];
+                
+                // Load all courses
+                const coursesResponse = await fetch(`${API_BASE}/courses`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+                
+                const coursesData = await coursesResponse.json();
+                
+                if (coursesData.success) {
+                    this.courses = coursesData.data || [];
+                    this.updateStats();
+                    this.renderCourses();
+                }
+            }
+        } catch (error) {
+            console.error('Error loading courses:', error);
+            this.showNotification('Failed to load courses', 'error');
+        }
+    }
+    
+    updateStats() {
+        const total = this.enrollments.length;
+        const completed = this.enrollments.filter(e => e.isCompleted).length;
+        const inProgress = total - completed;
+        
+        // Calculate average grade (placeholder)
+        const avgGrade = total > 0 ? Math.round(completed / total * 100) : 0;
+        
+        const elements = [
+            { id: 'totalCourses', value: total },
+            { id: 'completed', value: completed },
+            { id: 'inProgress', value: inProgress },
+            { id: 'avgGrade', value: avgGrade + '%' }
+        ];
+        
+        elements.forEach(({ id, value }) => {
+            const element = document.getElementById(id);
+            if (element) element.textContent = value;
+        });
+    }
+    
+    filterCourses() {
+        let filtered = this.enrollments;
+        
+        // Apply search filter
+        if (this.searchTerm) {
+            const searchLower = this.searchTerm.toLowerCase();
+            filtered = filtered.filter(enrollment => {
+                const course = enrollment.course;
+                return course.title.toLowerCase().includes(searchLower) ||
+                       course.description.toLowerCase().includes(searchLower) ||
+                       course.category.toLowerCase().includes(searchLower);
+            });
+        }
+        
+        // Apply status filter
+        switch (this.currentFilter) {
+            case 'in-progress':
+                filtered = filtered.filter(e => !e.isCompleted);
+                break;
+            case 'completed':
+                filtered = filtered.filter(e => e.isCompleted);
+                break;
+            case 'favorites':
+                // Add favorite logic if implemented
+                break;
+        }
+        
+        return filtered;
+    }
+    
+    renderCourses() {
+        const filteredEnrollments = this.filterCourses();
+        const grid = document.getElementById('coursesGrid');
+        
+        if (!filteredEnrollments || filteredEnrollments.length === 0) {
+            grid.innerHTML = this.getEmptyStateHTML();
+            return;
+        }
+        
+        grid.innerHTML = filteredEnrollments.map(enrollment => 
+            this.createCourseCard(enrollment)
+        ).join('');
+        
+        // Add event listeners
+        setTimeout(() => {
+            this.attachCourseListeners();
+        }, 100);
+    }
+    
+    getEmptyStateHTML() {
+        if (this.searchTerm) {
+            return `
+                <div class="empty-state">
+                    <span>🔍</span>
+                    <h3>No courses found</h3>
+                    <p>Try a different search term</p>
+                </div>
+            `;
+        }
+        
+        return `
+            <div class="empty-state">
+                <span>📚</span>
+                <h3>No courses enrolled yet</h3>
+                <p>Browse available courses to get started!</p>
+            </div>
+        `;
+    }
+    
+    createCourseCard(enrollment) {
+        const course = enrollment.course;
+        const progress = enrollment.progress || 0;
+        const isCompleted = enrollment.isCompleted;
+        
+        return `
+            <div class="course-card" data-course-id="${course._id}">
+                <div class="course-header">
+                    <span class="course-category" style="background: ${course.color || '#8a2be2'}">${course.category}</span>
+                    <h3 class="course-title">${course.title}</h3>
+                    <p class="course-instructor">
+                        👤 ${course.instructor?.name || 'Instructor'}
+                        ${course.rating?.average ? `<span style="margin-left: 10px; color: #ffc107;">★ ${course.rating.average}</span>` : ''}
+                    </p>
+                </div>
+                <div class="course-body">
+                    <p class="course-description">${course.description}</p>
+                    <div class="course-meta">
+                        <span>⏱ ${course.duration}</span>
+                        <span>📊 ${course.level}</span>
+                        <span>${isCompleted ? '✅ Completed' : '🔄 In Progress'}</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: ${progress}%"></div>
+                    </div>
+                    <div class="progress-text">
+                        <span>Progress</span>
+                        <span>${progress}%</span>
+                    </div>
+                    <div class="course-actions">
+                        <a href="course-details.html?id=${course._id}" class="btn">
+                            <span>▶</span> Continue
+                        </a>
+                        <button class="btn btn-outline favorite-btn" data-course-id="${course._id}">
+                            <span>⭐</span> Favorite
+                        </button>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+    
+    attachCourseListeners() {
+        // Favorite buttons
+        document.querySelectorAll('.favorite-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const courseId = e.target.closest('.favorite-btn').dataset.courseId;
+                this.toggleFavorite(courseId);
+            });
+        });
+    }
+    
+    toggleFavorite(courseId) {
+        // Implement favorite functionality
+        this.showNotification('Added to favorites!', 'info');
+    }
+    
+    showNotification(message, type = 'success') {
+        const notification = document.createElement('div');
+        notification.className = `custom-notification ${type}`;
+        notification.innerHTML = `
+            <i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'}"></i>
+            <span>${message}</span>
+        `;
+        
+        notification.style.cssText = `
+            position: fixed;
+            top: 100px;
+            right: 20px;
+            background: ${type === 'success' ? '#28a745' : type === 'error' ? '#dc3545' : '#17a2b8'};
+            color: white;
+            padding: 15px 25px;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            z-index: 9999;
+            animation: slideIn 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        `;
+        
+        document.body.appendChild(notification);
+        
+        setTimeout(() => {
+            notification.style.animation = 'slideOut 0.3s ease';
+            setTimeout(() => notification.remove(), 300);
+        }, 3000);
+    }
+    
+    setupEventListeners() {
+        // Filter buttons
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                e.target.classList.add('active');
+                this.currentFilter = e.target.dataset.filter;
+                this.renderCourses();
+            });
+        });
+        
+        // Search input
+        const searchInput = document.getElementById('searchInput');
+        if (searchInput) {
+            searchInput.addEventListener('input', (e) => {
+                this.searchTerm = e.target.value;
+                this.renderCourses();
+            });
+        }
+        
+        // Logout
+        const logoutLinks = document.querySelectorAll('a[href="#logout"]');
+        logoutLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                if (confirm('Are you sure you want to logout?')) {
+                    localStorage.removeItem('token');
+                    localStorage.removeItem('user');
+                    window.location.href = 'login.html';
+                }
+            });
+        });
+    }
+}
+
+// Initialize page
+document.addEventListener('DOMContentLoaded', () => {
+    const coursesPage = new CoursesPage();
+    coursesPage.init();
+});
+
+// Function to update header avatar
+async function updateHeaderAvatar() {
+    const token = localStorage.getItem('token');
+    const userStr = localStorage.getItem('user');
+    const headerAvatar = document.getElementById('headerAvatar');
+    
+    if (!headerAvatar) return;
+    
+    if (userStr) {
+        const user = JSON.parse(userStr);
+        
+        // Check if user has avatar
+        if (user.avatar) {
+            headerAvatar.innerHTML = `
+                <img src="${user.avatar}" alt="Profile" 
+                     style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;">
+            `;
+        } else {
+            // Show initial
+            headerAvatar.textContent = user.name.charAt(0).toUpperCase();
+        }
+    }
+}
+
+// Call this function when page loads
+updateHeaderAvatar();
+    </script>
+
+</body>
+</html>
